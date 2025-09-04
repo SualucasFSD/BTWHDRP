@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EsqueletonFctory : MonoBehaviour
@@ -24,13 +22,13 @@ public class EsqueletonFctory : MonoBehaviour
         //_bulletPool = new PoolGeneral<MoveEnemy>(() => CreateBullet(), (bullet) => bullet.gameObject.SetActive(false), (bullet) => bullet.gameObject.SetActive(true), _initialAmount);
     }
     
-    private SkeletonEnemyModel CreateBullet() 
+    /*private SkeletonEnemyModel CreateBullet() 
     {
         SkeletonEnemyModel p;
         p = Instantiate(_prefab);
         //DontDestroyOnLoad(p);
         return p;
-    }
+    }*/
     public void ReturnObj(SkeletonEnemyModel obj)
     {
         _bulletPool.ReturnObj(obj);

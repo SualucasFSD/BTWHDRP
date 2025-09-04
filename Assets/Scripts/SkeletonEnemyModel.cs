@@ -38,8 +38,8 @@ public class SkeletonEnemyModel : Entity, Idamageable
         if(_isReady)
         {
           _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
+          GameManager.Instance.AddEntity(this, Kind);
         }
-        GameManager.Instance.AddEntity(this, Kind);
     }
     private void OnDisable()
     {

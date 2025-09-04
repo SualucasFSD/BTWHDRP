@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         EventManager.Ejecute(EventManager.KindOfEvent.ReloadNodes);
+        if(PathNodes.Count <= 0) { PathNodes = PreLoadPathNodes; }
     }
     public bool OnView(GameObject P, float ViewDistance, float VisionAngle, float Radius, List<Entity> Targets)
     {
