@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float _longTimeFirstCombo = 0;
     private Vector3 _dir;
     private Vector3 _rawDir;
+    private Action ChangeMovementType = delegate { };
     private void Start()
     {
         _model=GetComponent<PjModel>();
@@ -34,7 +35,7 @@ public class PlayerController : MonoBehaviour
     }
     private void RotateCamera()
     {
-        _model.RotationPj(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"));
+        _model.RotateCamera(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"));
     }
     private void ManualMovement()
     {
@@ -78,7 +79,6 @@ public class PlayerController : MonoBehaviour
          {
              _model.ChangeTarget(-1);
          }
-        //print(Input.GetAxis("Mouse ScrollWheel"));
     }
     private void OnAttackFirshCombo()
     {

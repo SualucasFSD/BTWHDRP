@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class KnightView : PjView
@@ -25,6 +24,8 @@ public class KnightView : PjView
         _pjModel.OnFall += OnFall;
         _pjModel.OnLanding += OnLanding;
         _pjModel.OnDodge += OnDodge;
+        _pjModel.OnDirectionalMovement += OnDirectionalMove;
+        _pjModel.OnLifeUpdate += OnLifeUpdate;
     }
     #region Jump System
     private void OnFall(float fallVelocity)
@@ -59,62 +60,76 @@ public class KnightView : PjView
         {
             _animator.SetBool("isMoving", false);
         }
-        /* #region Movimiento Smooth
-         if (_dir.x<0)
-         {
-             _xAC -= Time.deltaTime / 0.15f;
-             _xAC = Mathf.Clamp(_xAC, -1, 1);
-         }
-         else if (_dir.x >0)
-         {
-             _xAC += Time.deltaTime / 0.15f;
-             _xAC = Mathf.Clamp(_xAC, -1, 1);
-         }
-         else
-         {
-             if (_xAC < 0)
-             {
-                 _xAC += Time.deltaTime / 0.15f;
-                 _xAC = Mathf.Clamp(_xAC, -1, 0);
-             }
-             else if (_xAC > 0)
-             {
-                 _xAC -= Time.deltaTime / 0.15f;
-                 _xAC = Mathf.Clamp(_xAC, 0, 1);
-             }
-         }
-         if (_dir.z > 0)
-         {
-             _zAC += Time.deltaTime / 0.15f;
-             _zAC = Mathf.Clamp(_zAC, -1, 1);
-         }
-         else if (_dir.z < 0)
-         {
-             _zAC -= Time.deltaTime / 0.15f;
-             _zAC = Mathf.Clamp(_zAC, -1, 1);
-         }
-         else
-         {
-             if (_zAC < 0)
-             {
-                 _zAC += Time.deltaTime / 0.15f;
-                 _zAC = Mathf.Clamp(_zAC, -1, 0);
-             }
-             else if (_zAC > 0)
-             {
-                 _zAC -= Time.deltaTime / 0.15f;
-                 _zAC = Mathf.Clamp(_zAC, 0, 1);
-             }
-         }
-         #endregion
-         Vector3 localDir = transform.InverseTransformDirection(new Vector3(_xAC,0,_zAC));*/
         Vector3 localDir = transform.InverseTransformDirection(_dir);
         _animator.SetFloat("xAxis", localDir.x, 0.1f, Time.deltaTime);
         _animator.SetFloat("zAxis", localDir.z, 0.1f, Time.deltaTime);
         _animator.SetBool("isRunning", running);
-        /*_animator.SetFloat("xAxis", _xAC);
+    }
+    private void OnLifeUpdate(float Value)
+    {
+        _animator.SetFloat("LifePercent", Value);
+    }
+    private void OnDirectionalMove(Vector3 _dir, bool running)
+    {
+        if (_dir.sqrMagnitude > 0)
+        {
+            _animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            _animator.SetBool("isMoving", false);
+        }
+        #region Movimiento Smooth
+        if (_dir.x < 0)
+        {
+            _xAC -= Time.deltaTime / 0.15f;
+            _xAC = Mathf.Clamp(_xAC, -1, 1);
+        }
+        else if (_dir.x > 0)
+        {
+            _xAC += Time.deltaTime / 0.15f;
+            _xAC = Mathf.Clamp(_xAC, -1, 1);
+        }
+        else
+        {
+            if (_xAC < 0)
+            {
+                _xAC += Time.deltaTime / 0.15f;
+                _xAC = Mathf.Clamp(_xAC, -1, 0);
+            }
+            else if (_xAC > 0)
+            {
+                _xAC -= Time.deltaTime / 0.15f;
+                _xAC = Mathf.Clamp(_xAC, 0, 1);
+            }
+        }
+        if (_dir.z > 0)
+        {
+            _zAC += Time.deltaTime / 0.15f;
+            _zAC = Mathf.Clamp(_zAC, -1, 1);
+        }
+        else if (_dir.z < 0)
+        {
+            _zAC -= Time.deltaTime / 0.15f;
+            _zAC = Mathf.Clamp(_zAC, -1, 1);
+        }
+        else
+        {
+            if (_zAC < 0)
+            {
+                _zAC += Time.deltaTime / 0.15f;
+                _zAC = Mathf.Clamp(_zAC, -1, 0);
+            }
+            else if (_zAC > 0)
+            {
+                _zAC -= Time.deltaTime / 0.15f;
+                _zAC = Mathf.Clamp(_zAC, 0, 1);
+            }
+        }
+        #endregion
+        _animator.SetFloat("xAxis", _xAC);
         _animator.SetFloat("zAxis", _zAC);
-        _animator.SetBool("isRunning", running);*/
+        _animator.SetBool("isRunning", running);
     }
     #endregion
     #region Combo System Modular

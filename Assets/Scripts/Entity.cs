@@ -4,10 +4,9 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 public class Entity : MonoBehaviour
 {
+    [Header("Variables Heredadas")]
     public Vector3 Dir;
     public float Life;
-
-    //Patrol Event Variables
     public float _visionTimer = 0f;
     public float _visionThreshold = 1f;
     public enum KindOfEntity
