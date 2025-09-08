@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class PjModel : Entity, Idamageable
 {
     //Variables
+    public Transform Camera;
+    [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _maxLife;
-    [SerializeField] float Velocity;
+    [SerializeField] private float _velocity;
     [SerializeField] float JumpForce;
     [SerializeField][Range(1,10)] private int _maxJumps=2;
     [SerializeField] float DodgeForce;
@@ -76,9 +79,7 @@ public class PjModel : Entity, Idamageable
         {
            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
         }
-        //Physics.Raycast(transform.position - transform.up + transform.up * 0.2f, -transform.up * _rayDistance);
         if (!Physics.Raycast(transform.position, -transform.up, maxDistance: 1.5f, hitInfo: out _groundHit))
-        //if(!Physics.Raycast(transform.position - transform.up + transform.up * 0.2f, -transform.up * _rayDistance))
         {
             _isGrounded = false;
             if (OnFall != null)
@@ -103,74 +104,48 @@ public class PjModel : Entity, Idamageable
                 _actualJumps = 0;
             }
         }
-        if (Physics.SphereCast(transform.position, 0.4f, (transform.forward * Dir.z + transform.right * Dir.x).normalized, out RaycastHit p, 0.3f, _stopLayer))
+        if (Physics.SphereCast(transform.position, 0.4f, Dir.normalized, out RaycastHit p, 0.3f, _stopLayer))
         {
             return;
         }
-        _rb.MovePosition(transform.position + (transform.forward * Dir.z + transform.right * Dir.x) * Time.fixedDeltaTime);
+        if (Dir != Vector3.zero)
+        {
+            _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
+            _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, Quaternion.LookRotation(Dir), _rotationSpeed * Time.fixedDeltaTime));
+        }
     }
     public void Movement(Vector3 dir,Vector3 rawDir,bool running)
     {
-        if(rawDir.sqrMagnitude>0) { _pathTimer += Time.fixedDeltaTime; }
-        if (rawDir.z < 0)
-        {
-            if (OnCancelAction != null)
-            {
-                OnCancelAction();
-            }
-        }
-        if (OnAnimation)
-        {
-            Dir=Vector3.zero;
-            OnMovement(dir, false);
+        if (Camera == null)
             return;
-        }
-        if (_pathTimer > 3f)
+
+        if (rawDir.sqrMagnitude > 0f)
         {
-            EventManager.Ejecute(EventManager.KindOfEvent.ReloadPath);
-            _pathTimer = 0;
-        }
-        if (rawDir.sqrMagnitude>1) { rawDir.Normalize(); }
-        if (running&&rawDir.z>0)
-        {
-            Dir = rawDir * Velocity*_movSpeedMultiplier;
+            Vector3 camForward = Camera.forward;
+            Vector3 camRight = Camera.right;
+
+            camForward.y = 0f;
+            camRight.y = 0f;
+
+            camForward.Normalize();
+            camRight.Normalize();
+
+            rawDir.Normalize();
+            Dir = camForward * rawDir.z + camRight * rawDir.x;
+
+            OnMovement(Dir, running);
         }
         else
         {
-            Dir = rawDir * Velocity;
-        }
-        if (OnMovement != null)
-        {
+            Dir = Vector3.zero;
             OnMovement(Dir, running);
         }
     }
 
     public void Dodge(Vector3 dir)
     {
-        _dodgeDir = dir * Velocity;
+        _dodgeDir = dir * _velocity;
         OnDodge(dir);
-        /*if (!OnJumpAnim&&dir.z<=0.1f)
-        {
-            //_dodgeDir = dir*Velocity;
-            if (dir.x>0)
-            {
-                OnDodge(2);
-                OnJumpAnim = true;
-                OnAnimation = true;
-            }
-            else if(dir.x<0)
-            {
-                OnDodge(-2);
-                OnJumpAnim = true;
-                OnAnimation = true;
-            }
-            else if (dir.z < 0&&Dir.x==0)
-            {
-               OnDodge(0);
-               OnJumpAnim = true;
-               OnAnimation = true;
-            }
-        }*/
     }
 
     public void AutoMove(Vector3 dir)
@@ -187,12 +162,11 @@ public class PjModel : Entity, Idamageable
             EventManager.Ejecute(EventManager.KindOfEvent.ReloadPath);
             _pathTimer = 0;
         }
-        Dir = Vector3.ClampMagnitude(Dir + dir,Velocity);
+        Dir = Vector3.ClampMagnitude(Dir + dir,_velocity);
         OnMovement(dir,true);
     }
     public void Jump()
     {
-        //if (Physics.Raycast(transform.position-transform.up + transform.up * 0.2f, -transform.up, _rayDistance)&&!OnAnimation&&!OnJumpAnim)
         if(_isGrounded||_actualJumps <_maxJumps)
         {
             _actualJumps++;
@@ -253,7 +227,6 @@ public class PjModel : Entity, Idamageable
     }
     public void RotationPj(float X, float Y)
     {
-       transform.rotation=Quaternion.Euler(0,X,0);
        OnAim(X, Y);
     }
     public void TakeDamage(float dmg, float exp, Vector3 pushDirection)
@@ -368,7 +341,7 @@ public class PjModel : Entity, Idamageable
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position - transform.up + transform.up * 0.2f, -transform.up * _rayDistance);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + (transform.forward * Dir.z + transform.right * Dir.x).normalized * 0.3f, 0.5f);
+        Gizmos.DrawWireSphere(transform.position + Dir.normalized * 0.3f, 0.5f);
     }
 
     private void OnDestroy()

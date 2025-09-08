@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
         _dodgeTime += Time.fixedDeltaTime;
         if (_model.ManualMovement)
         {
+          RotateCamera();
           ManualMovement();
           JumpControl();
           LockCameraControl();
@@ -30,6 +31,10 @@ public class PlayerController : MonoBehaviour
           OnAttackSecondCombo();
           DodgeControll();
         }
+    }
+    private void RotateCamera()
+    {
+        _model.RotationPj(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"));
     }
     private void ManualMovement()
     {

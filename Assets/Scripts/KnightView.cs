@@ -5,7 +5,6 @@ using UnityEngine;
 public class KnightView : PjView
 {
     public List<ComboObject> Combos = new List<ComboObject>();
-    //[SerializeField][Range(0.1f,1)]private float _maxInputDelay = 0.6f;
     private List<KindOfCombo> _currentImputs= new List<KindOfCombo>();
     private bool _isAttacking=false;
     HashSet<string> _combosFinish=new HashSet<string>();
@@ -60,57 +59,62 @@ public class KnightView : PjView
         {
             _animator.SetBool("isMoving", false);
         }
-        #region Movimiento Smooth
-        if (_dir.x<0)
-        {
-            _xAC -= Time.deltaTime / 0.15f;
-            _xAC = Mathf.Clamp(_xAC, -1, 1);
-        }
-        else if (_dir.x >0)
-        {
-            _xAC += Time.deltaTime / 0.15f;
-            _xAC = Mathf.Clamp(_xAC, -1, 1);
-        }
-        else
-        {
-            if (_xAC < 0)
-            {
-                _xAC += Time.deltaTime / 0.15f;
-                _xAC = Mathf.Clamp(_xAC, -1, 0);
-            }
-            else if (_xAC > 0)
-            {
-                _xAC -= Time.deltaTime / 0.15f;
-                _xAC = Mathf.Clamp(_xAC, 0, 1);
-            }
-        }
-        if (_dir.z > 0)
-        {
-            _zAC += Time.deltaTime / 0.15f;
-            _zAC = Mathf.Clamp(_zAC, -1, 1);
-        }
-        else if (_dir.z < 0)
-        {
-            _zAC -= Time.deltaTime / 0.15f;
-            _zAC = Mathf.Clamp(_zAC, -1, 1);
-        }
-        else
-        {
-            if (_zAC < 0)
-            {
-                _zAC += Time.deltaTime / 0.15f;
-                _zAC = Mathf.Clamp(_zAC, -1, 0);
-            }
-            else if (_zAC > 0)
-            {
-                _zAC -= Time.deltaTime / 0.15f;
-                _zAC = Mathf.Clamp(_zAC, 0, 1);
-            }
-        }
-        #endregion
-        _animator.SetFloat("xAxis", _xAC);
-        _animator.SetFloat("zAxis", _zAC);
+        /* #region Movimiento Smooth
+         if (_dir.x<0)
+         {
+             _xAC -= Time.deltaTime / 0.15f;
+             _xAC = Mathf.Clamp(_xAC, -1, 1);
+         }
+         else if (_dir.x >0)
+         {
+             _xAC += Time.deltaTime / 0.15f;
+             _xAC = Mathf.Clamp(_xAC, -1, 1);
+         }
+         else
+         {
+             if (_xAC < 0)
+             {
+                 _xAC += Time.deltaTime / 0.15f;
+                 _xAC = Mathf.Clamp(_xAC, -1, 0);
+             }
+             else if (_xAC > 0)
+             {
+                 _xAC -= Time.deltaTime / 0.15f;
+                 _xAC = Mathf.Clamp(_xAC, 0, 1);
+             }
+         }
+         if (_dir.z > 0)
+         {
+             _zAC += Time.deltaTime / 0.15f;
+             _zAC = Mathf.Clamp(_zAC, -1, 1);
+         }
+         else if (_dir.z < 0)
+         {
+             _zAC -= Time.deltaTime / 0.15f;
+             _zAC = Mathf.Clamp(_zAC, -1, 1);
+         }
+         else
+         {
+             if (_zAC < 0)
+             {
+                 _zAC += Time.deltaTime / 0.15f;
+                 _zAC = Mathf.Clamp(_zAC, -1, 0);
+             }
+             else if (_zAC > 0)
+             {
+                 _zAC -= Time.deltaTime / 0.15f;
+                 _zAC = Mathf.Clamp(_zAC, 0, 1);
+             }
+         }
+         #endregion
+         Vector3 localDir = transform.InverseTransformDirection(new Vector3(_xAC,0,_zAC));*/
+        Vector3 localDir = transform.InverseTransformDirection(_dir);
+        _animator.SetFloat("xAxis", localDir.x, 0.1f, Time.deltaTime);
+        _animator.SetFloat("zAxis", localDir.z, 0.1f, Time.deltaTime);
         _animator.SetBool("isRunning", running);
+        /*_animator.SetFloat("xAxis", _xAC);
+        _animator.SetFloat("zAxis", _zAC);
+        _animator.SetBool("isRunning", running);*/
     }
     #endregion
     #region Combo System Modular
