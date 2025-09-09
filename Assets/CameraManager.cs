@@ -61,7 +61,7 @@ public class CameraManager : MonoBehaviour
         EventManager.Suscribe(EventManager.KindOfEvent.OnChangeTarget, ChangeTarget);
         EventManager.Suscribe(EventManager.KindOfEvent.OnLockCamera, ChangeLookMode);
         EventManager.Suscribe(EventManager.KindOfEvent.ChangeSensibilitieMouse, UpdateMouseSens);
-
+        EventManager.Suscribe(EventManager.KindOfEvent.OnEnemyKilled, OnEnemyKilledChangeTarget);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _pjModel.OnAim += HandleRotation;
@@ -173,6 +173,10 @@ public class CameraManager : MonoBehaviour
 
     private void UpdateTarget()
     {
+        if (_target==null)
+        {
+            return;
+        }
         if (_lookTarget == null)
         {
             _falseUpdate += RotateCameraLateUpdate;

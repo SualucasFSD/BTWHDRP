@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ComboManager : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _trail;
     [SerializeField] private Sword _sword;
+    [SerializeField] private LayerMask _hitLayer;
     public void MakeDamage(int Dmg)
    {
        if(_trail!=null)
@@ -25,5 +24,21 @@ public class ComboManager : MonoBehaviour
             _trail.Stop();
         }
         _sword.Dmg = 0;
+    }
+    public void AddForceToEnemy()
+    {
+        Collider[] c = Physics.OverlapSphere(transform.position, 3f, _hitLayer);
+        foreach(Collider collider in c)
+        {
+            SkeletonEnemyModel l =collider.GetComponent<SkeletonEnemyModel>();
+            if (l!=null)
+            {
+                l.FlyFunct(4);
+            }
+            else
+            {
+                continue;
+            }
+        }
     }
 }

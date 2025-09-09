@@ -114,4 +114,5 @@ public class Entity : MonoBehaviour
             _visionTimer = Mathf.Max(0f, _visionTimer - Time.deltaTime * 2);
         }
     }
+
 }

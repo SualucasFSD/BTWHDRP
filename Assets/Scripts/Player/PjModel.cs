@@ -8,7 +8,8 @@ public class PjModel : Entity, Idamageable
     [Header("Variables Test")]
     public CameraManager Camera;
     public bool ManualMovement = true;
-    public bool OnAnimation = false, OnJumpAnim = false;
+    //public bool OnAnimation = false, OnJumpAnim = false;
+    public bool OnAttacking=false;
     [Header("Configuracion Player")]
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private Rigidbody _rb;
@@ -115,7 +116,7 @@ public class PjModel : Entity, Idamageable
         {
             return;
         }
-        if (Dir != Vector3.zero)
+        if (Dir != Vector3.zero&&!OnAttacking)
         {
             _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
         }
@@ -183,8 +184,8 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackFirstCombo()
     {
-        if (OnJumpAnim) return;
-        OnAnimation=true;
+        /*if (OnJumpAnim) return;
+        OnAnimation=true;*/
         if (OnAttack != null)
         {
             OnAttack();
@@ -192,8 +193,8 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondCombo()
     {
-        if (OnJumpAnim) return;
-        OnAnimation = true;
+        /*if (OnJumpAnim) return;
+        OnAnimation = true;*/
         if (OnAttackSecond != null)
         {
             OnAttackSecond();
@@ -201,8 +202,8 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondComboLong()
     {
-        if (OnJumpAnim) return;
-        OnAnimation = true;
+        /*if (OnJumpAnim) return;
+        OnAnimation = true;*/
         if (OnAttackSecondLong != null)
         {
             OnAttackSecondLong();
@@ -210,8 +211,8 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackFirstComboLong()
     {
-        if (OnJumpAnim) return;
-        OnAnimation = true;
+        /*if (OnJumpAnim) return;
+        OnAnimation = true;*/
         if (OnAttackLong != null)
         {
             OnAttackLong();
@@ -311,7 +312,7 @@ public class PjModel : Entity, Idamageable
     }
     #endregion
     #region Eventos De Animacion
-    public void JumpExecute(params object[] p) { _rb.AddForce(transform.up * JumpForce, ForceMode.Impulse); OnAnimation = false; }
+    public void JumpExecute(params object[] p) { _rb.AddForce(transform.up * JumpForce, ForceMode.Impulse); /*OnAnimation = false;*/ }
     public void DodgeExecute(params object[] p)
     {
         Vector3 inputDir = new Vector3(_dodgeDir.x, 0f, _dodgeDir.z);
@@ -338,11 +339,11 @@ public class PjModel : Entity, Idamageable
 
     public void AttackAnimReset(params object[] p)
     {
-        OnAnimation = false;
+        //OnAnimation = false;
     }
     public void JumpReset(params object[] p)
     {
-        OnJumpAnim = false;
+        //OnJumpAnim = false;
     }
     #endregion
     private void OnEnable()

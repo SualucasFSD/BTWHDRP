@@ -5,7 +5,6 @@ public class KnightView : PjView
 {
     public List<ComboObject> Combos = new List<ComboObject>();
     private List<KindOfCombo> _currentImputs= new List<KindOfCombo>();
-    private bool _isAttacking=false;
     HashSet<string> _combosFinish=new HashSet<string>();
     private void Start()
     {
@@ -155,7 +154,7 @@ public class KnightView : PjView
     private void RegisterImputs(KindOfCombo p)
     {
         _currentImputs.Add(p);
-        if (!_isAttacking)
+        if (!_pjModel.OnAttacking)
         {
             TryEjecuteAttack();
         }
@@ -170,7 +169,7 @@ public class KnightView : PjView
             {
                 _combosFinish.Add(combo.name);
                 _animator.SetTrigger(combo.TriggerAnimName);
-                _isAttacking = true;
+                _pjModel.OnAttacking = true;
                 return;
             }
         }
@@ -217,7 +216,7 @@ public class KnightView : PjView
         }
         _combosFinish.Clear();
         _currentImputs.Clear();
-        _isAttacking = false;
+        _pjModel.OnAttacking = false;
     }
     #endregion
     #region Dodge System
@@ -228,11 +227,6 @@ public class KnightView : PjView
         ComboResetGeneral();
     }
     #endregion
-    //Eventos/Funciones Varias
-    /*public void JumpForce()
-    {
-        EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
-    }*/
     private void OnAnimatorMove()
     {
         transform.parent.position += _animator.deltaPosition;

@@ -8,7 +8,8 @@ public class FsmEnemyEsqueleton
         OnPatrol,
         OnCombat,
         OnStunt,
-        OnDeath
+        OnDeath,
+        OnTakeDamage
     }
     Dictionary<AgentStates, IState> _states = new Dictionary<AgentStates, IState>();
     public void AddState(AgentStates newState, IState State)

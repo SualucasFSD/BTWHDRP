@@ -18,12 +18,18 @@ public class SkeletonEnemyModel : Entity, Idamageable
     public event Action OnAttack = delegate { };
     public event Action<float> OnDamage = delegate { };
     public event Action OnDeath = delegate { };
+    //Cosas Varias
     public List<PathNode> _paths = new List<PathNode>();
     [SerializeField] private Animator _anim;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] ParticleSystem _damageParticles;
     [SerializeField] AudioSource _mySource;
     private bool _isReady = false;
+    [SerializeField]private float _onAirTime=3;
+    [SerializeField] private LayerMask _airLayer;
+    private bool _useGravity=true;
+    private bool _stuned = false;
+    private float _actualAirTime=0;
     private void Awake()
     {
         Kind = KindOfEntity.Enemy;
@@ -39,11 +45,12 @@ public class SkeletonEnemyModel : Entity, Idamageable
         {
           _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
           GameManager.Instance.AddEntity(this, Kind);
+           Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
         }
     }
     private void OnDisable()
     {
-       // _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnDeath);
+        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnDeath);
         GameManager.Instance.RemoveEntity(this, Kind);
     }
     private void Start()
@@ -52,8 +59,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnCombat, new OnCombatEsqueleton(_fsm, this,_anim));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnDeath, new OnDeath());
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime,()=> _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat),_anim,"Stunt"));
+        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage, new OnTakeDamage(_onAirTime, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), _anim, "TakeDamage"));
         _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
         GameManager.Instance.AddEntity(this, Kind);
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
         _isReady = true;
     }
     private void Update()
@@ -63,19 +72,30 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
     private void FixedUpdate()
     {
-        if(IsDodge)
+        if (IsDodge)
         {
             _rb.AddForce(-transform.forward*1400,ForceMode.Impulse);
             IsDodge = false;
         }
-        _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].GravityForce, 2), ForceMode.Acceleration);
-        _rb.MovePosition(transform.position + (transform.forward * _dir.z* GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity* Time.fixedDeltaTime));
+        if(_useGravity)
+        {
+          _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].GravityForce, 2), ForceMode.Acceleration);
+        }
+        if(Physics.Raycast(transform.position,-Vector3.up,1.2f)&&!_stuned)
+        {
+          _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
+        }
     }
     public void TakeDamage(float dmg,float stunt, Vector3 pushDirection)
     {
         if (!IsDamageable) { return; }
         _stuntPercent += stunt;
         Life -=dmg;
+        if(Physics.Raycast(transform.position, -Vector3.up, 1.2f))
+        {
+            MantainOnAir();
+        }
+        _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
         SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
         _damageParticles.Play();
         //lifebar.value=life/maxlife;
@@ -100,7 +120,6 @@ public class SkeletonEnemyModel : Entity, Idamageable
         {
             _stuntPercent = 0;
             _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnStunt);
-            print("Stuneado");
         }
     }
     IEnumerator SpawnOrbs()
@@ -164,6 +183,53 @@ public class SkeletonEnemyModel : Entity, Idamageable
             }
             ant = i;
         }
+    }
+    public void FlyFunct(float height = 4f)
+    {
+        _stuned =true;
+        _actualAirTime = 0;
+        _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
+
+        _useGravity = false;
+        _rb.velocity = Vector3.zero;
+
+        float targetY = transform.position.y + height;
+
+        StartCoroutine(GoUpAndFloat(targetY));
+    }
+
+    private IEnumerator GoUpAndFloat(float targetY)
+    {
+        while (transform.position.y < targetY)
+        {
+            if (!_rb.isKinematic)
+            {
+                Vector3 pos = transform.position;
+                pos.y = Mathf.MoveTowards(pos.y, targetY, 50f * Time.deltaTime);
+                _rb.MovePosition(pos);
+                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            }
+            yield return null;
+        }
+
+        while (_actualAirTime < _onAirTime - 0.5f)
+        {
+            if (!_rb.isKinematic)
+            {
+                _rb.MovePosition(transform.position);
+                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            }
+            _actualAirTime += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        _stuned = false;
+        _useGravity = true;
+    }
+
+    private void MantainOnAir()
+    {
+        _actualAirTime=0;
     }
     private void OnDestroy()
     {
