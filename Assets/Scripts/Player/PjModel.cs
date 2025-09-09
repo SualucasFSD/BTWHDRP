@@ -118,7 +118,8 @@ public class PjModel : Entity, Idamageable
         }
         if(Camera._focusing&& Dir != Vector3.zero && !OnAttacking)
         {
-            _rb.MovePosition(_rb.position + Dir * (_velocity/2 * Time.fixedDeltaTime));
+            _rb.MovePosition(_rb.position + Dir * (_velocity/1.7f * Time.fixedDeltaTime));
+           return;
         }
         if (Dir != Vector3.zero&&!OnAttacking)
         {
@@ -346,7 +347,7 @@ public class PjModel : Entity, Idamageable
         {
             dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundHit.normal).normalized;
         }
-        _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
+        //_rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
     }
 
     public void AttackAnimReset(params object[] p)
