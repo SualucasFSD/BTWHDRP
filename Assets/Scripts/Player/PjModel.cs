@@ -150,7 +150,10 @@ public class PjModel : Entity, Idamageable
     }
     public void Dodge(Vector3 dir)
     {
-        OnDodge(Dir);
+        if (_dodgeDir.sqrMagnitude > 0)
+        {
+            OnDodge(Dir);
+        }
     }
 
     public void AutoMove(Vector3 dir)

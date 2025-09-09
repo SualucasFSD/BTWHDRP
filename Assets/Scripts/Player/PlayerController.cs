@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private float _longTimeFirstCombo = 0;
     private Vector3 _dir;
     private Vector3 _rawDir;
-    private Action ChangeMovementType = delegate { };
     private void Start()
     {
         _model=GetComponent<PjModel>();
@@ -47,7 +46,6 @@ public class PlayerController : MonoBehaviour
     }
     private void JumpControl()
     {
-        //if (Input.GetButtonDown("Jump")&&_jumpTime>=_jumpCoolDown&&_rawDir.sqrMagnitude>0)
         if (Input.GetButtonDown("Jump") && _jumpTime >= _jumpCoolDown)
         {
             _model.Jump();
