@@ -29,7 +29,7 @@ public class PjModel : Entity, Idamageable
     private Vector3 _dodgeDir;
     private int _actualJumps=0;
     private float _jumpTimerReset=0;
-    private bool _useGravity=true;
+    public bool _useGravity=true;
     private RaycastHit _groundHit;
     private float _pathTimer=0;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
@@ -116,6 +116,10 @@ public class PjModel : Entity, Idamageable
         {
             return;
         }
+        if(Camera._focusing&& Dir != Vector3.zero && !OnAttacking)
+        {
+            _rb.MovePosition(_rb.position + Dir * (_velocity/2 * Time.fixedDeltaTime));
+        }
         if (Dir != Vector3.zero&&!OnAttacking)
         {
             _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
@@ -182,42 +186,49 @@ public class PjModel : Entity, Idamageable
             OnJump();
         }
     }
+    #region ComboKeys
     public void AttackFirstCombo()
     {
-        /*if (OnJumpAnim) return;
-        OnAnimation=true;*/
         if (OnAttack != null)
         {
+            DesactiveGravity();
             OnAttack();
         }
     }
     public void AttackSecondCombo()
     {
-        /*if (OnJumpAnim) return;
-        OnAnimation = true;*/
         if (OnAttackSecond != null)
         {
+            DesactiveGravity();
             OnAttackSecond();
         }
     }
     public void AttackSecondComboLong()
     {
-        /*if (OnJumpAnim) return;
-        OnAnimation = true;*/
         if (OnAttackSecondLong != null)
         {
+            DesactiveGravity();
             OnAttackSecondLong();
         }
     }
     public void AttackFirstComboLong()
     {
-        /*if (OnJumpAnim) return;
-        OnAnimation = true;*/
         if (OnAttackLong != null)
         {
+            DesactiveGravity();
             OnAttackLong();
         }
     }
+    private void DesactiveGravity()
+    {
+        if (!_isGrounded)
+        {
+            _useGravity = false;
+            _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        }
+    }
+    #endregion
+    #region Camera
     public void LoockOnCamera()
     {
         EventManager.Ejecute(EventManager.KindOfEvent.OnLockCamera);
@@ -243,6 +254,7 @@ public class PjModel : Entity, Idamageable
         transform.rotation = Quaternion.Euler(0, X, 0);
         OnAim(X, Y);
     }
+    #endregion
     public void TakeDamage(float dmg, float exp, Vector3 pushDirection)
     {
         if (pushDirection != Vector3.zero)

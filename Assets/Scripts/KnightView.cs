@@ -31,6 +31,7 @@ public class KnightView : PjView
     {
         _animator.SetBool("IsGrounded", false);
         _animator.SetFloat("yAxis", fallVelocity);
+        
     }
     public void Landing()
     {
@@ -45,6 +46,7 @@ public class KnightView : PjView
     private void OnJump()
     {
         _animator.SetBool("Jump",true);
+        ComboResetGeneral();
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
     }
     #endregion
@@ -217,6 +219,7 @@ public class KnightView : PjView
         _combosFinish.Clear();
         _currentImputs.Clear();
         _pjModel.OnAttacking = false;
+        _pjModel._useGravity = true;
     }
     #endregion
     #region Dodge System
