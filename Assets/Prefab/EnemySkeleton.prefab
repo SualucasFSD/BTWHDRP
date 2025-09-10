@@ -16315,6 +16315,7 @@ GameObject:
   - component: {fileID: 323083595735182970}
   - component: {fileID: 124469598330932090}
   - component: {fileID: 7363573763659273657}
+  - component: {fileID: 6752166299712071562}
   m_Layer: 10
   m_Name: EnemySkeleton
   m_TagString: Player
@@ -16405,6 +16406,10 @@ MonoBehaviour:
   Life: 50
   _visionTimer: 0
   _visionThreshold: 1
+  IsGrounded: 0
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   Kind: 1
   Targets: []
   _rb: {fileID: 323083595735182970}
@@ -16420,6 +16425,7 @@ MonoBehaviour:
     type: 3}
   _damageParticles: {fileID: 3425622808941482395}
   _mySource: {fileID: 7363573763659273657}
+  _onAirTime: 3
 --- !u!82 &7363573763659273657
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16517,6 +16523,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!136 &6752166299712071562
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323704847567105215}
+  m_Material: {fileID: 13400000, guid: b40484fd5bb613540b8368cdd9a805c0, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!1 &5337724955769033443
 GameObject:
   m_ObjectHideFlags: 0
@@ -19161,7 +19190,7 @@ MonoBehaviour:
     m_Bits: 3072
   _destructibleLayer:
     serializedVersion: 2
-    m_Bits: 3072
+    m_Bits: 1024
 --- !u!1 &6309124876522241137
 GameObject:
   m_ObjectHideFlags: 0

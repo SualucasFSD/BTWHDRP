@@ -1265,7 +1265,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273728371259464656}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.13, y: 1.739, z: 15.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1339,6 +1339,10 @@ MonoBehaviour:
   Life: 0
   _visionTimer: 0
   _visionThreshold: 1
+  IsGrounded: 0
+  GroundLayer:
+    serializedVersion: 2
+    m_Bits: 10183
   Kind: 0
   Targets: []
   Camera: {fileID: 0}
@@ -1350,7 +1354,7 @@ MonoBehaviour:
   _velocity: 8
   JumpForce: 1800
   _maxJumps: 2
-  DodgeForce: 2200
+  DodgeForce: 1800
   _rayDistance: 0.6
   _gravityForce: 9.8
   _movSpeedMultiplier: 1.8
@@ -1360,6 +1364,7 @@ MonoBehaviour:
   _lifeBar: {fileID: 0}
   _powerSkeleton: {fileID: 6316961413313561806}
   _myAbilityText: {fileID: 0}
+  _useGravity: 1
 --- !u!114 &6284113935916694648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27125,6 +27130,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7bb51bb334e83264780ce311a286f195, type: 2}
   - {fileID: 11400000, guid: d42ab30009f3f1643b1295b9b9e94d1f, type: 2}
   - {fileID: 11400000, guid: 0ff4a6beb4b3d8d4f8ccbf4028268c3a, type: 2}
+  - {fileID: 11400000, guid: 98b410783c31b144b96de97a1dfebc2f, type: 2}
 --- !u!114 &98417204031912408
 MonoBehaviour:
   m_ObjectHideFlags: 0
