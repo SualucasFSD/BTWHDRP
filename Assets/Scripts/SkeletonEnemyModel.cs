@@ -26,7 +26,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     [SerializeField] AudioSource _mySource;
     private bool _isReady = false;
     [SerializeField]private float _onAirTime=3;
-    [SerializeField] private LayerMask _airLayer;
+    //[SerializeField] private LayerMask _airLayer;
     private bool _useGravity=true;
     private bool _stuned = false;
     private float _actualAirTime=0;

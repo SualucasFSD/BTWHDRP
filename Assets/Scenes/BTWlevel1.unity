@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6808.4053, g: 6849.208, b: 8064.0635, a: 1}
+  m_IndirectSpecularColor: {r: 6810.9995, g: 6849.8564, b: 8064.764, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4532,7 +4532,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5323704847567105215, guid: 278a0dce6f9b20041903a572da9cb0fe,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1778410894}
   m_SourcePrefab: {fileID: 100100000, guid: 278a0dce6f9b20041903a572da9cb0fe, type: 3}
 --- !u!4 &340392399 stripped
 Transform:
@@ -9584,6 +9588,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d972180aebe9f7f4ca0f55cd29634987, type: 3}
+--- !u!1 &714992011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5323704847567105215, guid: 278a0dce6f9b20041903a572da9cb0fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 335225201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &720215103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5138934356314045200, guid: d972180aebe9f7f4ca0f55cd29634987,
@@ -24926,6 +24936,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 335225201}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &1778410894
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714992011}
+  m_Material: {fileID: 13400000, guid: b40484fd5bb613540b8368cdd9a805c0, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!4 &1778650189 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5138934356314045200, guid: d972180aebe9f7f4ca0f55cd29634987,
@@ -30798,6 +30831,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: Combos.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: Combos.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 98b410783c31b144b96de97a1dfebc2f,
+        type: 2}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: _lifeBar
@@ -30805,9 +30849,19 @@ PrefabInstance:
       objectReference: {fileID: 4734636763907255122}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
+      propertyPath: DodgeForce
+      value: 1800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
       propertyPath: _myAbilityText
       value: 
       objectReference: {fileID: 8565725250154748271}
+    - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: GroundLayer.m_Bits
+      value: 10183
+      objectReference: {fileID: 0}
     - target: {fileID: 8898975352992438296, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: m_LocalPosition.x

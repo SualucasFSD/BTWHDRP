@@ -9,6 +9,9 @@ public class Entity : MonoBehaviour
     public float Life;
     public float _visionTimer = 0f;
     public float _visionThreshold = 1f;
+    public bool IsGrounded;
+    public LayerMask GroundLayer;
+    protected RaycastHit _groundDetect;
     public enum KindOfEntity
     {
         Allies,
@@ -115,4 +118,9 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public void IsGroundedDetector(float Height=0)
+    {
+        IsGrounded = Physics.Raycast(origin: transform.position + Vector3.up * Height,direction:-Vector3.up, layerMask: GroundLayer, maxDistance: 1, hitInfo: out _groundDetect);
+        //return IsGrounded;
+    }
 }

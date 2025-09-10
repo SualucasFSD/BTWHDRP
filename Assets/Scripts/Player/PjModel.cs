@@ -30,10 +30,7 @@ public class PjModel : Entity, Idamageable
     private int _actualJumps=0;
     private float _jumpTimerReset=0;
     public bool _useGravity=true;
-    private RaycastHit _groundHit;
-    private float _pathTimer=0;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
-    private bool _isGrounded=false;
     #region Eventos
     public event Action<Vector3,bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
@@ -68,8 +65,6 @@ public class PjModel : Entity, Idamageable
         Life=_maxLife;
         GameManager.Instance.AddEntity(this, Kind);
         EventManager.Suscribe(EventManager.KindOfEvent.OnEnemyKilled, EnemyKilled);
-        EventManager.Suscribe(EventManager.KindOfEvent.KnightComboReset, AttackAnimReset);
-        EventManager.Suscribe(EventManager.KindOfEvent.KnightJumpReset, JumpReset);
         EventManager.Suscribe(EventManager.KindOfEvent.JumpPj, JumpExecute);
         EventManager.Suscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
     }
@@ -83,13 +78,13 @@ public class PjModel : Entity, Idamageable
     }
     private void FixedUpdate()
     {
+        IsGroundedDetector(-0.7f);
         if (_useGravity)
         {
            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
         }
-        if (!Physics.Raycast(transform.position, -transform.up, maxDistance: 1.5f, hitInfo: out _groundHit))
+        if (!IsGrounded)
         {
-            _isGrounded = false;
             if (OnFall != null)
             {
                 OnFall(_rb.velocity.y);
@@ -102,7 +97,6 @@ public class PjModel : Entity, Idamageable
         else
         {
             _jumpTimerReset += Time.deltaTime;
-            _isGrounded = true;
             if (OnLanding != null)
             {
                 OnLanding();
@@ -170,18 +164,12 @@ public class PjModel : Entity, Idamageable
         Dir = Vector3.zero;
          return;
        }
-        _pathTimer += Time.fixedDeltaTime;
-        if(_pathTimer>3f)
-        {
-            EventManager.Ejecute(EventManager.KindOfEvent.ReloadPath);
-            _pathTimer = 0;
-        }
         Dir = Vector3.ClampMagnitude(Dir + dir,_velocity);
         OnMovement(dir,true);
     }
     public void Jump()
     {
-        if(_isGrounded||_actualJumps <_maxJumps)
+        if(IsGrounded||_actualJumps <_maxJumps)
         {
             _actualJumps++;
             OnJump();
@@ -192,6 +180,7 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttack != null)
         {
+            _rb.velocity = Vector3.zero;
             DesactiveGravity();
             OnAttack();
         }
@@ -200,6 +189,7 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecond != null)
         {
+            _rb.velocity = Vector3.zero;
             DesactiveGravity();
             OnAttackSecond();
         }
@@ -208,6 +198,7 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecondLong != null)
         {
+            _rb.velocity = Vector3.zero;
             DesactiveGravity();
             OnAttackSecondLong();
         }
@@ -216,13 +207,14 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackLong != null)
         {
+            _rb.velocity = Vector3.zero;
             DesactiveGravity();
             OnAttackLong();
         }
     }
     private void DesactiveGravity()
     {
-        if (!_isGrounded)
+        if (!IsGrounded)
         {
             _useGravity = false;
             _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
@@ -343,20 +335,11 @@ public class PjModel : Entity, Idamageable
 
         Vector3 dodgeDir = (camForward * inputDir.z + camRight * inputDir.x).normalized;
 
-        if (_groundHit.collider != null)
+        if (_groundDetect.collider != null)
         {
-            dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundHit.normal).normalized;
+            dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundDetect.normal).normalized;
         }
-        //_rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
-    }
-
-    public void AttackAnimReset(params object[] p)
-    {
-        //OnAnimation = false;
-    }
-    public void JumpReset(params object[] p)
-    {
-        //OnJumpAnim = false;
+        _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
     }
     #endregion
     private void OnEnable()
@@ -377,9 +360,7 @@ public class PjModel : Entity, Idamageable
 
     private void OnDestroy()
     {
-        EventManager.Unscribe(EventManager.KindOfEvent.KnightComboReset, AttackAnimReset);
         EventManager.Unscribe(EventManager.KindOfEvent.JumpPj, JumpExecute);
-        EventManager.Unscribe(EventManager.KindOfEvent.KnightJumpReset, JumpReset);
         EventManager.Unscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
     }
 }
