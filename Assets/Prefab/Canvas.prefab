@@ -302,9 +302,9 @@ RectTransform:
   - {fileID: 3406802212483138583}
   m_Father: {fileID: 4286425326102307240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -702.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7589181714247623140
@@ -6486,9 +6486,9 @@ RectTransform:
   - {fileID: 2527432657945825460}
   m_Father: {fileID: 4286425326102307240}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -796}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4160935208502024021
@@ -6788,6 +6788,7 @@ GameObject:
   - component: {fileID: 6337831468038412948}
   - component: {fileID: 767913748455885128}
   - component: {fileID: 900575715041573795}
+  - component: {fileID: 4941346331478919307}
   m_Layer: 5
   m_Name: Life
   m_TagString: Untagged
@@ -6852,6 +6853,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4941346331478919307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7557387721053487598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450be1ac62a8d4243b8d2ef9de513d80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeBarSlider: {fileID: 900575715041573795}
 --- !u!1 &7566287412074174983
 GameObject:
   m_ObjectHideFlags: 0
