@@ -1,11 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class KnightView : PjView
 {
     public List<ComboObject> Combos = new List<ComboObject>();
     private List<KindOfCombo> _currentImputs= new List<KindOfCombo>();
     HashSet<string> _combosFinish=new HashSet<string>();
+    [Header("ComboManager")]
+    [SerializeField] private ParticleSystem _trail;
+    [SerializeField] private GameObject _swordModel;
+    [SerializeField] private LayerMask _hitLayer;
+    [SerializeField] private float _dmgMultiply = 1;
+    private Vector3 _lastPosition;
+    private Vector3 _velocity;
+    private float _swordDistance;
+    private float _dmg;
+    private float _swordArea;
+    private float _stuntDmg;
+    private float _angle;
+    private float _flyAngle;
     private void Start()
     {
         _pjModel = GetComponentInParent<PjModel>();
@@ -26,6 +41,12 @@ public class KnightView : PjView
         _pjModel.OnDirectionalMovement += OnDirectionalMove;
         _pjModel.OnLifeUpdate += OnLifeUpdate;
     }
+    private void Update()
+    {
+        _velocity = (_swordModel.transform.position - _lastPosition) / Time.deltaTime;
+        _lastPosition = _swordModel.transform.position;
+    }
+
     #region Jump System
     private void OnFall(float fallVelocity)
     {
@@ -171,10 +192,20 @@ public class KnightView : PjView
             {
                 _combosFinish.Add(combo.name);
                 _animator.SetTrigger(combo.TriggerAnimName);
+                ChangeFloats(combo);
                 _pjModel.OnAttacking = true;
                 return;
             }
         }
+    }
+    private void ChangeFloats(ComboObject combo)
+    {
+        _dmg = combo.Dmg;
+        _stuntDmg = combo.StuntDmg;
+        _swordArea = combo.SwordFlyArea;
+        _swordDistance = combo.SwordDistance;
+        _flyAngle = combo.FlyAngle;
+        _angle=combo.Angle;
     }
 
     //Evento de consulta y sucesion por animacion
@@ -202,6 +233,7 @@ public class KnightView : PjView
             {
                 _combosFinish.Add(combo.name);
                 _animator.SetTrigger(combo.TriggerAnimName);
+                ChangeFloats(combo);
                 return;
             }
         }
@@ -228,6 +260,71 @@ public class KnightView : PjView
         _animator.SetTrigger("Dodge");
         EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
         ComboResetGeneral();
+    }
+    #endregion
+
+    #region ComboManager Section
+    public void TurnOffTrail()
+    {
+        if (_trail != null)
+        {
+            _trail.gameObject.SetActive(false);
+            _trail.Stop();
+        }
+    }
+    public void CauseDamage()
+    {
+        if (_trail != null)
+        {
+            _trail.gameObject.SetActive(true);
+            _trail.Play();
+        }
+        Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
+        foreach (Collider collider in c)
+        {
+            if (collider.gameObject == gameObject)
+            {
+                continue;
+            }
+            Entity j = collider.GetComponent<Entity>();
+            if (j != null)
+            {
+               Idamageable l= j.GetComponent<Idamageable>();
+                float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - transform.position).normalized);
+                if (backFrontAngle > _angle)
+                {
+                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, _velocity.normalized);
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
+    public void AddForceToEnemy()
+    {
+        Collider[] c = Physics.OverlapSphere(transform.position, _swordArea, _hitLayer);
+        foreach (Collider collider in c)
+        {
+            if (collider.gameObject == gameObject)
+            {
+                continue;
+            }
+            Entity l = collider.GetComponent<Entity>();
+            if (l != null)
+            {
+                float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - transform.position).normalized);
+                if (backFrontAngle > _flyAngle)
+                {
+                   l.FlyFunct(4);
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
     }
     #endregion
     private void OnAnimatorMove()

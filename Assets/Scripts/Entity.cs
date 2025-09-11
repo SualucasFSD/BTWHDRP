@@ -118,9 +118,27 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public void IsGroundedDetector(float Height=0)
+    public void IsGroundedDetector(float Height=1)
     {
-        IsGrounded = Physics.Raycast(origin: transform.position + Vector3.up * Height,direction:-Vector3.up, layerMask: GroundLayer, maxDistance: 1, hitInfo: out _groundDetect);
-        //return IsGrounded;
+       Physics.Raycast(origin: transform.position,direction:-Vector3.up, layerMask: GroundLayer, maxDistance: 10, hitInfo: out _groundDetect);
+        if(_groundDetect.collider!=null)
+        {
+            if(Vector3.Distance(transform.position,_groundDetect.point)<Height)
+            {
+                IsGrounded=true;
+            }
+            else
+            {
+                IsGrounded = false;
+            }
+        }
+        else
+        {
+            IsGrounded = false;
+        }
+    }
+    public virtual void FlyFunct(float height = 4f)
+    {
+
     }
 }

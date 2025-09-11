@@ -35,26 +35,4 @@ public class SpawnerEnemy : MonoBehaviour
             //GameManager.Instance.GenericUpdate -= FalseUpdate;
         }
     }
-   /* public void FalseUpdate()
-    {
-        int j = Random.Range(0, 11);
-
-        for (int r = 0; r < j; r++)
-        {
-            i=Random.Range(0, 101);
-            if(i<=75)
-            {
-                var p= EsqueletonFctory.instance.GetObj();
-                p.transform.position = p.transform.position;
-                p.transform.rotation = p.transform.rotation;
-            }
-            else
-            {
-                var p = MagueFactory.instance.GetObj();
-                p.transform.position = p.transform.position;
-                p.transform.rotation = p.transform.rotation;
-            }
-            GameManager.Instance.GenericUpdate -= FalseUpdate;
-        }
-    }*/
 }

@@ -184,7 +184,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
             ant = i;
         }
     }
-    public void FlyFunct(float height = 4f)
+    public override void  FlyFunct(float height = 4f)
     {
         _stuned =true;
         _actualAirTime = 0;

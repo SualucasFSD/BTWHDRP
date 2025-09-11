@@ -23,7 +23,6 @@ public class PjModel : Entity, Idamageable
     [SerializeField][Range(0.2f, 4)] private float _movSpeedMultiplier;
     [SerializeField] private LayerMask _stopLayer;
     [Header("Cosas Varias")]
-    [SerializeField] private Image _lifeBar;
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     private Vector3 _dodgeDir;
@@ -78,7 +77,7 @@ public class PjModel : Entity, Idamageable
     }
     private void FixedUpdate()
     {
-        IsGroundedDetector(-0.7f);
+        IsGroundedDetector(1.5f);
         if (_useGravity)
         {
            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
@@ -260,10 +259,11 @@ public class PjModel : Entity, Idamageable
         {
             Life = 0;
         }
-       if (_lifeBar != null)
-       {
-         _lifeBar.fillAmount = Life / _maxLife;
-       }
+        /*if (_lifeBar != null)
+        {
+          _lifeBar.fillAmount = Life / _maxLife;
+        }*/
+        EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater,Life / _maxLife);
        if (Life <= 0)
        {
             GameManager.Instance.RemoveEntity(this, Kind);
@@ -281,10 +281,7 @@ public class PjModel : Entity, Idamageable
         {
             Life = _maxLife;
         }
-        if (_lifeBar != null)
-        {
-            _lifeBar.fillAmount = Life / _maxLife;
-        }
+        EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater, Life / _maxLife);
     }
     public void AddPower(EnemyCatalogue Obj, Tuple<int,IPjPower> Needed)
     {

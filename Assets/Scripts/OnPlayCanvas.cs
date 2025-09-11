@@ -4,11 +4,12 @@ using UnityEngine.SceneManagement;
 public class OnPlayCanvas : MonoBehaviour
 {
     [SerializeField] private GameObject PauseMenu;
-    [SerializeField] private string _restartScene;
     [SerializeField] private GameObject _deadPanel;
     private void Start()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
+        EventManager.Suscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
+        EventManager.Suscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
     }
     private void Update()
     { 
@@ -22,14 +23,12 @@ public class OnPlayCanvas : MonoBehaviour
                 {
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
-                    //GameManager.Instance.IsPaused=false;
                     EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
                 }
                 else
                 {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
-                    //GameManager.Instance.IsPaused = true;
                     EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
                 }
             }
@@ -43,15 +42,20 @@ public class OnPlayCanvas : MonoBehaviour
         PauseMenu.SetActive(false);
         _deadPanel.SetActive(true);
     }
-    public void RestartScene()
+    public void RestartScene(params object[] p)
     {
         EventManager.ResetEvent();
-        SceneManager.LoadScene(_restartScene);
+        SceneManager.LoadScene((string)p[0]);
     }
-    public void QuitAplication()
+    public void MainMenuScene(params object[] p)
     {
         EventManager.ResetEvent();
-        SceneManager.LoadScene("MainMenu");
-        //Application.Quit();
+        SceneManager.LoadScene((string)p[0]);
+    }
+    private void OnDestroy()
+    {
+        EventManager.Unscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
+        EventManager.Unscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
+        EventManager.Unscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
     }
 }

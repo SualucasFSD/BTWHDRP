@@ -19,7 +19,10 @@ public class EventManager
         KnightJumpReset,
         KnightExecuteDodge,
         OnLockCamera,
-        OnChangeTarget,  
+        OnChangeTarget,
+        ResetLevel,
+        MainMenu,
+        LifeUpdater
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;
