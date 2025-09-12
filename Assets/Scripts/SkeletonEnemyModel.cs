@@ -30,6 +30,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     private bool _useGravity=true;
     private bool _stuned = false;
     private float _actualAirTime=0;
+    private Coroutine _orbsRoutine;
     private void Awake()
     {
         Kind = KindOfEntity.Enemy;
@@ -99,11 +100,11 @@ public class SkeletonEnemyModel : Entity, Idamageable
         SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
         _damageParticles.Play();
         //lifebar.value=life/maxlife;
-        if (Life <= 0)
+        if (Life <= 0 && _orbsRoutine==null)
         {
             if (_lifeOrbPrefab != null)
             {
-                StartCoroutine(SpawnOrbs());
+               _orbsRoutine = StartCoroutine(SpawnOrbs());
             }
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,50);
@@ -133,6 +134,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }
+        _orbsRoutine = null;
     }
     public void OnMovePj(Transform target)
     {
@@ -191,8 +193,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
         _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
 
         _useGravity = false;
-        _rb.velocity = Vector3.zero;
-
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
         float targetY = transform.position.y + height;
 
         StartCoroutine(GoUpAndFloat(targetY));

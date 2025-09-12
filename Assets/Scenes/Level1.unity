@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 3488.1938, g: 3525.6157, b: 4084.1255, a: 1}
+  m_IndirectSpecularColor: {r: 3487.0547, g: 3525.9019, b: 4083.5393, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -16311,7 +16311,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _lifeBar
       value: 
-      objectReference: {fileID: 1894855185}
+      objectReference: {fileID: 0}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: _maxJumps
@@ -16321,7 +16321,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _myAbilityText
       value: 
-      objectReference: {fileID: 1894855183}
+      objectReference: {fileID: 0}
     - target: {fileID: 8898975352992438296, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19040,7 +19040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mySource: {fileID: 490163710}
-  text: {fileID: 1894855184}
+  text: {fileID: 0}
   _particles: {fileID: 0}
   _desiredText:
   - "\xBFDonde estoy? \nTengo que encontrar una salida..."
@@ -20911,6 +20911,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1337724621825115229, guid: e58323eb9e1b973408984ae1953b24b0,
+        type: 3}
+      propertyPath: _sceneName
+      value: Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582730958312975517, guid: e58323eb9e1b973408984ae1953b24b0,
+        type: 3}
+      propertyPath: _sceneName
+      value: Level1
+      objectReference: {fileID: 0}
     - target: {fileID: 7594506304443290741, guid: e58323eb9e1b973408984ae1953b24b0,
         type: 3}
       propertyPath: m_Pivot.x
@@ -21021,42 +21031,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e58323eb9e1b973408984ae1953b24b0, type: 3}
---- !u!114 &1894855183 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6832129879717448780, guid: e58323eb9e1b973408984ae1953b24b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1894855182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13ccc119ebd8110458946d28f2d314f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1894855184 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4298576346045737523, guid: e58323eb9e1b973408984ae1953b24b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1894855182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1894855185 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 900575715041573795, guid: e58323eb9e1b973408984ae1953b24b0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1894855182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1896114948
 PrefabInstance:
   m_ObjectHideFlags: 0

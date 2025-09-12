@@ -8,7 +8,7 @@ public class MouseSensSlider : MonoBehaviour
     {
        if (SliderSens != null) { SliderSens = GetComponent<Slider>(); }
     }
-    public void MouseSens()
+    public void SliderRefresh()
     {
         EventManager.Ejecute(EventManager.KindOfEvent.ChangeSensibilitieMouse,SliderSens.value);
     }

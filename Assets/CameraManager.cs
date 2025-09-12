@@ -62,12 +62,22 @@ public class CameraManager : MonoBehaviour
         EventManager.Suscribe(EventManager.KindOfEvent.OnLockCamera, ChangeLookMode);
         EventManager.Suscribe(EventManager.KindOfEvent.ChangeSensibilitieMouse, UpdateMouseSens);
         EventManager.Suscribe(EventManager.KindOfEvent.OnEnemyKilled, OnEnemyKilledChangeTarget);
+        EventManager.Suscribe(EventManager.KindOfEvent.CameraSmooth, SmoothPercent);
+        EventManager.Suscribe(EventManager.KindOfEvent.CameraDistance, DistancePercent);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _pjModel.OnAim += HandleRotation;
         _falseUpdate += RotateCameraLateUpdate;
     }
 
+    private void SmoothPercent(params object[] p)
+    {
+        _smoothTime = (float)p[0];
+    }
+    private void DistancePercent(params object[] p)
+    {
+        _distance = (float)p[0];
+    }
     void LateUpdate()
     {
         _falseUpdate();
@@ -144,6 +154,7 @@ public class CameraManager : MonoBehaviour
         }
 
         _targets = Physics.OverlapSphere(_pjModel.transform.position, 100f, _lockeableLayer);
+        //_target=GameManager.Instance.RefreshEnemy()
         if (_targets.Length <= 0) return;
 
         _falseUpdate -= RotateCameraLateUpdate;
@@ -199,9 +210,7 @@ public class CameraManager : MonoBehaviour
 
         Vector3 dirToEnemy = (_pjModel.transform.position - _lookTarget.position).normalized;
 
-        Vector3 desiredPos = _pjModel.transform.position
-                           + Vector3.up * _lockHeight
-                           + dirToEnemy * _lockCamDistance;
+        Vector3 desiredPos = _pjModel.transform.position+ Vector3.up * _lockHeight+ dirToEnemy * _lockCamDistance;
 
         if (Physics.Linecast(_pjModel.transform.position + Vector3.up * _lockHeight, desiredPos, out RaycastHit hit, _collisionMask))
         {
@@ -307,5 +316,7 @@ public class CameraManager : MonoBehaviour
         EventManager.Unscribe(EventManager.KindOfEvent.OnEnemyKilled, OnEnemyKilledChangeTarget);
         EventManager.Unscribe(EventManager.KindOfEvent.OnChangeTarget, ChangeTarget);
         EventManager.Unscribe(EventManager.KindOfEvent.OnLockCamera, ChangeLookMode);
+        EventManager.Unscribe(EventManager.KindOfEvent.CameraSmooth, SmoothPercent);
+        EventManager.Unscribe(EventManager.KindOfEvent.CameraDistance, DistancePercent);
     }
 }

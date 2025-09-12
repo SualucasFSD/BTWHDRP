@@ -22,7 +22,9 @@ public class EventManager
         OnChangeTarget,
         ResetLevel,
         MainMenu,
-        LifeUpdater
+        LifeUpdater,
+        CameraSmooth,
+        CameraDistance,
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

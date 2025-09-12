@@ -179,7 +179,10 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttack != null)
         {
-            _rb.velocity = Vector3.zero;
+            if(!_rb.isKinematic)
+            {
+              _rb.velocity = Vector3.zero;
+            }
             DesactiveGravity();
             OnAttack();
         }
@@ -188,7 +191,10 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecond != null)
         {
-            _rb.velocity = Vector3.zero;
+            if (!_rb.isKinematic)
+            {
+                _rb.velocity = Vector3.zero;
+            }
             DesactiveGravity();
             OnAttackSecond();
         }
@@ -197,7 +203,10 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecondLong != null)
         {
-            _rb.velocity = Vector3.zero;
+            if (!_rb.isKinematic)
+            {
+                _rb.velocity = Vector3.zero;
+            }
             DesactiveGravity();
             OnAttackSecondLong();
         }
@@ -206,7 +215,10 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackLong != null)
         {
-            _rb.velocity = Vector3.zero;
+            if (!_rb.isKinematic)
+            {
+                _rb.velocity = Vector3.zero;
+            }
             DesactiveGravity();
             OnAttackLong();
         }

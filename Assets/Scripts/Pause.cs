@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,14 +7,15 @@ public class Pause : MonoBehaviour
     private Dictionary<Rigidbody, Vector3> savedVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, Vector3> savedAngularVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, bool> wasKinematic = new();
-
+    //private bool pause=false;
     private void Start()
     {
-        EventManager.Suscribe(EventManager.KindOfEvent.PauseGame, PauseApp);
+        EventManager.Suscribe(EventManager.KindOfEvent.PauseGame,PauseApp);
     }
     public void PauseApp(params object[] obj)
     {
         if(!GameManager.Instance.IsPaused)
+        //if(pause)
         {
             ResumeOn();
         }
@@ -23,7 +23,8 @@ public class Pause : MonoBehaviour
     }
     private void PauseOn()
     {
-        GameManager.Instance.IsPaused = true;
+        //pause = true;   
+        //GameManager.Instance.IsPaused = true;
 
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
@@ -58,7 +59,8 @@ public class Pause : MonoBehaviour
     }
     private void ResumeOn()
     {
-        GameManager.Instance.IsPaused = false;
+        //pause = false;
+        //GameManager.Instance.IsPaused = false;
 
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
