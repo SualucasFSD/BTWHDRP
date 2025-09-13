@@ -90,7 +90,7 @@ public class MagueEnemyModel : Entity, Idamageable
             _numbOfBullets = 0;
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,30);
-            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, GetComponent<Collider>(),EnemyCatalogue.Mague);
+            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject,EnemyCatalogue.Mague);
             enabled = false;
             StartCoroutine(Restart());
         }

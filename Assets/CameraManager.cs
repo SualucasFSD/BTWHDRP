@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 public class CameraManager : MonoBehaviour
 {
@@ -25,7 +26,8 @@ public class CameraManager : MonoBehaviour
     [Header("Internals")]
     [SerializeField] private float _minPitch = -30f;
     [SerializeField] private float _maxPitch = 60f;
-
+    [SerializeField][Range(0.3f,1f)] private float _camRadius=0.3f;
+    [SerializeField][Range(0.5f, 1)] private float _minDistance;
     private float _yaw;
     private float _pitch;
     private Vector3 _currentVelocity;
@@ -34,7 +36,7 @@ public class CameraManager : MonoBehaviour
     private float _defaultFov;
     private bool _zoomed = false;
     private Action _falseUpdate = delegate { };
-    [SerializeField] private Collider[] _targets;
+    [SerializeField] private List<GameObject> _targets;
     private float _minDistanceLocked;
     private float _visionAngleTarget;
 
@@ -109,7 +111,7 @@ public class CameraManager : MonoBehaviour
 
     private void HandleCollision()
     {
-        Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
+        /*Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
         _desiredPosition = _target.position - (rotation * Vector3.forward * _distance);
 
         RaycastHit hit;
@@ -118,8 +120,40 @@ public class CameraManager : MonoBehaviour
             _desiredPosition = hit.point + hit.normal * 0.2f;
         }
 
-        transform.position = Vector3.SmoothDamp(transform.position, _desiredPosition, ref _currentVelocity, _smoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, _desiredPosition, ref _currentVelocity, _smoothTime);*/
+        /* Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
+         Vector3 desiredDir = -(rotation * Vector3.forward);
+         Vector3 desiredPos = _target.position + desiredDir * _distance;
 
+         if (Physics.SphereCast(_target.position, _camRadius, desiredDir, out RaycastHit hit, _distance, _collisionMask))
+         {
+             float hitDistance = Mathf.Max(0.1f, hit.distance);
+             desiredPos = _target.position + desiredDir * hitDistance;
+             desiredPos += hit.normal * 0.2f;
+         }
+
+         _desiredPosition = desiredPos;
+
+         transform.position = Vector3.SmoothDamp(transform.position,_desiredPosition,ref _currentVelocity,_smoothTime);*/
+        if(_target==null)
+        {
+            return;
+        }
+        Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
+        Vector3 desiredDir = -(rotation * Vector3.forward);
+        Vector3 targetPos = _target.position;
+
+        float finalDistance = _distance;
+
+        if (Physics.SphereCast(_target.position, _camRadius, desiredDir, out RaycastHit hit, _distance, _collisionMask))
+        {
+            finalDistance = Mathf.Max(_minDistance, hit.distance - 0.1f);
+        }
+
+        Vector3 desiredPos = targetPos + desiredDir * finalDistance;
+        transform.position = Vector3.SmoothDamp(transform.position,desiredPos,ref _currentVelocity,_smoothTime);
+
+        _desiredPosition = desiredPos;
     }
 
     private void HandleFollow()
@@ -152,10 +186,8 @@ public class CameraManager : MonoBehaviour
             _focusing = false;
             return;
         }
-
-        _targets = Physics.OverlapSphere(_pjModel.transform.position, 100f, _lockeableLayer);
-        //_target=GameManager.Instance.RefreshEnemy()
-        if (_targets.Length <= 0) return;
+        _targets = GameManager.Instance.RefreshEnemy(Entity.KindOfEntity.Allies).Select(x => x.gameObject).ToList();
+        if (_targets.Count <= 0) return;
 
         _falseUpdate -= RotateCameraLateUpdate;
         _falseUpdate += UpdateTarget;
@@ -163,16 +195,24 @@ public class CameraManager : MonoBehaviour
         _lookTarget = null;
         _minDistanceLocked = Mathf.Infinity;
 
-        foreach (Collider c in _targets)
+        foreach (GameObject c in _targets)
         {
-            if (!GameManager.Instance.LineOfSight(transform.position, c.transform.position))
-                continue;
-
-            _visionAngleTarget = Vector3.Dot(transform.forward, (c.transform.position - transform.position).normalized);
-            if (_visionAngleTarget <= 0.75f)
-                continue;
-
             float dist = Vector3.Distance(c.transform.position, _pjModel.transform.position);
+            if (dist>=_distanceLocked)
+            {
+                continue;
+            }
+            if (!GameManager.Instance.LineOfSight(transform.position, c.transform.position))
+            {
+                continue;
+            }
+            _visionAngleTarget = Vector3.Dot(transform.forward, (c.transform.position - transform.position).normalized);
+
+            if (_visionAngleTarget <= 0.75f)
+            {
+                continue;
+            }
+
             if (dist < _minDistanceLocked)
             {
                 _focusing = true;
@@ -199,7 +239,7 @@ public class CameraManager : MonoBehaviour
             return;
         }
 
-        if (Vector3.Distance(_lookTarget.position, _pjModel.transform.position) > _distanceLocked)
+        if (Vector3.Distance(_lookTarget.position, _pjModel.transform.position) >= _distanceLocked)
         {
             _lookTarget = null;
             _falseUpdate += RotateCameraLateUpdate;
@@ -227,7 +267,8 @@ public class CameraManager : MonoBehaviour
 
     private void ChangeTarget(params object[] p)
     {
-        if (_lookTarget == null || _targets.Length <= 1)
+        List<GameObject> Targets = GameManager.Instance.RefreshEnemy(Entity.KindOfEntity.Allies).Select(x => x.gameObject).ToList();
+        if (_lookTarget == null || _targets.Count <= 1)
             return;
 
         int dir = (int)p[0];
@@ -237,7 +278,7 @@ public class CameraManager : MonoBehaviour
         Transform bestTarget = null;
         float bestAngle = dir == 1 ? 360f : -360f;
 
-        foreach (var t in _targets)
+        foreach (GameObject t in Targets)
         {
             if (t == null || t.transform == _lookTarget) continue;
 
@@ -261,7 +302,9 @@ public class CameraManager : MonoBehaviour
         }
 
         if (bestTarget != null)
+        {
             _lookTarget = bestTarget;
+        }
     }
 
     private void ChangeLookModeWithOutLineOfSingh()
@@ -274,8 +317,8 @@ public class CameraManager : MonoBehaviour
             return;
         }
 
-        _targets = Physics.OverlapSphere(_pjModel.transform.position, 100f, _lockeableLayer);
-        if (_targets.Length <= 0) return;
+        _targets = GameManager.Instance.RefreshEnemy(Entity.KindOfEntity.Allies).Select(x => x.gameObject).ToList();
+        if (_targets.Count <= 0) return;
 
         _falseUpdate -= RotateCameraLateUpdate;
         _falseUpdate += UpdateTarget;
@@ -283,12 +326,17 @@ public class CameraManager : MonoBehaviour
         _lookTarget = null;
         _minDistanceLocked = Mathf.Infinity;
 
-        foreach (Collider c in _targets)
+        foreach (GameObject c in _targets)
         {
-            if (!GameManager.Instance.LineOfSight(transform.position, c.transform.position))
-                continue;
-
             float dist = Vector3.Distance(c.transform.position, _pjModel.transform.position);
+            if (dist >= _distanceLocked)
+            {
+                continue;
+            }
+            if (!GameManager.Instance.LineOfSight(transform.position, c.transform.position))
+            {
+                continue;
+            }
             if (dist < _minDistanceLocked)
             {
                 _focusing = true;
@@ -300,9 +348,9 @@ public class CameraManager : MonoBehaviour
 
     private void OnEnemyKilledChangeTarget(params object[] obj)
     {
-        if ((Collider)obj[0] != null)
+        if ((GameObject)obj[0] != null)
         {
-            if (_targets.ToList().Contains(obj[0]))
+            if (_targets.Contains(obj[0]))
             {
                 ChangeLookModeWithOutLineOfSingh();
                 ChangeLookModeWithOutLineOfSingh();

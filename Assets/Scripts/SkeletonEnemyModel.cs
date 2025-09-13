@@ -108,7 +108,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
             }
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,50);
-            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled,GetComponent<Collider>(),EnemyCatalogue.Esqueleton);
+            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled,gameObject,EnemyCatalogue.Esqueleton);
             enabled = false;
             _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
             StartCoroutine(Restart());
