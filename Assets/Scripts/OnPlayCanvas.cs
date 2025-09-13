@@ -12,7 +12,6 @@ public class OnPlayCanvas : MonoBehaviour
         EventManager.Suscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
         EventManager.Suscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
         EventManager.Suscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
-        //EventManager.Suscribe(EventManager.KindOfEvent.PauseGame, PauseApp);
     }
     private void Update()
     {
@@ -23,30 +22,31 @@ public class OnPlayCanvas : MonoBehaviour
         if (Input.GetButtonDown("Pause"))
         {
             PauseApp();
-            EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
         }
     }
     private void PauseApp()
     {
         if (GameManager.Instance != null)
         {
-            if(_panels.Count>0)
+            if (_panels.Count > 0)
             {
                 Close();
-                return;
-            }
-            GameManager.Instance.IsPaused = !GameManager.Instance.IsPaused;
-            PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-            if (!PauseMenu.activeInHierarchy)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                PauseMenu.SetActive(false);
             }
             else
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                GameManager.Instance.IsPaused = !GameManager.Instance.IsPaused;
+                PauseMenu.SetActive(GameManager.Instance.IsPaused);
+                EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
+                if (!GameManager.Instance.IsPaused)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
             }
         }
     }
@@ -90,6 +90,5 @@ public class OnPlayCanvas : MonoBehaviour
         EventManager.Unscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
         EventManager.Unscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
         EventManager.Unscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
-       // EventManager.Unscribe(EventManager.KindOfEvent.PauseGame, PauseApp);
     }
 }
