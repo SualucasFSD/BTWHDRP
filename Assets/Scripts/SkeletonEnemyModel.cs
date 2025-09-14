@@ -1,8 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using System.Collections.Generic;
+
 [RequireComponent(typeof(Rigidbody))]
 public class SkeletonEnemyModel : Entity, Idamageable
 {
@@ -12,56 +13,61 @@ public class SkeletonEnemyModel : Entity, Idamageable
     public Vector3 _dir;
     public bool IsDodge;
     public bool IsDamageable = true;
+    public List<PathNode> _paths = new List<PathNode>();
+
     private float _stuntPercent;
+    private bool _isReady = false;
+    private bool _useGravity = true;
+    private bool _stuned = false;
+    private float _actualAirTime = 0;
+    private Coroutine _orbsRoutine;
+
+    [SerializeField] private Animator _anim;
+    [SerializeField] private LifeOrb _lifeOrbPrefab;
+    [SerializeField] private ParticleSystem _damageParticles;
+    [SerializeField] private AudioSource _mySource;
     //Eventos
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
     public event Action<float> OnDamage = delegate { };
     public event Action OnDeath = delegate { };
-    //Cosas Varias
-    public List<PathNode> _paths = new List<PathNode>();
-    [SerializeField] private Animator _anim;
-    [SerializeField] private LifeOrb _lifeOrbPrefab;
-    [SerializeField] ParticleSystem _damageParticles;
-    [SerializeField] AudioSource _mySource;
-    private bool _isReady = false;
-    [SerializeField]private float _onAirTime=3;
-    //[SerializeField] private LayerMask _airLayer;
-    private bool _useGravity=true;
-    private bool _stuned = false;
-    private float _actualAirTime=0;
-    private Coroutine _orbsRoutine;
+    [Header("Air Settings")]
+    [SerializeField] private float _onAirTime = 3;
+    [SerializeField] int _airLayer;
+    [SerializeField] private float _ceilingOffset = 0.2f;
+    private int _groundLayer;
     private void Awake()
     {
         Kind = KindOfEntity.Enemy;
         if (_rb == null)
-        {
             _rb = GetComponent<Rigidbody>();
-        }
         _rb.useGravity = false;
     }
+
     private void OnEnable()
     {
-        if(_isReady)
+        if (_isReady)
         {
-          _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
-          GameManager.Instance.AddEntity(this, Kind);
-           Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
+            _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
+            GameManager.Instance.AddEntity(this, Kind);
+            Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
         }
     }
+
     private void OnDisable()
     {
-        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnDeath);
         GameManager.Instance.RemoveEntity(this, Kind);
     }
     private void Start()
     {
-        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer,()=>_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat),OnMovePj));
-        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnCombat, new OnCombatEsqueleton(_fsm, this,_anim));
+        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), OnMovePj));
+        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnCombat, new OnCombatEsqueleton(_fsm, this, _anim));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnDeath, new OnDeath());
-        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime,()=> _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat),_anim,"Stunt"));
+        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), _anim, "Stunt"));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage, new OnTakeDamage(_onAirTime, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), _anim, "TakeDamage"));
+
         _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
+        _groundLayer=gameObject.layer;
         GameManager.Instance.AddEntity(this, Kind);
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
         _isReady = true;
@@ -73,18 +79,25 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
     private void FixedUpdate()
     {
+        IsGroundedDetector();
+        if(_useGravity&&IsGrounded)
+        {
+            gameObject.layer = _groundLayer;
+        }
         if (IsDodge)
         {
-            _rb.AddForce(-transform.forward*1400,ForceMode.Impulse);
+            _rb.AddForce(-transform.forward * 1400, ForceMode.Impulse);
             IsDodge = false;
         }
-        if(_useGravity)
+
+        if (_useGravity)
         {
-          _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].GravityForce, 2), ForceMode.Acceleration);
+            _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].GravityForce, 2), ForceMode.Acceleration);
         }
-        if(Physics.Raycast(transform.position,-Vector3.up,1.2f)&&!_stuned)
+
+        if (Physics.Raycast(transform.position, -Vector3.up, 1.2f) && !_stuned)
         {
-          _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
+            _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
         }
     }
     public void TakeDamage(float dmg,float stunt, Vector3 pushDirection)
@@ -92,7 +105,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
         if (!IsDamageable) { return; }
         _stuntPercent += stunt;
         Life -=dmg;
-        if(Physics.Raycast(transform.position, -Vector3.up, 1.2f))
+        if(!IsGrounded)
         {
             MantainOnAir();
         }
@@ -138,6 +151,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     public void OnMovePj(Transform target)
     {
+        if(!IsGrounded)
+        {
+            return;
+        }
         if (target == null)
         {
             _dir=Vector3.zero;
@@ -155,6 +172,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     public void OnMovePj(Vector3 Dir)
     {
+        if (!IsGrounded)
+        {
+            return;
+        }
         _dir = Dir;
         if (OnMove != null)
         {
@@ -175,6 +196,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.green;
         PathNode ant = null;
         if(_paths.Count > 0) { Gizmos.DrawRay(transform.position, _paths[0].transform.position-transform.position); }
         foreach(PathNode i in _paths)
@@ -185,52 +207,69 @@ public class SkeletonEnemyModel : Entity, Idamageable
             }
             ant = i;
         }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position,-Vector3.up * 10);
+        if (_groundDetect.point != null)
+        {
+            if (Vector3.Distance(transform.position, _groundDetect.point) <= GroundDistanceDetector)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(_groundDetect.point, 0.3f);
+            }
+        }
     }
     public override void  FlyFunct(float height = 4f)
     {
-        _stuned =true;
+        _stuned = true;
         _actualAirTime = 0;
         _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
 
         _useGravity = false;
         if (!_rb.isKinematic)
-        {
             _rb.velocity = Vector3.zero;
-        }
+
         float targetY = transform.position.y + height;
 
+        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Radius, Vector3.up, out RaycastHit hit, height, ~0))
+        {
+            targetY = hit.point.y - _ceilingOffset;
+        }
+
+       gameObject.layer = _airLayer;
         StartCoroutine(GoUpAndFloat(targetY));
     }
-
+                                
     private IEnumerator GoUpAndFloat(float targetY)
     {
         while (transform.position.y < targetY)
         {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             if (!_rb.isKinematic)
             {
                 Vector3 pos = transform.position;
                 pos.y = Mathf.MoveTowards(pos.y, targetY, 50f * Time.deltaTime);
                 _rb.MovePosition(pos);
-                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             }
             yield return null;
         }
 
         while (_actualAirTime < _onAirTime - 0.5f)
         {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             if (!_rb.isKinematic)
             {
                 _rb.MovePosition(transform.position);
-                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             }
             _actualAirTime += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
-
         _stuned = false;
         _useGravity = true;
     }
-
+    public override void GetToTheGround()
+    {
+        _actualAirTime = 10f;
+    }
     private void MantainOnAir()
     {
         _actualAirTime=0;

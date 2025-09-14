@@ -24,12 +24,12 @@ public class PlayerController : MonoBehaviour
         {
           RotateCamera();
           ManualMovement();
+          DodgeControll();
           JumpControl();
           LockCameraControl();
           ChangeLockTarget();
           OnAttackFirshCombo();
           OnAttackSecondCombo();
-          DodgeControll();
         }
     }
     private void RotateCamera()

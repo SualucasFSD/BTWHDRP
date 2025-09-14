@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6805.7236, g: 6844.922, b: 8059.175, a: 1}
+  m_IndirectSpecularColor: {r: 6806.798, g: 6845.8936, b: 8060.49, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23997,6 +23997,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 530272009}
     m_Modifications:
+    - target: {fileID: 124469598330932090, guid: 278a0dce6f9b20041903a572da9cb0fe,
+        type: 3}
+      propertyPath: GroundDistanceDetector
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5323704847567105215, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
       propertyPath: m_Name
@@ -24020,7 +24025,7 @@ PrefabInstance:
     - target: {fileID: 6576353215341533350, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.16
+      value: 2.212
       objectReference: {fileID: 0}
     - target: {fileID: 6576353215341533350, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
@@ -30895,6 +30900,8 @@ MonoBehaviour:
   _lockHeight: 1.5
   _minPitch: -30
   _maxPitch: 60
+  _camRadius: 0.3
+  _minDistance: 0
   _targets: []
 --- !u!1001 &8862528992837283015
 PrefabInstance:

@@ -111,30 +111,6 @@ public class CameraManager : MonoBehaviour
 
     private void HandleCollision()
     {
-        /*Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
-        _desiredPosition = _target.position - (rotation * Vector3.forward * _distance);
-
-        RaycastHit hit;
-        if (Physics.Linecast(_target.position, _desiredPosition, out hit, _collisionMask))
-        {
-            _desiredPosition = hit.point + hit.normal * 0.2f;
-        }
-
-        transform.position = Vector3.SmoothDamp(transform.position, _desiredPosition, ref _currentVelocity, _smoothTime);*/
-        /* Quaternion rotation = Quaternion.Euler(_pitch, _yaw, 0);
-         Vector3 desiredDir = -(rotation * Vector3.forward);
-         Vector3 desiredPos = _target.position + desiredDir * _distance;
-
-         if (Physics.SphereCast(_target.position, _camRadius, desiredDir, out RaycastHit hit, _distance, _collisionMask))
-         {
-             float hitDistance = Mathf.Max(0.1f, hit.distance);
-             desiredPos = _target.position + desiredDir * hitDistance;
-             desiredPos += hit.normal * 0.2f;
-         }
-
-         _desiredPosition = desiredPos;
-
-         transform.position = Vector3.SmoothDamp(transform.position,_desiredPosition,ref _currentVelocity,_smoothTime);*/
         if(_target==null)
         {
             return;

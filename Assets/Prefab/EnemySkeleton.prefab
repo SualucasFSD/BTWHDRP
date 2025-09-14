@@ -16382,7 +16382,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 131072
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
@@ -16409,7 +16409,8 @@ MonoBehaviour:
   IsGrounded: 0
   GroundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 10183
+  GroundDistanceDetector: 1.2
   Kind: 1
   Targets: []
   _rb: {fileID: 323083595735182970}
@@ -16426,6 +16427,8 @@ MonoBehaviour:
   _damageParticles: {fileID: 3425622808941482395}
   _mySource: {fileID: 7363573763659273657}
   _onAirTime: 3
+  _airLayer: 17
+  _ceilingOffset: 1
 --- !u!82 &7363573763659273657
 AudioSource:
   m_ObjectHideFlags: 0

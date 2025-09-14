@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     public bool IsGrounded;
     public LayerMask GroundLayer;
     protected RaycastHit _groundDetect;
+    public float GroundDistanceDetector;
     public enum KindOfEntity
     {
         Allies,
@@ -118,12 +119,12 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public void IsGroundedDetector(float Height=1)
+    public void IsGroundedDetector()
     {
        Physics.Raycast(origin: transform.position,direction:-Vector3.up, layerMask: GroundLayer, maxDistance: 10, hitInfo: out _groundDetect);
         if(_groundDetect.collider!=null)
         {
-            if(Vector3.Distance(transform.position,_groundDetect.point)<Height)
+            if(Vector3.Distance(transform.position,_groundDetect.point)<GroundDistanceDetector)
             {
                 IsGrounded=true;
             }
@@ -138,6 +139,10 @@ public class Entity : MonoBehaviour
         }
     }
     public virtual void FlyFunct(float height = 4f)
+    {
+
+    }
+    public virtual void GetToTheGround()
     {
 
     }

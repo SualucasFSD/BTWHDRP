@@ -27,11 +27,21 @@ public class KnightView : PjView
         {
             return;
         }
+        _pjModel.OnAttack+=()=> RegisterImputs(KindOfCombo.Light);
+        _pjModel.OnAttackSecond += () => RegisterImputs(KindOfCombo.Strong);
+        _pjModel.OnAttackLong += () => RegisterImputs(KindOfCombo.LightLong);
+        _pjModel.OnAttackSecondLong += () => RegisterImputs(KindOfCombo.StrongLong);
+
+        _pjModel.OnAttackAir += () => RegisterImputs(KindOfCombo.LightAir);
+        _pjModel.OnAttackSecondAir += () => RegisterImputs(KindOfCombo.StrongAir);
+        _pjModel.OnAttackLongAir += () => RegisterImputs(KindOfCombo.LightLongAir);
+        _pjModel.OnAttackSecondLongAir += () => RegisterImputs(KindOfCombo.StrongLongAir);
+
         _pjModel.OnMovement += OnMove;
-        _pjModel.OnAttack += OnAttack;
+        /*_pjModel.OnAttack += OnAttack;
         _pjModel.OnAttackSecond += OnAttackStrong;
         _pjModel.OnAttackLong += OnAttackLong;
-        _pjModel.OnAttackSecondLong += OnAttackStrongLong;
+        _pjModel.OnAttackSecondLong += OnAttackStrongLong;*/
         _pjModel.OnJump += OnJump;
         _pjModel.OnFall += OnFall;
         _pjModel.OnLanding += OnLanding;
@@ -64,8 +74,8 @@ public class KnightView : PjView
     }
     private void OnJump()
     {
-        _animator.SetBool("Jump",true);
         ComboResetGeneral();
+        _animator.SetBool("Jump",true);
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
     }
     #endregion
@@ -154,7 +164,7 @@ public class KnightView : PjView
     #endregion
     #region Combo System Modular
     //Deteccion tipo de boton
-    private void OnAttack()
+    /*private void OnAttack()
     {
         RegisterImputs(KindOfCombo.Light);
     }
@@ -169,7 +179,7 @@ public class KnightView : PjView
     private void OnAttackStrongLong()
     {
         RegisterImputs(KindOfCombo.StrongLong);
-    }
+    }*/
 
     //Registrado del input indicado
     private void RegisterImputs(KindOfCombo p)
@@ -241,7 +251,8 @@ public class KnightView : PjView
     //Cancelacion del combo
     public void ComboResetGeneral()
     {
-        EventManager.Ejecute(EventManager.KindOfEvent.KnightComboReset);
+        _pjModel.RotationSpeedMultiply = 1.0f;
+        //EventManager.Ejecute(EventManager.KindOfEvent.KnightComboReset);
         foreach (ComboObject combo in Combos)
         {
             _animator.ResetTrigger(combo.TriggerAnimName);
@@ -255,9 +266,11 @@ public class KnightView : PjView
     #region Dodge System
     private void OnDodge(Vector3 dir)
     {
-        _animator.SetTrigger("Dodge");
-        EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
+        _pjModel.IsDodging = true;
         ComboResetGeneral();
+        _animator.SetTrigger("Dodge");
+        
+        EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
     }
     #endregion
 
@@ -288,7 +301,7 @@ public class KnightView : PjView
             if (j != null)
             {
                Idamageable l= j.GetComponent<Idamageable>();
-                float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - transform.position).normalized);
+                float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
                 if (backFrontAngle > _angle)
                 {
                     l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, _velocity.normalized);
@@ -312,7 +325,7 @@ public class KnightView : PjView
             Entity l = collider.GetComponent<Entity>();
             if (l != null)
             {
-                float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - transform.position).normalized);
+                float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
                 if (backFrontAngle > _flyAngle)
                 {
                    l.FlyFunct(4);
@@ -325,6 +338,10 @@ public class KnightView : PjView
         }
     }
     #endregion
+    public void EndDodge()
+    {
+        _pjModel.IsDodging = false;
+    }
     private void OnAnimatorMove()
     {
         transform.parent.position += _animator.deltaPosition;

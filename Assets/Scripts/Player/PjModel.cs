@@ -25,10 +25,12 @@ public class PjModel : Entity, Idamageable
     [Header("Cosas Varias")]
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
+    public bool IsDodging=false;
     private Vector3 _dodgeDir;
     private int _actualJumps=0;
     private float _jumpTimerReset=0;
     public bool _useGravity=true;
+    public float RotationSpeedMultiply=1;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     #region Eventos
     public event Action<Vector3,bool> OnMovement = delegate { };
@@ -45,6 +47,10 @@ public class PjModel : Entity, Idamageable
     public event Action OnAttackLong = delegate { };
     public event Action OnAttackSecond = delegate { };
     public event Action OnAttackSecondLong = delegate { };
+    public event Action OnAttackAir = delegate { };
+    public event Action OnAttackLongAir = delegate { };
+    public event Action OnAttackSecondAir = delegate { };
+    public event Action OnAttackSecondLongAir = delegate { };
     public event Action OnCancelAction = delegate { };
     public event Action EjecutePower=delegate { };
     public event Action<float> OnFall=delegate { };
@@ -72,12 +78,12 @@ public class PjModel : Entity, Idamageable
         EjecutePower();
         if (!Camera._focusing&&Dir!=Vector3.zero)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(Dir),_rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(Dir),_rotationSpeed*RotationSpeedMultiply * Time.deltaTime);
         }
     }
     private void FixedUpdate()
     {
-        IsGroundedDetector(1.5f);
+        /*IsGroundedDetector();
         if (_useGravity)
         {
            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
@@ -111,10 +117,46 @@ public class PjModel : Entity, Idamageable
         }
         if(Camera._focusing&& Dir != Vector3.zero && !OnAttacking)
         {
-            _rb.MovePosition(_rb.position + Dir * (_velocity/1.7f * Time.fixedDeltaTime));
+            _rb.MovePosition(_rb.position + Dir * (_velocity/1.8f * Time.fixedDeltaTime));
            return;
         }
         if (Dir != Vector3.zero&&!OnAttacking)
+        {
+            _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
+        }*/
+        IsGroundedDetector();
+
+        if (_useGravity)
+        {
+            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
+        }
+
+        if (!IsGrounded)
+        {
+            OnFall(_rb.velocity.y);
+            if (_actualJumps == 0) { _actualJumps = 1; }
+        }
+        else
+        {
+            _jumpTimerReset += Time.deltaTime;
+            OnLanding();
+            if (_jumpTimerReset > 0.5f) { _actualJumps = 0; }
+        }
+
+        if (Physics.SphereCast(transform.position, 0.4f, Dir.normalized, out RaycastHit p, 0.3f, _stopLayer))
+        {
+            return;
+        }
+
+        if (OnAttacking)
+            return;
+
+        if (Camera._focusing && Dir != Vector3.zero)
+        {
+            _rb.MovePosition(_rb.position + Dir * (_velocity / 1.8f * Time.fixedDeltaTime));
+            return;
+        }
+        if (Dir != Vector3.zero)
         {
             _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
         }
@@ -122,7 +164,9 @@ public class PjModel : Entity, Idamageable
     public void Movement(Vector3 dir, Vector3 rawDir, bool running)
     {
         if (Camera == null)
+        {
             return;
+        }
         if (rawDir.sqrMagnitude > 0f)
         {
             _dodgeDir = rawDir;
@@ -137,19 +181,26 @@ public class PjModel : Entity, Idamageable
 
             rawDir.Normalize();
             Dir = camForward * rawDir.z + camRight * rawDir.x;
-
+            if(OnAttacking)
+            {
+                return;
+            }
             OnMovement(Dir, running);
         }
         else
         {
             _dodgeDir = Vector3.zero;
             Dir = Vector3.zero;
+            if (OnAttacking)
+            {
+                return;
+            }
             OnMovement(Dir, running);
         }
     }
     public void Dodge(Vector3 dir)
     {
-        if (_dodgeDir.sqrMagnitude > 0)
+        if (_dodgeDir.sqrMagnitude > 0 && !IsDodging)
         {
             OnDodge(Dir);
         }
@@ -168,7 +219,7 @@ public class PjModel : Entity, Idamageable
     }
     public void Jump()
     {
-        if(IsGrounded||_actualJumps <_maxJumps)
+        if(IsGrounded||_actualJumps <_maxJumps && !IsDodging)
         {
             _actualJumps++;
             OnJump();
@@ -177,59 +228,72 @@ public class PjModel : Entity, Idamageable
     #region ComboKeys
     public void AttackFirstCombo()
     {
-        if (OnAttack != null)
+        if (OnAttack != null&&!IsDodging)
         {
-            if(!_rb.isKinematic)
+            ComboInitial();
+            if (!IsGrounded)
             {
-              _rb.velocity = Vector3.zero;
+                DesactiveGravity();
+                OnAttackAir();
+                return;
             }
-            DesactiveGravity();
             OnAttack();
         }
     }
     public void AttackSecondCombo()
     {
-        if (OnAttackSecond != null)
+        if (OnAttackSecond != null && !IsDodging)
         {
-            if (!_rb.isKinematic)
+            ComboInitial();
+            if (!IsGrounded)
             {
-                _rb.velocity = Vector3.zero;
+                DesactiveGravity();
+                OnAttackSecondAir();
+                return;
             }
-            DesactiveGravity();
             OnAttackSecond();
         }
     }
     public void AttackSecondComboLong()
     {
-        if (OnAttackSecondLong != null)
+        if (OnAttackSecondLong != null && !IsDodging)
         {
-            if (!_rb.isKinematic)
+            ComboInitial();
+            if (!IsGrounded)
             {
-                _rb.velocity = Vector3.zero;
+                DesactiveGravity();
+               OnAttackSecondLongAir();
+                return;
             }
-            DesactiveGravity();
             OnAttackSecondLong();
         }
     }
     public void AttackFirstComboLong()
     {
-        if (OnAttackLong != null)
+        if (OnAttackLong != null && !IsDodging)
         {
-            if (!_rb.isKinematic)
+            ComboInitial();
+            if (!IsGrounded)
             {
-                _rb.velocity = Vector3.zero;
+                DesactiveGravity();
+                OnAttackLongAir();
+                return;
             }
-            DesactiveGravity();
             OnAttackLong();
         }
     }
+    private void ComboInitial()
+    {
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
+        RotationSpeedMultiply = 0.2f;
+    }
     private void DesactiveGravity()
     {
-        if (!IsGrounded)
-        {
-            _useGravity = false;
-            _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-        }
+      _useGravity = false;
+      _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
     }
     #endregion
     #region Camera
@@ -271,18 +335,11 @@ public class PjModel : Entity, Idamageable
         {
             Life = 0;
         }
-        /*if (_lifeBar != null)
-        {
-          _lifeBar.fillAmount = Life / _maxLife;
-        }*/
         EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater,Life / _maxLife);
        if (Life <= 0)
        {
             GameManager.Instance.RemoveEntity(this, Kind);
-            //Destroy(gameObject);
-            //EventManager.ResetEvent();
             EventManager.Ejecute(EventManager.KindOfEvent.OnDeath);
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             Destroy(gameObject);
         }
     }
@@ -351,18 +408,18 @@ public class PjModel : Entity, Idamageable
         _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
     }
     #endregion
-    private void OnEnable()
-    {
-    
-    }
-    private void OnDisable()
-    {
-  
-    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position - transform.up + transform.up * 0.2f, -transform.up * _rayDistance);
+        Gizmos.DrawRay(transform.position, direction: -Vector3.up*10);
+        if (_groundDetect.point!=null)
+        {
+            if (Vector3.Distance(transform.position, _groundDetect.point) <= GroundDistanceDetector)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(_groundDetect.point, 0.3f);
+            }
+        }
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Dir.normalized * 0.3f, 0.5f);
     }

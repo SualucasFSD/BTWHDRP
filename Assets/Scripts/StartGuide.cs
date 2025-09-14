@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,30 +12,24 @@ public class StartGuide : MonoBehaviour
     [SerializeField] float _textSpeed;
 
     int currentdisplayedChar = 0;
-    // Start is called before the first frame update
     void Start()
     {
-        StartingGuide();
+        if(text==null||_particles==null||_mySource==null)
+        {
+            return;
+        }
         StartCoroutine(StartingGuide());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-
 
     IEnumerator StartingGuide()
     {
         yield return new WaitForSeconds(5);
         SoundManager.Instance.PlayOneShot(entityType.player, soundType.playerTalk, _mySource, 0);
-        //text.alignment = TextAlignmentOptions.Center;
 
         for (int i = 0; i < _desiredText[currentdisplayedChar].Length+1; i++)
         {
             text.text = _desiredText[currentdisplayedChar].Substring(0, i);
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             yield return new WaitForSeconds(_textSpeed);
         }
 
@@ -50,6 +43,7 @@ public class StartGuide : MonoBehaviour
                 string visibleText = text.text.Substring(i + 1);
                 string espacio = new string(' ', i + 1);
                 text.text = espacio + visibleText;
+                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             }
             yield return new WaitForSeconds(_textSpeed);
         }

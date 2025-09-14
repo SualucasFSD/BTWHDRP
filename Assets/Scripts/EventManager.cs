@@ -14,7 +14,7 @@ public class EventManager
         OnEnemyKilled,
         ChangeSensibilitieMouse,
         OnDeath,
-        KnightComboReset,
+        //KnightComboReset,
         JumpPj,
         KnightJumpReset,
         KnightExecuteDodge,

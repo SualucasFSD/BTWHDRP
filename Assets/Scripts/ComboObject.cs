@@ -5,7 +5,13 @@ public enum KindOfCombo
    Light,
    Strong,
    LightLong,
-   StrongLong
+   StrongLong,
+   LightAir,
+   StrongAir,
+   LightLongAir,
+   StrongLongAir,
+   SprintLight,
+   SprintLong
 }
 
 [CreateAssetMenu]
