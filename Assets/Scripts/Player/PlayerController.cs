@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private float _longTimeFirstCombo = 0;
     private Vector3 _dir;
     private Vector3 _rawDir;
+    private bool _stickInUse;
     private void Start()
     {
         _model=GetComponent<PjModel>();
@@ -62,21 +63,71 @@ public class PlayerController : MonoBehaviour
     }
     private void LockCameraControl()
     {
-        if (Input.GetMouseButtonDown(2))
+        if (Input.GetButtonDown("LockOut"))
         {
             _model.LoockOnCamera();
         }
     }
     private void ChangeLockTarget()
     {
-         if(Input.GetAxis("Mouse ScrollWheel")>0)
-         {
-             _model.ChangeTarget(1);
-         }
-         else if(Input.GetAxis("Mouse ScrollWheel") < 0)
-         {
-             _model.ChangeTarget(-1);
-         }
+        if (Input.GetAxis("Mouse ScrollWheel") >= 0.1f)
+        {
+            _model.ChangeTarget(1);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") <= -0.1f)
+        {
+            _model.ChangeTarget(-1);
+        }
+
+        if (!_stickInUse)
+        {
+            if (Input.GetAxis("RightStickHorizontal") >= 0.8f)
+            {
+                _model.ChangeTarget(1);
+                _stickInUse = true;
+            }
+            else if (Input.GetAxis("RightStickHorizontal") <= -0.8f)
+            {
+                _model.ChangeTarget(-1);
+                _stickInUse = true;
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(Input.GetAxis("RightStickHorizontal")) < 0.2f) // vuelve a la zona muerta
+            {
+                _stickInUse = false;
+            }
+        }
+        /*if(Input.GetAxis("Mouse ScrollWheel")>0)
+        {
+            _model.ChangeTarget(1);
+        }
+        else if(Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            _model.ChangeTarget(-1);
+        }
+
+       if (!_stickInUse)
+       {
+           if (Input.GetAxis("RightStickHorizontal") >= 0.8f)
+           {
+               _model.ChangeTarget(1);
+               _stickInUse = true;
+           }
+           else if (Input.GetAxis("RightStickHorizontal") <= -0.8f)
+           {
+               _model.ChangeTarget(-1);
+               _stickInUse = true;
+           }
+       }
+       else
+       {
+           if (Mathf.Abs(Input.GetAxis("RightStickHorizontal")) < 0.2f) // vuelve a la zona muerta
+           {
+               _stickInUse = false;
+           }
+       }*/
     }
     private void OnAttackFirshCombo()
     {
