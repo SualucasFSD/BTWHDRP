@@ -83,47 +83,6 @@ public class PjModel : Entity, Idamageable
     }
     private void FixedUpdate()
     {
-        /*IsGroundedDetector();
-        if (_useGravity)
-        {
-           _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
-        }
-        if (!IsGrounded)
-        {
-            if (OnFall != null)
-            {
-                OnFall(_rb.velocity.y);
-            }
-            if(_actualJumps==0)
-            {
-                _actualJumps = 1;
-            }
-        }
-        else
-        {
-            _jumpTimerReset += Time.deltaTime;
-            if (OnLanding != null)
-            {
-                OnLanding();
-            }
-            if(_jumpTimerReset>0.5f)
-            {
-                _actualJumps = 0;
-            }
-        }
-        if (Physics.SphereCast(transform.position, 0.4f, Dir.normalized, out RaycastHit p, 0.3f, _stopLayer))
-        {
-            return;
-        }
-        if(Camera._focusing&& Dir != Vector3.zero && !OnAttacking)
-        {
-            _rb.MovePosition(_rb.position + Dir * (_velocity/1.8f * Time.fixedDeltaTime));
-           return;
-        }
-        if (Dir != Vector3.zero&&!OnAttacking)
-        {
-            _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
-        }*/
         IsGroundedDetector();
 
         if (_useGravity)
@@ -284,10 +243,10 @@ public class PjModel : Entity, Idamageable
     }
     private void ComboInitial()
     {
-        if (!_rb.isKinematic)
+        /*if (!_rb.isKinematic)
         {
             _rb.velocity = Vector3.zero;
-        }
+        }*/
         RotationSpeedMultiply = 0.2f;
     }
     private void DesactiveGravity()

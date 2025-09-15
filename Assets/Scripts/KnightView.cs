@@ -306,7 +306,10 @@ public class KnightView : PjView
                 float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
                 if (backFrontAngle > _angle)
                 {
-                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, _velocity.normalized);
+                    //l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, _velocity.normalized);
+                    Vector3 pushDirection= new Vector3((j.transform.position - transform.position).x,0, (j.transform.position - transform.position).z).normalized;
+                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection);
+                    //l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, (j.transform.position-transform.position).normalized);
                 }
             }
             else
