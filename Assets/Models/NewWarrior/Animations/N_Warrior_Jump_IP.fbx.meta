@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9c43501aae9bc6b48b498544978b8e18
+guid: 04ae9154cbeee3d409819f983f767a7f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: JumpForce
+      name: ForceJump
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 0
-      lastFrame: 17
+      lastFrame: 4.2
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -65,8 +65,8 @@ ModelImporter:
       name: Fall
       takeName: Take 001
       internalID: -998496362607748373
-      firstFrame: 17
-      lastFrame: 21
+      firstFrame: 4.2
+      lastFrame: 8
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -91,11 +91,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Standing
+      name: Grounded
       takeName: Take 001
       internalID: 3060872287085348379
-      firstFrame: 21
-      lastFrame: 32
+      firstFrame: 10
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

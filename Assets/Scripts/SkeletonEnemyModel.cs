@@ -103,6 +103,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     public void TakeDamage(float dmg,float stunt, Vector3 pushDirection)
     {
+        if(Life<=0)
+        {
+            return;
+        }
         if (!IsDamageable) { return; }
         _stuntPercent += stunt;
         Life -=dmg;
