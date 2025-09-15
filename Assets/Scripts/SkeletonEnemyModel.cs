@@ -35,6 +35,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     [SerializeField] private float _onAirTime = 3;
     [SerializeField] int _airLayer;
     [SerializeField] private float _ceilingOffset = 0.2f;
+    [SerializeField] private LayerMask _stuckLayer;
     private int _groundLayer;
     private void Awake()
     {
@@ -230,7 +231,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
         float targetY = transform.position.y + height;
 
-        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Radius, Vector3.up, out RaycastHit hit, height, ~0))
+        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Radius, Vector3.up, out RaycastHit hit, height, _stuckLayer))
         {
             targetY = hit.point.y - _ceilingOffset;
         }

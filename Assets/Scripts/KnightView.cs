@@ -192,6 +192,7 @@ public class KnightView : PjView
     }
 
     //Ejecucion necesaria para empezar el combo si este no se encuentra en ejecucion
+
     private void TryEjecuteAttack()
     {
         foreach (ComboObject combo in Combos)
@@ -217,7 +218,7 @@ public class KnightView : PjView
     }
 
     //Evento de consulta y sucesion por animacion
-    public void EjecuteAttack()
+     public void EjecuteAttack()
     {
         foreach (ComboObject combo in Combos)
         {
@@ -263,6 +264,7 @@ public class KnightView : PjView
         _pjModel._useGravity = true;
     }
     #endregion
+    
     #region Dodge System
     private void OnDodge(Vector3 dir)
     {
