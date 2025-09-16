@@ -23621,32 +23621,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
-        type: 3}
-      propertyPath: _trail
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
-        type: 3}
-      propertyPath: Combos.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
-        type: 3}
-      propertyPath: Combos.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0730331fd3f925c4cb5357c0d2415763,
-        type: 2}
-    - target: {fileID: 4650900223648113256, guid: b28475f4e9a07cd41acc2fb939a9483a,
-        type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4650900223648113256, guid: b28475f4e9a07cd41acc2fb939a9483a,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: Camera
@@ -72492,7 +72466,7 @@ GameObject:
   - component: {fileID: 8239586543914398743}
   - component: {fileID: 1489556941013572570}
   - component: {fileID: 8239586543914398744}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79459,7 +79433,7 @@ GameObject:
   - component: {fileID: 3279447276693050452}
   - component: {fileID: 3586524247456135346}
   - component: {fileID: 3586524247456135347}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MiddleFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87042,7 +87016,7 @@ GameObject:
   - component: {fileID: 4179676747559978858}
   - component: {fileID: 7840871197364834999}
   - component: {fileID: 7840871197364835000}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87872,7 +87846,7 @@ GameObject:
   - component: {fileID: 8310122356381071357}
   - component: {fileID: 1279908898586983358}
   - component: {fileID: 8310122356381071358}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Piso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87963,7 +87937,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5669701294437220572, guid: 14ef5de256f0f9c469233195afeba1e4, type: 3}
 --- !u!33 &5587031955504625224
@@ -88568,7 +88542,7 @@ GameObject:
   - component: {fileID: 6806004940987737589}
   - component: {fileID: 5282630025180807366}
   - component: {fileID: 6806004940987737590}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpperFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90699,7 +90673,7 @@ GameObject:
   - component: {fileID: 6221547457527221663}
   - component: {fileID: 7953660620293849672}
   - component: {fileID: 8904642802777526700}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Floor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99597,7 +99571,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3402742096233047544, guid: 14ef5de256f0f9c469233195afeba1e4, type: 3}
 --- !u!33 &7984798134731801052
