@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Collections.Generic;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
 public class SkeletonEnemyModel : Entity, Idamageable
@@ -24,7 +25,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
     [SerializeField] private Animator _anim;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
-    [SerializeField] private ParticleSystem _damageParticles;
+    [SerializeField] private VisualEffect /*ParticleSystem*/ _damageParticles;
     [SerializeField] private AudioSource _mySource;
     //Eventos
     public event Action<Vector3> OnMove = delegate { };
