@@ -18,7 +18,7 @@ public class ColisionEjecute : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PjModel model = other.GetComponent<PjModel>();
-        if (other != null && _animator != null)
+        if (model != null && _animator != null)
         {
             _boolValue = true;
             _animator.speed = 1;

@@ -206,6 +206,10 @@ public class KnightView : PjView
                 return;
             }
         }
+        if(_combosFinish.Count<=0)
+        {
+            ComboResetGeneral();
+        }
     }
     private void ChangeFloats(ComboObject combo)
     {

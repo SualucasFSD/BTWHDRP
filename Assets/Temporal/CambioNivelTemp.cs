@@ -5,20 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class CambioNivelTemp : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    [SerializeField] private string SceneName;
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(2);
+        if(SceneName!=null)
+        SceneManager.LoadScene(SceneName);
     }
 }

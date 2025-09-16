@@ -104,6 +104,7 @@ public class PjModel : Entity, Idamageable
 
         if (Physics.SphereCast(transform.position, 0.4f, Dir.normalized, out RaycastHit p, 0.3f, _stopLayer))
         {
+            //print("STOP");
             return;
         }
 
