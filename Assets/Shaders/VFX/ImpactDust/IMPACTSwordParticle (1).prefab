@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3724450011293734739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4718504989784986105}
+  m_Layer: 0
+  m_Name: IMPACTSwordParticle (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4718504989784986105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724450011293734739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.08446157, y: -1.872, z: -0.007455826}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2322118865584634497}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1001 &3365536293450957099
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4718504989784986105}
+    m_Modifications:
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3067321368320560528, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+        type: 3}
+      propertyPath: m_Name
+      value: DustSplash
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9, type: 3}
+--- !u!4 &2322118865584634497 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1048524676964547498, guid: d5c5b5c1cac664c4bbf1e37fe8eec6c9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3365536293450957099}
+  m_PrefabAsset: {fileID: 0}
