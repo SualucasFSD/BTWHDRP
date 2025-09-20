@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private float _dodgeTime = 0;
     private float _longTimeSecondCombo = 0;
     private float _longTimeFirstCombo = 0;
-    private Vector3 _dir;
+    //private Vector3 _dir;
     private Vector3 _rawDir;
     private bool _stickInUse;
     private void Start()
@@ -39,11 +39,11 @@ public class PlayerController : MonoBehaviour
     }
     private void ManualMovement()
     {
-        _dir.z = Input.GetAxis("Vertical");
-        _dir.x = Input.GetAxis("Horizontal");
+        /*_dir.z = Input.GetAxis("Vertical");
+        _dir.x = Input.GetAxis("Horizontal");*/
         _rawDir.z = Input.GetAxisRaw("Vertical");
         _rawDir.x = Input.GetAxisRaw("Horizontal");
-        _model.Movement(_dir,_rawDir, Input.GetButton("Run"));
+        _model.Movement(_rawDir, Input.GetButton("Run"));
     }
     private void JumpControl()
     {
@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Dodge") && _dodgeTime >= _dodgeCoolDown)
         {
-            _model.Dodge(_rawDir);
+            _model.Dodge();
             _dodgeTime = 0;
         }
     }

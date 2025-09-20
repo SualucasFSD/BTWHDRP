@@ -1,42 +1,45 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class PjModel : Entity, Idamageable
 {
+    [Header("Mov Test")]
+    [SerializeField] PhysicMaterial _movMaterial;
+    [SerializeField] PhysicMaterial _standMaterial;
     [Header("Variables Test")]
     public CameraManager Camera;
-    public bool ManualMovement = true;
-    //public bool OnAnimation = false, OnJumpAnim = false;
+    public bool ManualMovement = true; 
     public bool OnAttacking=false;
     [Header("Configuracion Player")]
-    [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _maxLife;
     [SerializeField] private float _velocity;
     [SerializeField] float JumpForce;
     [SerializeField][Range(1,10)] private int _maxJumps=2;
     [SerializeField] float DodgeForce;
-    [SerializeField][Range(0, 10)] private float _rayDistance;
     [SerializeField][Range(0, 15)] private float _gravityForce;
     [SerializeField][Range(0.2f, 4)] private float _movSpeedMultiplier;
-    [SerializeField] private LayerMask _stopLayer;
     [Header("Cosas Varias")]
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     public bool IsDodging=false;
-    private Vector3 _dodgeDir;
-    private int _actualJumps=0;
-    private float _jumpTimerReset=0;
     public bool _useGravity=true;
     public float RotationSpeedMultiply=1;
+    //Privates
+    private Vector3 _dodgeDir;
+    private float _jumpTimerReset = 0;
+    private int _actualJumps = 0;
+    private float _rotationD = 15f;
+    private float _alignmentEpsilon = 0.5f;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
+    private Collider _ownCollider;
     #region Eventos
     public event Action<Vector3,bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
     public event Action<float> OnLifeUpdate=delegate { };
-    public event Action<Vector3> OnDodge = delegate { };
+    public event Action OnDodge = delegate { };
     public event Action OnJump=delegate { };
     public event Action OnDeath=delegate { };
     public event Action<float,float> OnAim = delegate { };
@@ -60,6 +63,7 @@ public class PjModel : Entity, Idamageable
     {
         Kind=KindOfEntity.Allies;
         _rb = GetComponent<Rigidbody>();
+        _ownCollider = GetComponent<Collider>();
     }
     private void Start()
     {
@@ -76,10 +80,6 @@ public class PjModel : Entity, Idamageable
     private void Update()
     {
         EjecutePower();
-        if (!Camera._focusing&&Dir!=Vector3.zero)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation,Quaternion.LookRotation(Dir),_rotationSpeed*RotationSpeedMultiply * Time.deltaTime);
-        }
     }
     private void FixedUpdate()
     {
@@ -87,7 +87,7 @@ public class PjModel : Entity, Idamageable
 
         if (_useGravity)
         {
-            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce, 1.7f), ForceMode.Acceleration);
+            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce,2), ForceMode.Acceleration);
         }
 
         if (!IsGrounded)
@@ -101,27 +101,23 @@ public class PjModel : Entity, Idamageable
             OnLanding();
             if (_jumpTimerReset > 0.5f) { _actualJumps = 0; }
         }
-
-        if (Physics.SphereCast(transform.position, 0.4f, Dir.normalized, out RaycastHit p, 0.3f, _stopLayer))
-        {
-            //print("STOP");
+        RotateTowardsDir();
+        if (OnAttacking||IsDodging)
+        { return; }
+         if (Camera._focusing && Dir != Vector3.zero)
+         {
+            Vector3 velocityChange = (Dir * _velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+            _rb.AddForce(velocityChange * 50/1.8f, ForceMode.Acceleration);
             return;
-        }
-
-        if (OnAttacking)
-            return;
-
-        if (Camera._focusing && Dir != Vector3.zero)
-        {
-            _rb.MovePosition(_rb.position + Dir * (_velocity / 1.8f * Time.fixedDeltaTime));
-            return;
-        }
-        if (Dir != Vector3.zero)
-        {
-            _rb.MovePosition(_rb.position + Dir * _velocity * Time.fixedDeltaTime);
-        }
+         }
+         if (Dir != Vector3.zero)
+         {
+            Vector3 velocityChange = (Dir*_velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+            _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
+         }
     }
-    public void Movement(Vector3 dir, Vector3 rawDir, bool running)
+    #region Movimiento y Rotacion
+    public void Movement(Vector3 rawDir, bool running)
     {
         if (Camera == null)
         {
@@ -140,6 +136,7 @@ public class PjModel : Entity, Idamageable
             camRight.Normalize();
 
             rawDir.Normalize();
+            _ownCollider.material = _movMaterial;
             Dir = camForward * rawDir.z + camRight * rawDir.x;
             if(OnAttacking)
             {
@@ -149,6 +146,7 @@ public class PjModel : Entity, Idamageable
         }
         else
         {
+            _ownCollider.material=_standMaterial;
             _dodgeDir = Vector3.zero;
             Dir = Vector3.zero;
             if (OnAttacking)
@@ -158,14 +156,38 @@ public class PjModel : Entity, Idamageable
             OnMovement(Dir, running);
         }
     }
-    public void Dodge(Vector3 dir)
+    /// <summary>
+    /// Calculo de rotacion y rotacion justamente XD
+    /// </summary>
+    private void RotateTowardsDir()
     {
-        if (_dodgeDir.sqrMagnitude > 0 && !IsDodging)
+        if (!Camera._focusing)
         {
-            OnDodge(Dir);
+            if (Dir == Vector3.zero)
+            {
+                _rb.angularVelocity = Vector3.zero;
+                return;
+            }
+
+            Quaternion target = Quaternion.LookRotation(Dir);
+            Quaternion delta = target * Quaternion.Inverse(_rb.rotation);
+
+            delta.ToAngleAxis(out float angle, out Vector3 axis);
+            if (angle > 180f) angle -= 360f;
+
+            if (Mathf.Abs(angle) < _alignmentEpsilon)
+            {
+                _rb.angularVelocity = Vector3.zero;
+                _rb.rotation = target;
+                return;
+            }
+
+            float p = _rotationSpeed * RotationSpeedMultiply;
+            Vector3 torque = axis.normalized * angle * Mathf.Deg2Rad * p - _rb.angularVelocity * _rotationD;
+
+            _rb.AddTorque(torque, ForceMode.Acceleration);
         }
     }
-
     public void AutoMove(Vector3 dir)
     {
        if (dir.magnitude == 0)
@@ -177,6 +199,8 @@ public class PjModel : Entity, Idamageable
         Dir = Vector3.ClampMagnitude(Dir + dir,_velocity);
         OnMovement(dir,true);
     }
+    #endregion
+    #region Jump
     public void Jump()
     {
         if(IsGrounded||_actualJumps <_maxJumps && !IsDodging)
@@ -185,6 +209,69 @@ public class PjModel : Entity, Idamageable
             OnJump();
         }
     }
+    public void JumpExecute(params object[] p)
+    {
+        _rb.AddForce(transform.up * JumpForce, ForceMode.Impulse);
+    }
+    #endregion
+    #region Dodge
+    public void Dodge()
+    {
+        /*if (_dodgeDir.sqrMagnitude > 0 && !IsDodging)
+        {
+            IsDodging = true;
+            _ownCollider.material = _movMaterial;
+            _rb.velocity = Vector3.zero;
+            DodgeExecute();
+            OnDodge();
+        }*/
+        if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging)
+        {
+            IsDodging = true;
+            _ownCollider.material = _movMaterial;
+
+            _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
+            OnDodge();
+
+            DodgeExecute();
+        }
+    }
+    public void DodgeExecute(params object[] p)
+    {
+        /*Vector3 inputDir = new Vector3(_dodgeDir.x, 0f, _dodgeDir.z);
+        if (inputDir.sqrMagnitude < 0.01f)
+        {
+            inputDir = Vector3.forward;
+        }
+        Vector3 camForward = Camera.transform.forward;
+        Vector3 camRight = Camera.transform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 dodgeDir = (camForward * inputDir.z + camRight * inputDir.x).normalized;
+
+        if (_groundDetect.collider != null)
+        {
+            dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundDetect.normal).normalized;
+        }
+        _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);*/
+        Vector3 worldDodge = Dir.normalized;
+
+        if (worldDodge.sqrMagnitude < 0.01f)
+        {
+            worldDodge = transform.forward;
+        }
+        if (_groundDetect.collider != null)
+        {
+            worldDodge = Vector3.ProjectOnPlane(worldDodge, _groundDetect.normal).normalized;
+        }
+
+        _rb.AddForce(worldDodge * DodgeForce, ForceMode.VelocityChange);
+    }
+    #endregion
     #region ComboKeys
     public void AttackFirstCombo()
     {
@@ -242,19 +329,6 @@ public class PjModel : Entity, Idamageable
             OnAttackLong();
         }
     }
-    private void ComboInitial()
-    {
-        /*if (!_rb.isKinematic)
-        {
-            _rb.velocity = Vector3.zero;
-        }*/
-        RotationSpeedMultiply = 0.2f;
-    }
-    private void DesactiveGravity()
-    {
-      _useGravity = false;
-      _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-    }
     #endregion
     #region Camera
     public void LoockOnCamera()
@@ -283,6 +357,7 @@ public class PjModel : Entity, Idamageable
         OnAim(X, Y);
     }
     #endregion
+    #region Genericos
     public void TakeDamage(float dmg, float exp, Vector3 pushDirection)
     {
         if (pushDirection != Vector3.zero)
@@ -316,11 +391,10 @@ public class PjModel : Entity, Idamageable
     {
         if(!_powerActivate.ContainsKey(Obj))
         {
-            
             _powerActivate.Add(Obj, Needed);
         }
     }
-    #region Eventos
+
     public void EnemyKilled(object[] obj)
     {
         if (!_powerActivate.ContainsKey((EnemyCatalogue)obj[1]))
@@ -341,33 +415,18 @@ public class PjModel : Entity, Idamageable
           print("Faltan " + _powerActivate[(EnemyCatalogue)obj[1]].Item1 + " " + (EnemyCatalogue)obj[1]);
         }
     }
-    #endregion
-    #region Eventos De Animacion
-    public void JumpExecute(params object[] p) { _rb.AddForce(transform.up * JumpForce, ForceMode.Impulse); /*OnAnimation = false;*/ }
-    public void DodgeExecute(params object[] p)
+    private void ComboInitial()
     {
-        Vector3 inputDir = new Vector3(_dodgeDir.x, 0f, _dodgeDir.z);
-        if (inputDir.sqrMagnitude < 0.01f)
-        {
-            inputDir = Vector3.forward;
-        }
-        Vector3 camForward = Camera.transform.forward;
-        Vector3 camRight = Camera.transform.right;
-
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
-
-        Vector3 dodgeDir = (camForward * inputDir.z + camRight * inputDir.x).normalized;
-
-        if (_groundDetect.collider != null)
-        {
-            dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundDetect.normal).normalized;
-        }
-        _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);
+        _rb.velocity = Vector3.zero;
+        RotationSpeedMultiply = 0.2f;
+    }
+    private void DesactiveGravity()
+    {
+        _useGravity = false;
+        _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
     }
     #endregion
+   
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

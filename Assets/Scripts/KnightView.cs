@@ -38,10 +38,6 @@ public class KnightView : PjView
         _pjModel.OnAttackSecondLongAir += () => RegisterImputs(KindOfCombo.StrongLongAir);
 
         _pjModel.OnMovement += OnMove;
-        /*_pjModel.OnAttack += OnAttack;
-        _pjModel.OnAttackSecond += OnAttackStrong;
-        _pjModel.OnAttackLong += OnAttackLong;
-        _pjModel.OnAttackSecondLong += OnAttackStrongLong;*/
         _pjModel.OnJump += OnJump;
         _pjModel.OnFall += OnFall;
         _pjModel.OnLanding += OnLanding;
@@ -74,6 +70,7 @@ public class KnightView : PjView
     }
     private void OnJump()
     {
+        EndDodge();
         ComboResetGeneral();
         _animator.SetBool("Jump",true);
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
@@ -163,23 +160,6 @@ public class KnightView : PjView
     }
     #endregion
     #region Combo System Modular
-    //Deteccion tipo de boton
-    /*private void OnAttack()
-    {
-        RegisterImputs(KindOfCombo.Light);
-    }
-    private void OnAttackStrong()
-    {
-        RegisterImputs(KindOfCombo.Strong);
-    }
-    private void OnAttackLong()
-    {
-        RegisterImputs(KindOfCombo.LightLong);
-    }
-    private void OnAttackStrongLong()
-    {
-        RegisterImputs(KindOfCombo.StrongLong);
-    }*/
 
     //Registrado del input indicado
     private void RegisterImputs(KindOfCombo p)
@@ -270,13 +250,15 @@ public class KnightView : PjView
     #endregion
     
     #region Dodge System
-    private void OnDodge(Vector3 dir)
+    private void OnDodge()
     {
-        _pjModel.IsDodging = true;
         ComboResetGeneral();
         _animator.SetTrigger("Dodge");
-        
         EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
+    }
+    public void EndDodge()
+    {
+        _pjModel.IsDodging = false;
     }
     #endregion
 
@@ -347,10 +329,6 @@ public class KnightView : PjView
         }
     }
     #endregion
-    public void EndDodge()
-    {
-        _pjModel.IsDodging = false;
-    }
     private void OnAnimatorMove()
     {
         transform.parent.position += _animator.deltaPosition;

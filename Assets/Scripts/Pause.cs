@@ -7,6 +7,7 @@ public class Pause : MonoBehaviour
     private Dictionary<Rigidbody, Vector3> savedVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, Vector3> savedAngularVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, bool> wasKinematic = new();
+    private List<Animator> _animExclude=new List<Animator>();
     private void Start()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.PauseGame,PauseApp);
@@ -23,7 +24,14 @@ public class Pause : MonoBehaviour
     {
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
-            anim.speed = 0;
+            if (anim.speed != 0)
+            {
+                anim.speed = 0;
+            }
+            else
+            {
+                _animExclude.Add(anim);
+            }
         }
 
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>(includeInactive: true))
@@ -56,9 +64,13 @@ public class Pause : MonoBehaviour
     {
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
+            if(_animExclude.Contains(anim))
+            {
+               continue;
+            }
             anim.speed = 1;
         }
-
+        _animExclude.Clear();
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>(includeInactive: true))
         {
             if (!rb.gameObject.activeInHierarchy) continue;
