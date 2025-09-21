@@ -6,7 +6,7 @@ public enum EnemyCatalogue
 {
     Esqueleton,
     Mague,
-    Blink
+    SavageDog
 }
 public enum PjPower
 {
