@@ -20,38 +20,45 @@ public class Entity : MonoBehaviour
     }
     public KindOfEntity Kind;
     public List<Entity> Targets=new List<Entity>();
-
-    public List<PathNode> TakePath(Transform pos,LayerMask nodesLayer)
+    public List<PathNode> TakePath(Transform pos, LayerMask nodesLayer, int maxTries = 5)
     {
-        List<PathNode> Pathnodes=new List<PathNode>();
+
+        List<PathNode> pathNodes = new List<PathNode>();
         Collider[] nodes = Physics.OverlapSphere(pos.position, 25f, nodesLayer);
-        if (nodes.Length > 0)
+
+        if (nodes.Length == 0)
         {
-            Pathnodes = PathFinding.Instance.AStar(GameManager.Instance.GetCloseNode(pos), nodes[Random.Range(0, nodes.Length)].GetComponent<PathNode>());
-
-            if (Pathnodes.Count <= 0) { return Pathnodes; }
-
-            float dist = 0;
-            PathNode i = default;
-            foreach (PathNode node in Pathnodes)
-            {
-                if (dist == 0)
-                {
-                    dist += Vector3.Distance(pos.position, node.transform.position);
-                }
-                else
-                {
-                    dist += Vector3.Distance(i.transform.position, node.transform.position);
-                }
-                i = node;
-            }
-            if (dist > 50)
-            {
-                return TakePath(pos,nodesLayer);
-            }
+            return pathNodes;
         }
-        return Pathnodes;
+        PathNode start = GameManager.Instance.GetCloseNode(pos);
+
+        for (int i = 0; i < maxTries; i++)
+        {
+            PathNode target = nodes[Random.Range(0, nodes.Length)].GetComponent<PathNode>();
+            pathNodes = PathFinding.Instance.AStar(start, target);
+
+            if (pathNodes.Count == 0)
+                continue;
+
+            float dist = 0f;
+            PathNode prev = null;
+            foreach (PathNode node in pathNodes)
+            {
+                if (prev == null)
+                    dist += Vector3.Distance(pos.position, node.transform.position);
+                else
+                    dist += Vector3.Distance(prev.transform.position, node.transform.position);
+
+                prev = node;
+            }
+
+            if (dist <= 50f)
+                return pathNodes;
+        }
+
+        return new List<PathNode>();
     }
+
     public void Detection(EnemyStats stats,Transform pos, Action CombatState)
     {
 

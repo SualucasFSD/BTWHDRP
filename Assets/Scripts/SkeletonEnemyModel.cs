@@ -62,7 +62,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     private void Start()
     {
-        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), OnMovePj));
+        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), OnMovePj,_rb, EnemyCatalogue.Esqueleton));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnCombat, new OnCombatEsqueleton(_fsm, this, _anim));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnDeath, new OnDeath());
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), _anim, "Stunt"));
@@ -81,6 +81,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
     private void FixedUpdate()
     {
+        _fsm.ArtificialFixedUpdate();
         IsGroundedDetector();
         if(_useGravity&&IsGrounded)
         {
@@ -97,10 +98,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
             _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].GravityForce, 2), ForceMode.Acceleration);
         }
 
-        if (Physics.Raycast(transform.position, -Vector3.up, 1.2f) && !_stuned)
+        /*if (Physics.Raycast(transform.position, -Vector3.up, 1.2f) && !_stuned)
         {
             _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
-        }
+        }*/
     }
     public void TakeDamage(float dmg,float stunt, Vector3 pushDirection)
     {
@@ -175,6 +176,11 @@ public class SkeletonEnemyModel : Entity, Idamageable
         {
             OnMove(_dir);
         }
+
+      if (Physics.Raycast(transform.position, -Vector3.up, 1.2f) && !_stuned)
+      {
+          _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
+      }
     }
     public void OnMovePj(Vector3 Dir)
     {
@@ -186,6 +192,10 @@ public class SkeletonEnemyModel : Entity, Idamageable
         if (OnMove != null)
         {
             OnMove(Dir);
+        }
+        if (Physics.Raycast(transform.position, -Vector3.up, 1.2f) && !_stuned)
+        {
+            _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
         }
     }
     public void TakeHealt(float amount)

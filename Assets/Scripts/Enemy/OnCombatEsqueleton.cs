@@ -184,4 +184,9 @@ public class OnCombatEsqueleton : IState
     {
        _dogeProb = Random.Range(1, 101);
     }
+
+    public void OnFixedUpdate()
+    {
+       
+    }
 }

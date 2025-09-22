@@ -45,7 +45,7 @@ public class SavageDog : Entity, Idamageable
     }
     private void Start()
     {
-        //_fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj));
+        //_fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj, _rb));
     }
     private void Update()
     {
@@ -54,6 +54,7 @@ public class SavageDog : Entity, Idamageable
     }
     private void FixedUpdate()
     {
+        //_fsm.ArtificialFixedUpdate();
         IsGroundedDetector();
         if (UseGravity)
         {

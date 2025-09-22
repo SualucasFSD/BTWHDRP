@@ -10,6 +10,11 @@ public class OnDeath : IState
        
     }
 
+    public void OnFixedUpdate()
+    {
+     
+    }
+
     public void OnUpdate()
     {
      

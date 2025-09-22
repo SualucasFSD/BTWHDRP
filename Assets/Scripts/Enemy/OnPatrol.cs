@@ -2,85 +2,130 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 public class OnPatrol : IState
 {
     private Entity _entity;
     private List<PathNode> _nodes = new List<PathNode>();
-    Action _combatState;
-    Action<Transform> _movePos;
+    private Action _combatState;
+    private Action<Transform> _movePos;
     private LayerMask _nodesLayer;
+
     private float _timer = 0;
     private float _idleTime;
     private float _resetTimer = 0;
-    private Quaternion _rotationVector;
-    public OnPatrol(Entity Entity,LayerMask NodesLayer, Action CombatState,Action<Transform> MovePos)
+
+    private float _pathCooldown = 3f;
+    private float _pathTimer = 0f;
+
+    private Rigidbody _rb;
+    private Vector3 _rotationDirection;
+    private EnemyCatalogue _kind;
+
+    private Transform _targetNode;
+
+    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action<Transform> movePos, Rigidbody rb, EnemyCatalogue kind)
     {
-        _nodesLayer = NodesLayer;
-        _entity = Entity;
-        _combatState = CombatState;
-        _movePos = MovePos;
+        _entity = entity;
+        _nodesLayer = nodesLayer;
+        _combatState = combatState;
+        _movePos = movePos;
+        _rb = rb;
+        _kind = kind;
     }
+
     public void OnEnter()
     {
         _idleTime = Random.Range(0, 15f);
         _nodes = _entity.TakePath(_entity.transform, _nodesLayer);
+        _pathTimer = 0f;
     }
 
     public void OnExit()
     {
-        _nodes = new List<PathNode>();
+        _nodes.Clear();
+        _targetNode = null;
+        _rotationDirection = Vector3.zero;
     }
 
     public void OnUpdate()
     {
-        if (_nodes.Count <= 0 && _timer >= _idleTime)
+        _pathTimer += Time.deltaTime;
+
+        if (_nodes.Count <= 0)
         {
-            _timer = 0f;
-            _idleTime = Random.Range(3, 20f);
-            _nodes = _entity.TakePath(_entity.transform, _nodesLayer);
+            _timer += Time.deltaTime;
+            _targetNode = null;
+
+            if (_timer >= _idleTime && _pathTimer >= _pathCooldown)
+            {
+                _timer = 0f;
+                _pathTimer = 0f;
+                _idleTime = Random.Range(3, 20f);
+                _nodes = _entity.TakePath(_entity.transform, _nodesLayer);
+            }
         }
 
         if (_nodes.Count > 0)
         {
-            var currentNodePos = _nodes[0].transform.position + Vector3.up * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Height;
+            var currentNodePos = _nodes[0].transform.position + Vector3.up * GameManager.Instance.EnemyConfiguration[_kind].Height;
             float distanceToNode = Vector3.Distance(_entity.transform.position, currentNodePos);
 
             if (!GameManager.Instance.LineOfSight(_nodes[0].transform.position, _entity.transform.position))
+            {
                 _resetTimer += Time.deltaTime;
+            }
             else
+            {
                 _resetTimer = 0f;
+            }
 
             if (_resetTimer > 5f)
             {
                 _idleTime = Random.Range(3, 20f);
                 _nodes = _entity.TakePath(_entity.transform, _nodesLayer);
-                return;
+                _resetTimer = 0f;
             }
 
             Vector3 direction = (_nodes[0].transform.position - _entity.transform.position);
-            if (direction.magnitude > 0.5f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(direction.normalized);
-                _rotationVector = Quaternion.Slerp(_entity.transform.rotation, targetRot, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce);
-                _rotationVector.x = _entity.transform.rotation.x;
-                _rotationVector.z = _entity.transform.rotation.z;
-                _entity.transform.rotation = _rotationVector;
-            }
+            _rotationDirection = direction.magnitude > 0.5f ? direction : Vector3.zero;
 
             if (distanceToNode <= 2f)
             {
                 _nodes.RemoveAt(0);
             }
-            if (_nodes.Count > 0)
+
+            _targetNode = (_nodes.Count > 0) ? _nodes[0].transform : null;
+        }
+
+        _entity.Detection(GameManager.Instance.EnemyConfiguration[_kind], _entity.transform, _combatState);
+    }
+
+    public void OnFixedUpdate()
+    {
+        if (_rotationDirection.sqrMagnitude > 0.001f)
+        {
+            Vector3 flatDir = new Vector3(_rotationDirection.x, 0f, _rotationDirection.z).normalized;
+
+            if (flatDir.sqrMagnitude > 0.001f)
             {
-                _movePos(_nodes[0].transform);
+                Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
+                Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
+
+                deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
+                if (angle > 180f) angle -= 360f;
+
+                if (Mathf.Abs(angle) > 1f)
+                {
+                    Vector3 torque = axis.normalized * angle * GameManager.Instance.EnemyConfiguration[_kind].RotForce;
+                    _rb.AddTorque(torque, ForceMode.Acceleration);
+                }
+                else
+                {
+                    _rb.angularVelocity = Vector3.zero;
+                }
             }
         }
-        else
-        {
-            _timer += Time.deltaTime;
-            _movePos(null);
-        }
-        _entity.Detection(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague], _entity.transform, _combatState);
+        _movePos(_targetNode);
     }
 }

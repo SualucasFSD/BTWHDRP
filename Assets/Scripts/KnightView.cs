@@ -70,7 +70,8 @@ public class KnightView : PjView
     }
     private void OnJump()
     {
-        EndDodge();
+        //EndDodge();
+        _pjModel.IsDodging = false;
         ComboResetGeneral();
         _animator.SetBool("Jump",true);
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
@@ -167,13 +168,24 @@ public class KnightView : PjView
         _currentImputs.Add(p);
         if (!_pjModel.OnAttacking)
         {
-            TryEjecuteAttack();
+            if (TryEjecuteAttack())
+            {
+                _pjModel.ComboInitial();
+                if (!_pjModel.IsGrounded)
+                {
+                    _pjModel.DesactiveGravity();
+                }
+                if(IsInvoking(nameof(ActiveGravInvoke)))
+                {
+                  CancelInvoke(nameof(ActiveGravInvoke));
+                }
+            }
         }
     }
 
     //Ejecucion necesaria para empezar el combo si este no se encuentra en ejecucion
 
-    private void TryEjecuteAttack()
+    private bool TryEjecuteAttack()
     {
         foreach (ComboObject combo in Combos)
         {
@@ -183,13 +195,19 @@ public class KnightView : PjView
                 _animator.SetTrigger(combo.TriggerAnimName);
                 ChangeFloats(combo);
                 _pjModel.OnAttacking = true;
-                return;
+                return true;
             }
         }
         if(_combosFinish.Count<=0)
         {
             ComboResetGeneral();
+            if (!_pjModel._useGravity)
+            {
+                _pjModel.ActiveGravity();
+            }
+            return false;
         }
+        return false;
     }
     private void ChangeFloats(ComboObject combo)
     {
@@ -231,13 +249,16 @@ public class KnightView : PjView
             }
         }
         ComboResetGeneral();
+        if (!_pjModel._useGravity)
+        {
+            _pjModel.ActiveGravity();
+        }
     }
 
     //Cancelacion del combo
     public void ComboResetGeneral()
     {
         _pjModel.RotationSpeedMultiply = 1.0f;
-        //EventManager.Ejecute(EventManager.KindOfEvent.KnightComboReset);
         foreach (ComboObject combo in Combos)
         {
             _animator.ResetTrigger(combo.TriggerAnimName);
@@ -245,7 +266,6 @@ public class KnightView : PjView
         _combosFinish.Clear();
         _currentImputs.Clear();
         _pjModel.OnAttacking = false;
-        _pjModel._useGravity = true;
     }
     #endregion
     
@@ -253,15 +273,31 @@ public class KnightView : PjView
     private void OnDodge()
     {
         ComboResetGeneral();
+        if (!_pjModel.IsGrounded)
+        {
+            _pjModel.DesactiveGravity();
+        }
         _animator.SetTrigger("Dodge");
         EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
     }
     public void EndDodge()
     {
         _pjModel.IsDodging = false;
+        if(!_pjModel.IsGrounded)
+        {
+            _pjModel.StopPJ();
+            _animator.SetTrigger("IsFalling");
+        }
+        if (!_pjModel._useGravity)
+        {
+            Invoke(nameof(ActiveGravInvoke), 0.5f);
+        }
     }
     #endregion
-
+    private void ActiveGravInvoke()
+    {
+       _pjModel.ActiveGravity();
+    }
     #region ComboManager Section
     public void TurnOffTrail()
     {

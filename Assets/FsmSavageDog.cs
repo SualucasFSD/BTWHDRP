@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine;
-
-public class FsmSavageDog : MonoBehaviour
+public class FsmSavageDog
 {
     private IState _currenState;
     public enum DogState
@@ -23,6 +21,10 @@ public class FsmSavageDog : MonoBehaviour
     public void ArtificialUpdate()
     {
         if (_currenState != null) { _currenState.OnUpdate(); }
+    }
+    public void ArtificialFixedUpdate()
+    {
+        if (_currenState != null) { _currenState.OnFixedUpdate(); }
     }
     public void ChangeState(DogState newState)
     {

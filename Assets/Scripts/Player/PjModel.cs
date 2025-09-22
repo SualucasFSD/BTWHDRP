@@ -24,10 +24,12 @@ public class PjModel : Entity, Idamageable
     [Header("Cosas Varias")]
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
+    [SerializeField] private float _maxAirTime;
     public bool IsDodging=false;
     public bool _useGravity=true;
     public float RotationSpeedMultiply=1;
     //Privates
+    public float _airTime;
     private Vector3 _dodgeDir;
     private float _jumpTimerReset = 0;
     private int _actualJumps = 0;
@@ -35,6 +37,8 @@ public class PjModel : Entity, Idamageable
     private float _alignmentEpsilon = 0.5f;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
+    private bool _isStoped=false;
+    private bool _dodgeReset=true;
     #region Eventos
     public event Action<Vector3,bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
@@ -99,10 +103,15 @@ public class PjModel : Entity, Idamageable
         {
             _jumpTimerReset += Time.deltaTime;
             OnLanding();
-            if (_jumpTimerReset > 0.5f) { _actualJumps = 0; }
+            if (_jumpTimerReset > 0.5f)
+            {
+                _dodgeReset=true;
+                _actualJumps = 0;
+                _jumpTimerReset = 0;
+            }
         }
         RotateTowardsDir();
-        if (OnAttacking||IsDodging)
+        if (OnAttacking||IsDodging|| _isStoped)
         { return; }
          if (Camera._focusing && Dir != Vector3.zero)
          {
@@ -217,47 +226,17 @@ public class PjModel : Entity, Idamageable
     #region Dodge
     public void Dodge()
     {
-        /*if (_dodgeDir.sqrMagnitude > 0 && !IsDodging)
+        if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
             IsDodging = true;
+            _dodgeReset = false;
             _ownCollider.material = _movMaterial;
-            _rb.velocity = Vector3.zero;
-            DodgeExecute();
+            //_rb.velocity = new Vector3(0, _rb.velocity.y, 0);
             OnDodge();
-        }*/
-        if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging)
-        {
-            IsDodging = true;
-            _ownCollider.material = _movMaterial;
-
-            _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
-            OnDodge();
-
-            DodgeExecute();
         }
     }
     public void DodgeExecute(params object[] p)
     {
-        /*Vector3 inputDir = new Vector3(_dodgeDir.x, 0f, _dodgeDir.z);
-        if (inputDir.sqrMagnitude < 0.01f)
-        {
-            inputDir = Vector3.forward;
-        }
-        Vector3 camForward = Camera.transform.forward;
-        Vector3 camRight = Camera.transform.right;
-
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
-
-        Vector3 dodgeDir = (camForward * inputDir.z + camRight * inputDir.x).normalized;
-
-        if (_groundDetect.collider != null)
-        {
-            dodgeDir = Vector3.ProjectOnPlane(dodgeDir, _groundDetect.normal).normalized;
-        }
-        _rb.AddForce(dodgeDir * DodgeForce, ForceMode.Impulse);*/
         Vector3 worldDodge = Dir.normalized;
 
         if (worldDodge.sqrMagnitude < 0.01f)
@@ -277,10 +256,8 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttack != null&&!IsDodging)
         {
-            ComboInitial();
             if (!IsGrounded)
             {
-                DesactiveGravity();
                 OnAttackAir();
                 return;
             }
@@ -291,10 +268,8 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecond != null && !IsDodging)
         {
-            ComboInitial();
             if (!IsGrounded)
             {
-                DesactiveGravity();
                 OnAttackSecondAir();
                 return;
             }
@@ -305,10 +280,8 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackSecondLong != null && !IsDodging)
         {
-            ComboInitial();
             if (!IsGrounded)
             {
-                DesactiveGravity();
                OnAttackSecondLongAir();
                 return;
             }
@@ -319,10 +292,8 @@ public class PjModel : Entity, Idamageable
     {
         if (OnAttackLong != null && !IsDodging)
         {
-            ComboInitial();
             if (!IsGrounded)
             {
-                DesactiveGravity();
                 OnAttackLongAir();
                 return;
             }
@@ -415,18 +386,37 @@ public class PjModel : Entity, Idamageable
           print("Faltan " + _powerActivate[(EnemyCatalogue)obj[1]].Item1 + " " + (EnemyCatalogue)obj[1]);
         }
     }
-    private void ComboInitial()
+    public void ComboInitial()
     {
         _rb.velocity = Vector3.zero;
         RotationSpeedMultiply = 0.2f;
     }
-    private void DesactiveGravity()
+    public void DesactiveGravity()
     {
         _useGravity = false;
+        _rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
         _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
     }
+    public void StopPJ()
+    {
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
+        _isStoped = true;
+        Invoke(nameof(StopedInvoke), 0.5f);
+    }
+    private void StopedInvoke()
+    {
+        _isStoped = false;
+    }
+    public void ActiveGravity()
+    {
+        _useGravity = true;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+    }
     #endregion
-   
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

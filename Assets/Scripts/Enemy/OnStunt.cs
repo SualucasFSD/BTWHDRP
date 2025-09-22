@@ -26,6 +26,11 @@ public class OnStunt : IState
         //_animator.ResetTrigger(_triggerName);
     }
 
+    public void OnFixedUpdate()
+    {
+      
+    }
+
     public void OnUpdate()
     {
         _stuntProgres += Time.deltaTime;

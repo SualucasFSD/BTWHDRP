@@ -94,40 +94,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (Mathf.Abs(Input.GetAxis("RightStickHorizontal")) < 0.2f) // vuelve a la zona muerta
+            if (Mathf.Abs(Input.GetAxis("RightStickHorizontal")) < 0.2f)
             {
                 _stickInUse = false;
             }
         }
-        /*if(Input.GetAxis("Mouse ScrollWheel")>0)
-        {
-            _model.ChangeTarget(1);
-        }
-        else if(Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            _model.ChangeTarget(-1);
-        }
-
-       if (!_stickInUse)
-       {
-           if (Input.GetAxis("RightStickHorizontal") >= 0.8f)
-           {
-               _model.ChangeTarget(1);
-               _stickInUse = true;
-           }
-           else if (Input.GetAxis("RightStickHorizontal") <= -0.8f)
-           {
-               _model.ChangeTarget(-1);
-               _stickInUse = true;
-           }
-       }
-       else
-       {
-           if (Mathf.Abs(Input.GetAxis("RightStickHorizontal")) < 0.2f) // vuelve a la zona muerta
-           {
-               _stickInUse = false;
-           }
-       }*/
     }
     private void OnAttackFirshCombo()
     {
@@ -135,7 +106,7 @@ public class PlayerController : MonoBehaviour
         {
             _longTimeFirstCombo += Time.deltaTime;
 
-            if (_longTimeFirstCombo > 0.5f && _longTimeFirstCombo < 0.9f)
+            if (_longTimeFirstCombo > 0.3f && _longTimeFirstCombo < 0.9f)
             {
                 _model.AttackFirstComboLong();
                 _longTimeFirstCombo = 2f;
@@ -155,7 +126,7 @@ public class PlayerController : MonoBehaviour
         {
             _longTimeSecondCombo += Time.deltaTime;
 
-            if (_longTimeSecondCombo > 0.5f&& _longTimeSecondCombo < 0.9f)
+            if (_longTimeSecondCombo > 0.3f&& _longTimeSecondCombo < 0.9f)
             {
                 _model.AttackSecondComboLong();
                 _longTimeSecondCombo = 2f;

@@ -16,6 +16,7 @@ public class SavageView : MonoBehaviour
         {
             _dogModel=GetComponentInParent<SavageDog>();
         }
+
     }
     private void Start()
     {

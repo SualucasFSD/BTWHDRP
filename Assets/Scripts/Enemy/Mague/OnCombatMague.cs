@@ -141,4 +141,9 @@ public class OnCombatMague : IState
             return;
         }
     }
+
+    public void OnFixedUpdate()
+    {
+       
+    }
 }

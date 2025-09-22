@@ -24,6 +24,11 @@ public class OnTakeDamage : IState
         
     }
 
+    public void OnFixedUpdate()
+    {
+      
+    }
+
     public void OnUpdate()
     {
         _stuntProgres += Time.deltaTime;

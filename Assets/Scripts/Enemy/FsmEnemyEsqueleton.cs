@@ -23,6 +23,10 @@ public class FsmEnemyEsqueleton
     {
         if (_currenState != null) { _currenState.OnUpdate(); }
     }
+    public void ArtificialFixedUpdate()
+    {
+        if (_currenState != null) { _currenState.OnFixedUpdate(); }
+    }
     public void ChangeState(AgentStates newState)
     {
         if (_currenState != null)
