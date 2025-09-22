@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Unity.VisualScripting;
+using Unity.Mathematics;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
+    private bool _stuned = false;
+    private float _actualAirTime;
+    private bool _inAirCombo=false;
+    private float _groundDelay=0;
+    private Coroutine _floatRoutine;
     public FsmSavageDog _fsm=new FsmSavageDog();
     private bool _isReady=false;
     [SerializeField]private Collider _collider;
@@ -15,11 +22,17 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private LayerMask _nodeLayer;
     [SerializeField] private PhysicMaterial _movMat;
     [SerializeField] private PhysicMaterial _stopMat;
+    [SerializeField] private float _ceilingOffset;
+    [SerializeField] private float _groundImpulse=2500f;
     public bool UseGravity=true;
     public bool CanMove = true;
     //[SerializeField] private float _velocity;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
+    public event Action OnAirHit=delegate { };      
+    public event Action OnHitStunt= delegate { };
+    public event Action OnFreeFall= delegate { };
+    public event Action<bool> OnGrounded= delegate { };
     #endregion
     private void Awake()
     {
@@ -49,6 +62,11 @@ public class SavageDog : Entity, Idamageable
     }
     private void Update()
     {
+        _groundDelay += Time.deltaTime;
+        if (_groundDelay > 1.5f)
+        {
+            OnGrounded(IsGrounded);
+        }
         //_fsm.ArtificialUpdate();
         //IsGroundedDetector();
     }
@@ -60,9 +78,13 @@ public class SavageDog : Entity, Idamageable
         {
             _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce, 2), ForceMode.Acceleration);
         }
-            Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-            _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
-        
+        if (Dir == Vector3.zero)
+        {
+            _rb.angularVelocity = Vector3.zero;
+            return;
+        }
+        Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
         //_rb.MovePosition(transform.position + Dir * Time.fixedDeltaTime);
     }
     public void OnMovePj(Transform tg)
@@ -99,12 +121,89 @@ public class SavageDog : Entity, Idamageable
     }
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection)
     {
-       
+        if (IsGrounded&&!_inAirCombo)
+        {
+            OnHitStunt();
+        }
+        else
+        {
+            MantainOnAir();
+        }
+
     }
 
     public void TakeHealt(float amount)
     {
        
+    }
+    public override void FlyFunct(float height = 4)
+    {
+        _stuned = true;
+        _actualAirTime = 0;
+        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
+
+        UseGravity = false;
+        if (!_rb.isKinematic)
+            _rb.velocity = Vector3.zero;
+
+        float targetY = transform.position.y + height;
+
+        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius, Vector3.up, out RaycastHit hit, height+0.5f, layerMask: GroundLayer))
+        {
+            targetY = hit.point.y - _ceilingOffset;
+        }
+
+        //gameObject.layer = _airLayer;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        _floatRoutine=StartCoroutine(GoUpAndFloat(targetY));
+    }
+    private void MantainOnAir()
+    {
+        _actualAirTime = 0;
+    }
+    private IEnumerator GoUpAndFloat(float targetY)
+    {
+        while (transform.position.y < targetY)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            if (!_rb.isKinematic)
+            {
+                Vector3 pos = transform.position;
+                pos.y = Mathf.MoveTowards(pos.y, targetY, 50f * Time.deltaTime);
+                _rb.MovePosition(pos);
+            }
+            yield return null;
+        }
+        _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
+        while (_actualAirTime < 2.5f - 0.5f)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            if (!_rb.isKinematic)
+            {
+                _rb.MovePosition(transform.position);
+            }
+            _actualAirTime += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        _groundDelay = 0;
+        OnFreeFall();
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
+        _stuned = false;
+        UseGravity = true;
+    }
+    public override void GetToTheGround()
+    {
+      if (_floatRoutine!=null)
+      {
+         StopCoroutine(_floatRoutine);
+         _floatRoutine = null;
+      }
+        OnFreeFall();
+        _groundDelay = 0;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);
+        _stuned = false;
+        UseGravity = true;
     }
     private void OnDrawGizmos()
     {

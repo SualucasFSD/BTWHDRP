@@ -21,6 +21,28 @@ public class SavageView : MonoBehaviour
     private void Start()
     {
         _dogModel.OnMove += OnMove;
+        _dogModel.OnAirHit += OnAirHit;
+        _dogModel.OnHitStunt += OnHitGround;
+        _dogModel.OnFreeFall += OnFreeFall;
+        _dogModel.OnGrounded += OnGrounded;
+    }
+    private void OnHitGround()
+    {
+        _animator.SetTrigger("Hit");
+    }
+    private void OnFreeFall()
+    {
+        print("AirFall");
+        _animator.SetTrigger("AerialDown");
+    }
+    private void OnGrounded(bool I)
+    {
+        _animator.SetBool("IsGrounded", I);
+    }
+    private void OnAirHit()
+    {
+        print("AirHit");
+
     }
     private void OnMove(Vector3 Dir)
     {

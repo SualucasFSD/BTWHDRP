@@ -1,5 +1,8 @@
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 
 public class KnightView : PjView
 {
@@ -19,6 +22,7 @@ public class KnightView : PjView
     private float _stuntDmg;
     private float _angle;
     private float _flyAngle;
+    private Transform _target;
     private void Start()
     {
         _pjModel = GetComponentInParent<PjModel>();
@@ -309,11 +313,11 @@ public class KnightView : PjView
     }
     public void CauseDamage()
     {
-        if (_trail != null)
+        /*if (_trail != null)
         {
             _trail.gameObject.SetActive(true);
             _trail.Play();
-        }
+        }*/
         Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
         foreach (Collider collider in c)
         {
@@ -340,6 +344,35 @@ public class KnightView : PjView
             }
         }
     }
+    public void CauseDamageInAir()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 5, _hitLayer);
+        Entity closest = null;
+        float closestDist = Mathf.Infinity;
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject == gameObject) continue;
+
+            Entity entity = collider.GetComponent<Entity>();
+            if (entity == null) continue;
+
+            Vector3 dirToEntity = (entity.transform.position - transform.position).normalized;
+            float dot = Vector3.Dot(transform.forward, dirToEntity);
+
+            if (dot > _angle)
+            {
+                float dist = Vector3.Distance(transform.position, entity.transform.position);
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closest = entity;
+                }
+            }
+        }
+
+        _target = closest.transform;
+    }
     public void AddForceToEnemy()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, _swordArea, _hitLayer);
@@ -353,7 +386,7 @@ public class KnightView : PjView
             if (l != null)
             {
                 float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
-                if (backFrontAngle > _flyAngle)
+                if (backFrontAngle > _flyAngle&& Mathf.Abs(l.transform.position.y - transform.position.y)<3)
                 {
                    l.FlyFunct(4);
                 }
@@ -361,6 +394,50 @@ public class KnightView : PjView
             else
             {
                 continue;
+            }
+        }
+    }
+    public void AddDownForce()
+    {
+        Collider[] c = Physics.OverlapSphere(transform.position, _swordArea, _hitLayer);
+        foreach (Collider collider in c)
+        {
+            if (collider.gameObject == gameObject)
+            {
+                continue;
+            }
+            Entity l = collider.GetComponent<Entity>();
+            if (l != null)
+            {
+                float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
+                if (backFrontAngle > _flyAngle&& Mathf.Abs(l.transform.position.y - transform.position.y) < 3)
+                {
+                    l.GetToTheGround();
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+    }
+    public void DashToTarget(Transform target, float dashForce, float stopDistance = 0.5f, float maxDistance = 5f)
+    {
+        if (target == null) return;
+
+        Vector3 direction = (target.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, maxDistance))
+        {
+            float distance = hit.distance;
+            if (distance > maxDistance) return;
+
+            Vector3 desiredPosition = hit.point - direction * stopDistance;
+            Vector3 impulse = (desiredPosition - transform.position);
+
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(impulse.normalized * dashForce, ForceMode.VelocityChange);
             }
         }
     }
