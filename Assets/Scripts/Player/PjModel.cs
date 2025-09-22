@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]
 public class PjModel : Entity, Idamageable
 {
@@ -11,6 +12,7 @@ public class PjModel : Entity, Idamageable
     public CameraManager Camera;
     public bool ManualMovement = true; 
     public bool OnAttacking=false;
+    [SerializeField] private VisualEffect _bloodVfx;
     [Header("Configuracion Player")]
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private Rigidbody _rb;
@@ -336,6 +338,7 @@ public class PjModel : Entity, Idamageable
             _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
         }
         Life -=dmg;
+        _bloodVfx?.Play();
         OnLifeUpdate(Life / _maxLife);
         if (Life < 0)
         {
