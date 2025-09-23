@@ -420,6 +420,7 @@ public class KnightView : PjView
                 continue;
             }
         }
+        _pjModel.GetDown();
     }
     public void DashToTarget(Transform target, float dashForce, float stopDistance = 0.5f, float maxDistance = 5f)
     {
