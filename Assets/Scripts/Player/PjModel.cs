@@ -421,6 +421,7 @@ public class PjModel : Entity, Idamageable
     #endregion
     public void GetDown()
     {
+        _ownCollider.material = _movMaterial;
         _rb.AddForce(-Vector3.up * 2500, ForceMode.Impulse);
     }
     private void OnDrawGizmos()
