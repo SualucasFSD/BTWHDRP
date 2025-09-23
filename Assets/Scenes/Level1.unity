@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 3487.0625, g: 3525.9014, b: 4083.5466, a: 1}
+  m_IndirectSpecularColor: {r: 3488.2856, g: 3525.8052, b: 4083.9888, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -578,6 +578,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1be36ff8e8083b42a7ec4f647b02748, type: 3}
+--- !u!1001 &50291311
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_Name
+      value: SavageDog
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.592951
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 36.66078
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591686814921095273, guid: 3cdaa232d5a6f5a448c2e7e439917591,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3cdaa232d5a6f5a448c2e7e439917591, type: 3}
 --- !u!4 &55823329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1144501088173105929, guid: 21113aa48b0d1854b8759b27bea1a12e,
@@ -3776,7 +3844,7 @@ PrefabInstance:
     - target: {fileID: 5323704847567105215, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6394435736171640916, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
@@ -3831,6 +3899,11 @@ PrefabInstance:
     - target: {fileID: 6576353215341533350, guid: 278a0dce6f9b20041903a572da9cb0fe,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7683571495960207316, guid: 278a0dce6f9b20041903a572da9cb0fe,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -19785,6 +19858,7 @@ MonoBehaviour:
   ConfigurationEnemys:
   - {fileID: 11400000, guid: 2d88cdcb90ee30b49b2b05178d527e06, type: 2}
   - {fileID: 11400000, guid: a27911cd249a94840842ea903e432e06, type: 2}
+  - {fileID: 11400000, guid: 01df3127ea12d414899b3082955fac91, type: 2}
   PathNodes: []
   PreLoadPathNodes: []
   _blockLayer:
@@ -24892,3 +24966,4 @@ SceneRoots:
   - {fileID: 1852297853}
   - {fileID: 76544703}
   - {fileID: 8862528992837283015}
+  - {fileID: 50291311}

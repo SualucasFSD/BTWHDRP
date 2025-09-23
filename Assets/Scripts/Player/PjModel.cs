@@ -419,7 +419,10 @@ public class PjModel : Entity, Idamageable
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
     #endregion
-
+    public void GetDown()
+    {
+        _rb.AddForce(-Vector3.up * 2500, ForceMode.Impulse);
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

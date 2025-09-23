@@ -36,7 +36,7 @@ public class SavageDog : Entity, Idamageable
     #endregion
     private void Awake()
     {
-        Kind = KindOfEntity.Enemy;
+      /*  Kind = KindOfEntity.Enemy;
         if (_rb == null)
         {
             _rb = GetComponent<Rigidbody>();
@@ -45,7 +45,7 @@ public class SavageDog : Entity, Idamageable
         if (_collider == null)
         {
             _collider = GetComponent<Collider>();
-        }
+        }*/
     }
     private void OnEnable()
     {
@@ -58,6 +58,16 @@ public class SavageDog : Entity, Idamageable
     }
     private void Start()
     {
+        Kind = KindOfEntity.Enemy;
+        if (_rb == null)
+        {
+            _rb = GetComponent<Rigidbody>();
+        }
+        _rb.useGravity = false;
+        if (_collider == null)
+        {
+            _collider = GetComponent<Collider>();
+        }
         //_fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj, _rb));
     }
     private void Update()
