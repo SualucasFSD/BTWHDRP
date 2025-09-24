@@ -6,7 +6,7 @@ using UnityEngine;
 public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
-    private bool _stuned = false;
+    public bool Stuned = false;
     private bool _inAirCombo=false;
     private float _groundDelay=0;
     private Coroutine _floatRoutine;
@@ -21,12 +21,15 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private PhysicMaterial _stopMat;
     [SerializeField] private float _ceilingOffset;
     [SerializeField] private float _groundImpulse=2500f;
+    [SerializeField] private float _attackDelay=2.5f;
     public bool UseGravity=true;
     public bool CanMove = true;
     private float _gravityValue;
+    private float _attackTimer;
     //[SerializeField] private float _velocity;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
+    public event Action OnAttack = delegate { };
     public event Action OnAirHit=delegate { };      
     public event Action OnHitStunt= delegate { };
     public event Action GetToAir = delegate { };
@@ -35,28 +38,6 @@ public class SavageDog : Entity, Idamageable
     public event Action<bool> OnGrounded= delegate { };
     #endregion
     private void Awake()
-    {
-      /*  Kind = KindOfEntity.Enemy;
-        if (_rb == null)
-        {
-            _rb = GetComponent<Rigidbody>();
-        }
-        _rb.useGravity = false;
-        if (_collider == null)
-        {
-            _collider = GetComponent<Collider>();
-        }*/
-    }
-    private void OnEnable()
-    {
-        //_fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-        if (_isReady)
-        {
-            _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
-        }
-        GameManager.Instance.AddEntity(this, Kind);
-    }
-    private void Start()
     {
         Kind = KindOfEntity.Enemy;
         if (_rb == null)
@@ -68,11 +49,29 @@ public class SavageDog : Entity, Idamageable
         {
             _collider = GetComponent<Collider>();
         }
+    }
+    private void OnEnable()
+    {
+        //_fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
+        _attackTimer = _attackDelay;
+        if (_isReady)
+        {
+            _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+        }
+        GameManager.Instance.AddEntity(this, Kind);
+    }
+    private void Start()
+    {
         _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj, _rb,EnemyCatalogue.SavageDog));
+        _fsm.AddState(FsmSavageDog.DogState.OnCombat, new SavageDogOnCombat(_fsm,this));
         _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
     }
     private void Update()
     {
+        if(_attackTimer<_attackDelay)
+        {
+            _attackTimer += Time.deltaTime;
+        }
         if(_gravityValue< GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
         {
             _gravityValue += Time.deltaTime*7f;
@@ -80,30 +79,38 @@ public class SavageDog : Entity, Idamageable
         _groundDelay += Time.deltaTime;
         if (_groundDelay > 1.5f)
         {
+            //Stuned=false;
             OnGrounded(IsGrounded);
+        }
+        if (Stuned)
+        {
+            _rb.angularVelocity = Vector3.zero;
+            return;
         }
         _fsm.ArtificialUpdate();
     }
     private void FixedUpdate()
     {
-        _fsm.ArtificialFixedUpdate();
         IsGroundedDetector();
         if (UseGravity)
         {
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
         }
+        if (Stuned)
+        {
+
+            return;
+        }
+        _fsm.ArtificialFixedUpdate();
         if (Dir == Vector3.zero)
         {
             _rb.angularVelocity = Vector3.zero;
             return;
         }
-        /*Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);*/
-        //_rb.MovePosition(transform.position + Dir * Time.fixedDeltaTime);
     }
     public void OnMovePj(Transform tg)
     {
-        if (tg == null)
+        if (tg == null||_attackTimer<_attackDelay)
         {
             Dir = Vector3.zero;
             if (OnMove != null)
@@ -179,14 +186,21 @@ public class SavageDog : Entity, Idamageable
         }
 
     }
-
+    public void Attack()
+    {
+        if (_attackTimer >= _attackDelay)
+        {
+            _attackTimer = 0;
+            OnAttack();
+        }
+    }
     public void TakeHealt(float amount)
     {
        
     }
     public override void FlyFunct(float height = 4)
     {
-        _stuned = true;
+        Stuned = true;
         //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
 
         UseGravity = false;
@@ -234,7 +248,7 @@ public class SavageDog : Entity, Idamageable
         }
         _groundDelay = 0;
         OnFreeFall();
-        _stuned = false;
+        //Stuned = false;
         UseGravity = true;
     }
     public override void GetToTheGround()
@@ -248,7 +262,7 @@ public class SavageDog : Entity, Idamageable
         _groundDelay = 0;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);
-        _stuned = false;
+        //Stuned = false;
         UseGravity = true;
     }
     private void OnDrawGizmos()

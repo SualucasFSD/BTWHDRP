@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class SavageView : MonoBehaviour
@@ -6,6 +7,8 @@ public class SavageView : MonoBehaviour
     private SavageDog _dogModel;
     private Vector3 _fixedDir;
     private Vector3 _smoothAnimDir;
+    [SerializeField] private LayerMask _hitLayer;
+    private List<Idamageable> _damageable = new List<Idamageable>();
     private void Awake()
     {
         if (_animator == null)
@@ -27,10 +30,16 @@ public class SavageView : MonoBehaviour
         _dogModel.OnGrounded += OnGrounded;
         _dogModel.GetToAir += GetToTheAir;
         _dogModel.GetToGround += GetToGround;
+        _dogModel.OnAttack += OnAttacking;
     }
     private void OnHitGround()
     {
+        _dogModel.Stuned=true;
         _animator.SetTrigger("Hit");
+    }
+    public void RecoverFromHit()
+    {
+        _dogModel.Stuned = false;
     }
     private void GetToGround()
     {
@@ -39,8 +48,6 @@ public class SavageView : MonoBehaviour
     }
     private void OnFreeFall()
     {
-        //print("AirFall");
-        //_animator.SetTrigger("AerialDown");
         _animator.SetBool("CancelAir", true);
     }
     private void GetToTheAir()
@@ -54,8 +61,43 @@ public class SavageView : MonoBehaviour
     }
     private void OnAirHit()
     {
-        //print("AirHit");
         _animator.SetTrigger("HitMidAir");
+    }
+    private void OnAttacking()
+    {
+        _animator.SetTrigger("Attack1");
+    }
+    public void Attack()
+    {
+        Collider[] c = Physics.OverlapSphere(transform.position, 1.3f, _hitLayer);
+
+        foreach (Collider col in c)
+        {
+            Entity p = col.GetComponent<Entity>();
+            if (p != null)
+            {
+                if (p.Kind == _dogModel.Kind)
+                {
+                    continue;
+                }
+            }
+            else { continue; }
+            if (Vector3.Dot(transform.forward, (col.transform.position - transform.position).normalized) > 0.55f)
+            {
+                _damageable.Add(col.GetComponent<Idamageable>());
+            }
+            else
+            {
+                continue;
+            }
+        }
+        MakeDamage();
+    }
+    private void MakeDamage()
+    {
+        if (_damageable.Count <= 0) { return; }
+        foreach (Idamageable d in _damageable) { d.TakeDamage(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Damage, 0, Vector3.zero); }
+        _damageable.Clear();
     }
     private void OnMove(Vector3 Dir)
     {
@@ -78,11 +120,6 @@ public class SavageView : MonoBehaviour
         {
             _animator.SetFloat("Vel", 1);
         }
-        /*_fixedDir.x = transform.InverseTransformDirection(Dir.normalized).x;
-        _fixedDir.y = transform.InverseTransformDirection(Dir.normalized).z;
-        _smoothAnimDir = Vector2.Lerp(_smoothAnimDir, _fixedDir, Time.deltaTime * 10f);
-        _animator.SetFloat("xAxis", _smoothAnimDir.x);
-        _animator.SetFloat("zAxis", _smoothAnimDir.y);*/
     }
     private void OnAnimatorMove()
     {
