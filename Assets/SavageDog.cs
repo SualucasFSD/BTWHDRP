@@ -68,7 +68,8 @@ public class SavageDog : Entity, Idamageable
         {
             _collider = GetComponent<Collider>();
         }
-        //_fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj, _rb));
+        _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj, _rb,EnemyCatalogue.SavageDog));
+        _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
     }
     private void Update()
     {
@@ -81,12 +82,11 @@ public class SavageDog : Entity, Idamageable
         {
             OnGrounded(IsGrounded);
         }
-        //_fsm.ArtificialUpdate();
-        //IsGroundedDetector();
+        _fsm.ArtificialUpdate();
     }
     private void FixedUpdate()
     {
-        //_fsm.ArtificialFixedUpdate();
+        _fsm.ArtificialFixedUpdate();
         IsGroundedDetector();
         if (UseGravity)
         {
@@ -97,12 +97,12 @@ public class SavageDog : Entity, Idamageable
             _rb.angularVelocity = Vector3.zero;
             return;
         }
-        Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
+        /*Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);*/
         //_rb.MovePosition(transform.position + Dir * Time.fixedDeltaTime);
     }
     public void OnMovePj(Transform tg)
-    { 
+    {
         if (tg == null)
         {
             Dir = Vector3.zero;
@@ -117,11 +117,13 @@ public class SavageDog : Entity, Idamageable
         {
             _collider.material = _movMat;
         }
-        //AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce));
+        AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce));
         if (OnMove != null)
         {
             OnMove(Dir);
         }
+        Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
     }
     public void OnRotatePj(Vector3 Direction)
     {
@@ -139,8 +141,13 @@ public class SavageDog : Entity, Idamageable
 
                 if (Mathf.Abs(angle) > 1f)
                 {
-                    Vector3 torque = axis.normalized * angle * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce;
-                    _rb.AddTorque(torque, ForceMode.Acceleration);
+                    float rotForce = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce;
+
+                    Vector3 torqueP = axis.normalized * angle * rotForce;
+
+                    Vector3 torqueD = -_rb.angularVelocity * 0.5f;
+
+                    _rb.AddTorque(torqueP + torqueD, ForceMode.Acceleration);
                 }
                 else
                 {
@@ -152,7 +159,7 @@ public class SavageDog : Entity, Idamageable
     private void AddForce(Vector3 target)
     {
         if (target.magnitude == 0) { return; }
-        Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity);
+        Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
     }
     private void OnDisable()
     {

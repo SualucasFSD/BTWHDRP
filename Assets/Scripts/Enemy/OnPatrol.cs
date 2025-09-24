@@ -9,6 +9,7 @@ public class OnPatrol : IState
     private List<PathNode> _nodes = new List<PathNode>();
     private Action _combatState;
     private Action<Transform> _movePos;
+    private Action<Vector3> _rotatePos;
     private LayerMask _nodesLayer;
 
     private float _timer = 0;
@@ -24,7 +25,7 @@ public class OnPatrol : IState
 
     private Transform _targetNode;
 
-    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action<Transform> movePos, Rigidbody rb, EnemyCatalogue kind)
+    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action<Transform> movePos, Action<Vector3> rotatePos, Rigidbody rb, EnemyCatalogue kind)
     {
         _entity = entity;
         _nodesLayer = nodesLayer;
@@ -32,6 +33,7 @@ public class OnPatrol : IState
         _movePos = movePos;
         _rb = rb;
         _kind = kind;
+        _rotatePos = rotatePos;
     }
 
     public void OnEnter()
@@ -103,6 +105,7 @@ public class OnPatrol : IState
 
     public void OnFixedUpdate()
     {
+        _rotatePos(_rotationDirection);
         /*if (_rotationDirection.sqrMagnitude > 0.001f)
         {
             Vector3 flatDir = new Vector3(_rotationDirection.x, 0f, _rotationDirection.z).normalized;

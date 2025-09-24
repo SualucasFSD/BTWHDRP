@@ -62,7 +62,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     }
     private void Start()
     {
-        _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), OnMovePj,_rb, EnemyCatalogue.Esqueleton));
+        //_fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), OnMovePj,_rb, EnemyCatalogue.Esqueleton));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnCombat, new OnCombatEsqueleton(_fsm, this, _anim));
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnDeath, new OnDeath());
         _fsm.AddState(FsmEnemyEsqueleton.AgentStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime, () => _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnCombat), _anim, "Stunt"));

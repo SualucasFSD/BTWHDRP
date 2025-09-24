@@ -52,7 +52,7 @@ public class MagueEnemyModel : Entity, Idamageable
     private void Start()
     {
          GameManager.Instance.AddEntity(this, Kind);
-        _fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this,_nodeLayer,()=>_fsm.ChangeState(FsmMague.MagueStates.OnCombat),OnMovePj, _rb, EnemyCatalogue.Mague));
+        //_fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this,_nodeLayer,()=>_fsm.ChangeState(FsmMague.MagueStates.OnCombat),OnMovePj, _rb, EnemyCatalogue.Mague));
         _fsm.AddState(FsmMague.MagueStates.OnCombat, new OnCombatMague(_fsm, this));
         _fsm.AddState(FsmMague.MagueStates.OnDeath, new OnDeath());
         _fsm.AddState(FsmMague.MagueStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime, () => _fsm.ChangeState(FsmMague.MagueStates.OnCombat), _anim, "Stunt"));
