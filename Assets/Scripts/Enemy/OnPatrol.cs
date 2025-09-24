@@ -103,7 +103,7 @@ public class OnPatrol : IState
 
     public void OnFixedUpdate()
     {
-        if (_rotationDirection.sqrMagnitude > 0.001f)
+        /*if (_rotationDirection.sqrMagnitude > 0.001f)
         {
             Vector3 flatDir = new Vector3(_rotationDirection.x, 0f, _rotationDirection.z).normalized;
 
@@ -125,7 +125,7 @@ public class OnPatrol : IState
                     _rb.angularVelocity = Vector3.zero;
                 }
             }
-        }
+        }*/
         _movePos(_targetNode);
     }
 }

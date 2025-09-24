@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using Unity.VisualScripting;
-using Unity.Mathematics;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
 {
@@ -98,7 +96,7 @@ public class SavageDog : Entity, Idamageable
         //_rb.MovePosition(transform.position + Dir * Time.fixedDeltaTime);
     }
     public void OnMovePj(Transform tg)
-    {
+    { 
         if (tg == null)
         {
             Dir = Vector3.zero;
@@ -113,10 +111,36 @@ public class SavageDog : Entity, Idamageable
         {
             _collider.material = _movMat;
         }
-        AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce));
+        //AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce));
         if (OnMove != null)
         {
             OnMove(Dir);
+        }
+    }
+    public void OnRotatePj(Vector3 Direction)
+    {
+        if (Direction.sqrMagnitude > 0.001f)
+        {
+            Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
+
+            if (flatDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
+                Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
+
+                deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
+                if (angle > 180f) angle -= 360f;
+
+                if (Mathf.Abs(angle) > 1f)
+                {
+                    Vector3 torque = axis.normalized * angle * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce;
+                    _rb.AddTorque(torque, ForceMode.Acceleration);
+                }
+                else
+                {
+                    _rb.angularVelocity = Vector3.zero;
+                }
+            }
         }
     }
     private void AddForce(Vector3 target)
