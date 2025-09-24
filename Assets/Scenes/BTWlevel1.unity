@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6803.458, g: 6843.259, b: 8056.9697, a: 1}
+  m_IndirectSpecularColor: {r: 6805.7563, g: 6844.922, b: 8059.2295, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -18470,7 +18470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1319811523
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20449,7 +20449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1462172590
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23141,7 +23141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1635589943
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31270,6 +31270,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 6284113935916694648, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: _dodgeCoolDown
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
