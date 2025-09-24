@@ -71,7 +71,6 @@ public class CameraManager : MonoBehaviour
         _pjModel.OnAim += HandleRotation;
         _falseUpdate += RotateCameraLateUpdate;
     }
-
     private void SmoothPercent(params object[] p)
     {
         _smoothTime = (float)p[0];
