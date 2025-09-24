@@ -67,9 +67,17 @@ public class SavageView : MonoBehaviour
     {
         _animator.SetTrigger("Attack1");
     }
+    public void RecoverFromHitDelay()
+    {
+        Invoke(nameof(InvokeIsGround), 1.5f);
+    }
+    private void InvokeIsGround()
+    {
+        _dogModel.Stuned=false;
+    }
     public void Attack()
     {
-        Collider[] c = Physics.OverlapSphere(transform.position, 1.3f, _hitLayer);
+        Collider[] c = Physics.OverlapSphere(transform.position, 2.2f, _hitLayer);
 
         foreach (Collider col in c)
         {
@@ -96,7 +104,7 @@ public class SavageView : MonoBehaviour
     private void MakeDamage()
     {
         if (_damageable.Count <= 0) { return; }
-        foreach (Idamageable d in _damageable) { d.TakeDamage(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Damage, 0, Vector3.zero); }
+        foreach (Idamageable d in _damageable) { d.TakeDamage(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Damage, 0, Vector3.zero); }
         _damageable.Clear();
     }
     private void OnMove(Vector3 Dir)

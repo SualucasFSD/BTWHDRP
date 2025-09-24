@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
     public bool Stuned = false;
     private bool _inAirCombo=false;
+    private Coroutine _orbsRoutine;
     private float _groundDelay=0;
     private Coroutine _floatRoutine;
     public FsmSavageDog _fsm=new FsmSavageDog();
@@ -16,6 +18,7 @@ public class SavageDog : Entity, Idamageable
     [Header("Debug")]
     public List<PathNode> _paths = new List<PathNode>();
     [Header("Variables")]
+    [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] private LayerMask _nodeLayer;
     [SerializeField] private PhysicMaterial _movMat;
     [SerializeField] private PhysicMaterial _stopMat;
@@ -39,6 +42,7 @@ public class SavageDog : Entity, Idamageable
     #endregion
     private void Awake()
     {
+        Life= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         Kind = KindOfEntity.Enemy;
         if (_rb == null)
         {
@@ -77,11 +81,13 @@ public class SavageDog : Entity, Idamageable
             _gravityValue += Time.deltaTime*7f;
         }
         _groundDelay += Time.deltaTime;
-        if (_groundDelay > 1.5f)
+        /*if (_groundDelay > 1.5f)
         {
             //Stuned=false;
             OnGrounded(IsGrounded);
-        }
+        }*/
+        
+        OnGrounded(IsGrounded);
         if (Stuned)
         {
             _rb.angularVelocity = Vector3.zero;
@@ -98,7 +104,6 @@ public class SavageDog : Entity, Idamageable
         }
         if (Stuned)
         {
-
             return;
         }
         _fsm.ArtificialFixedUpdate();
@@ -175,6 +180,44 @@ public class SavageDog : Entity, Idamageable
     }
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection)
     {
+        if (Life <= 0)
+        {
+            return;
+        }
+        /*if (!IsDamageable) { return; }
+        _stuntPercent += stunt;*/
+        Life -= dmg;
+        if (!IsGrounded)
+        {
+            MantainOnAir();
+        }
+        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
+        //SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
+        //_damageParticles.Play();
+        //lifebar.value=life/maxlife;
+        if (Life <= 0 && _orbsRoutine == null)
+        {
+            if (_lifeOrbPrefab != null)
+            {
+                _orbsRoutine = StartCoroutine(SpawnOrbs());
+            }
+            GameManager.Instance.RemoveEntity(this, Kind);
+            //GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 50);
+            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
+            enabled = false;
+            //gameObject.SetActive(false);
+            //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
+            //StartCoroutine(Restart());
+        }
+        if (pushDirection != Vector3.zero && IsGrounded)
+        {
+            _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
+        }
+       /* if (_stuntPercent >= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntResistance)
+        {
+            _stuntPercent = 0;
+            _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnStunt);
+        }*/
         if (IsGrounded&&!_inAirCombo)
         {
             OnHitStunt();
@@ -185,6 +228,20 @@ public class SavageDog : Entity, Idamageable
             MantainOnAir();
         }
 
+    }
+    IEnumerator SpawnOrbs()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * 5;
+            LifeOrb p = Instantiate(_lifeOrbPrefab, transform.position + Vector3.up * 1.2f, transform.rotation);
+            p.transform.parent = GameManager.Instance.Gameplay;
+            p.Amount = Random.Range(15, 25);
+            GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
+            yield return new WaitForSeconds(0.5f);
+        }
+        gameObject.SetActive(false);
+        _orbsRoutine = null;
     }
     public void Attack()
     {
@@ -247,7 +304,7 @@ public class SavageDog : Entity, Idamageable
             yield return null;
         }
         _groundDelay = 0;
-        OnFreeFall();
+        //OnFreeFall();
         //Stuned = false;
         UseGravity = true;
     }

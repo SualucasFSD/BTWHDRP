@@ -357,6 +357,7 @@ public class PjModel : Entity, Idamageable
         Life += amount;
         if(Life>_maxLife)
         {
+            EventManager.Ejecute(EventManager.KindOfEvent.MaxLifeReach);
             Life = _maxLife;
         }
         EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater, Life / _maxLife);

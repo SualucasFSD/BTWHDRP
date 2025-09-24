@@ -31,11 +31,13 @@ public class SavageDogOnCombat : IState
     {
         if (_tg != null)
         {
+            _rotateDir = _tg.transform.position - _entity.transform.position;
             if (Vector3.Distance(_tg.transform.position, _entity.transform.position) < 5)
             {
+                //_rotateDir = _tg.transform.position - _entity.transform.position;
                 if (GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position))
                 {
-                    _rotateDir=_tg.transform.position - _entity.transform.position;
+                    //_rotateDir=_tg.transform.position - _entity.transform.position;
                     //_entity.OnRotatePj(_tg.transform.position - _entity.transform.position);
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance&&!_entity.Stuned)
                     {
@@ -49,9 +51,10 @@ public class SavageDogOnCombat : IState
             }
             else
             {
+                //_rotateDir = _tg.transform.position - _entity.transform.position;
                 if (GameManager.Instance.SphereLineOfSight(_entity.transform.position, _tg.transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius))
                 {
-                    _rotateDir = _tg.transform.position - _entity.transform.position;
+                    //_rotateDir = _tg.transform.position - _entity.transform.position;
                     //_entity.OnRotatePj(_tg.transform.position-_entity.transform.position);
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance && !_entity.Stuned)
                     {
@@ -62,6 +65,7 @@ public class SavageDogOnCombat : IState
                     return;
                 }
             }
+            //_rotateDir = _tg.transform.position - _entity.transform.position;
             //return;
         }
         else
