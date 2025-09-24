@@ -88,11 +88,11 @@ public class SavageDog : Entity, Idamageable
         }*/
         
         OnGrounded(IsGrounded);
-        if (Stuned)
+        /*if (Stuned)
         {
             _rb.angularVelocity = Vector3.zero;
             return;
-        }
+        }*/
         _fsm.ArtificialUpdate();
     }
     private void FixedUpdate()
@@ -102,10 +102,10 @@ public class SavageDog : Entity, Idamageable
         {
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
         }
-        if (Stuned)
+        /*if (Stuned)
         {
             return;
-        }
+        }*/
         _fsm.ArtificialFixedUpdate();
         if (Dir == Vector3.zero)
         {
@@ -115,6 +115,8 @@ public class SavageDog : Entity, Idamageable
     }
     public void OnMovePj(Transform tg)
     {
+        if(Stuned)
+        { return; }
         if (tg == null||_attackTimer<_attackDelay)
         {
             Dir = Vector3.zero;
@@ -157,7 +159,7 @@ public class SavageDog : Entity, Idamageable
 
                     Vector3 torqueP = axis.normalized * angle * rotForce;
 
-                    Vector3 torqueD = -_rb.angularVelocity * 0.5f;
+                    Vector3 torqueD = -_rb.angularVelocity * 10f;
 
                     _rb.AddTorque(torqueP + torqueD, ForceMode.Acceleration);
                 }
@@ -197,21 +199,26 @@ public class SavageDog : Entity, Idamageable
         //lifebar.value=life/maxlife;
         if (Life <= 0 && _orbsRoutine == null)
         {
+            _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
+            _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)
             {
                 _orbsRoutine = StartCoroutine(SpawnOrbs());
             }
             GameManager.Instance.RemoveEntity(this, Kind);
-            //GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 50);
+            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 50);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
             enabled = false;
             //gameObject.SetActive(false);
             //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
             //StartCoroutine(Restart());
         }
-        if (pushDirection != Vector3.zero && IsGrounded)
+        else
         {
-            _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
+            if (pushDirection != Vector3.zero && IsGrounded)
+            {
+                _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
+            }
         }
        /* if (_stuntPercent >= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntResistance)
         {
@@ -240,7 +247,6 @@ public class SavageDog : Entity, Idamageable
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }
-        gameObject.SetActive(false);
         _orbsRoutine = null;
     }
     public void Attack()
@@ -284,6 +290,7 @@ public class SavageDog : Entity, Idamageable
     }
     private IEnumerator GoUpAndFloat(float targetY)
     {
+        _collider.material=_stopMat;
         while (transform.position.y < targetY)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);

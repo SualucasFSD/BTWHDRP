@@ -9,11 +9,10 @@ public class SavageDogOnCombat : IState
     GameObject _tg;
     private Vector3 _rotateDir;
     private Transform _fallowTg;
-    public SavageDogOnCombat(FsmSavageDog fsm, SavageDog entity/*, Animator anim*/)
+    public SavageDogOnCombat(FsmSavageDog fsm, SavageDog entity)
     {
         _fsm = fsm;
         _entity = entity;
-        //_anim = anim;
     }
     public void OnEnter()
     {
@@ -24,7 +23,6 @@ public class SavageDogOnCombat : IState
 
     public void OnExit()
     {
-        //_anim.SetBool("isAttacking", false);
         EventManager.Unscribe(EventManager.KindOfEvent.ReloadPath, PathReload);
     }
     public void OnUpdate()
@@ -32,41 +30,30 @@ public class SavageDogOnCombat : IState
         if (_tg != null)
         {
             _rotateDir = _tg.transform.position - _entity.transform.position;
-            if (Vector3.Distance(_tg.transform.position, _entity.transform.position) < 5)
+            if (Vector3.Distance(_tg.transform.position, _entity.transform.position) < 3)
             {
-                //_rotateDir = _tg.transform.position - _entity.transform.position;
                 if (GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position))
                 {
-                    //_rotateDir=_tg.transform.position - _entity.transform.position;
-                    //_entity.OnRotatePj(_tg.transform.position - _entity.transform.position);
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance&&!_entity.Stuned)
                     {
                         _entity.Attack();
-                        //_anim.SetBool("isAttacking", true);
                     }
                     _fallowTg = _tg.transform;
-                    //_entity.OnMovePj(_tg.transform);
                     return;
                 }
             }
             else
             {
-                //_rotateDir = _tg.transform.position - _entity.transform.position;
                 if (GameManager.Instance.SphereLineOfSight(_entity.transform.position, _tg.transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius))
                 {
-                    //_rotateDir = _tg.transform.position - _entity.transform.position;
-                    //_entity.OnRotatePj(_tg.transform.position-_entity.transform.position);
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance && !_entity.Stuned)
                     {
                         _entity.Attack();
                     }
                     _fallowTg = _tg.transform;
-                    //_entity.OnMovePj(_tg.transform);
                     return;
                 }
             }
-            //_rotateDir = _tg.transform.position - _entity.transform.position;
-            //return;
         }
         else
         {
@@ -89,9 +76,7 @@ public class SavageDogOnCombat : IState
         }
 
         _fallowTg = _pathNodes[0].transform;
-        //_entity.OnMovePj(_pathNodes[0].transform);
         _rotateDir = _pathNodes[0].transform.position - _entity.transform.position;
-        //_entity.OnRotatePj(_pathNodes[0].transform.position-_entity.transform.position);
         if (Vector3.Distance(_pathNodes[0].transform.position + Vector3.up * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Height, _entity.transform.position) < 5f && GameManager.Instance.SphereLineOfSight(_entity.transform.position, _pathNodes[0].transform.position, 1f))
         {
             _pathNodes.RemoveAt(0);
