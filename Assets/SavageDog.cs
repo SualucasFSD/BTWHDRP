@@ -7,7 +7,6 @@ public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
     private bool _stuned = false;
-    private float _actualAirTime;
     private bool _inAirCombo=false;
     private float _groundDelay=0;
     private Coroutine _floatRoutine;
@@ -24,11 +23,14 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private float _groundImpulse=2500f;
     public bool UseGravity=true;
     public bool CanMove = true;
+    private float _gravityValue;
     //[SerializeField] private float _velocity;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAirHit=delegate { };      
     public event Action OnHitStunt= delegate { };
+    public event Action GetToAir = delegate { };
+    public event Action GetToGround = delegate { };
     public event Action OnFreeFall= delegate { };
     public event Action<bool> OnGrounded= delegate { };
     #endregion
@@ -70,6 +72,10 @@ public class SavageDog : Entity, Idamageable
     }
     private void Update()
     {
+        if(_gravityValue< GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
+        {
+            _gravityValue += Time.deltaTime*7f;
+        }
         _groundDelay += Time.deltaTime;
         if (_groundDelay > 1.5f)
         {
@@ -84,7 +90,7 @@ public class SavageDog : Entity, Idamageable
         IsGroundedDetector();
         if (UseGravity)
         {
-            _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce, 2), ForceMode.Acceleration);
+            _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
         }
         if (Dir == Vector3.zero)
         {
@@ -161,6 +167,7 @@ public class SavageDog : Entity, Idamageable
         }
         else
         {
+            OnAirHit();
             MantainOnAir();
         }
 
@@ -173,12 +180,13 @@ public class SavageDog : Entity, Idamageable
     public override void FlyFunct(float height = 4)
     {
         _stuned = true;
-        _actualAirTime = 0;
         //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
 
         UseGravity = false;
         if (!_rb.isKinematic)
+        {
             _rb.velocity = Vector3.zero;
+        }
 
         float targetY = transform.position.y + height;
 
@@ -188,12 +196,13 @@ public class SavageDog : Entity, Idamageable
         }
 
         //gameObject.layer = _airLayer;
+        GetToAir();
         _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         _floatRoutine=StartCoroutine(GoUpAndFloat(targetY));
     }
     private void MantainOnAir()
     {
-        _actualAirTime = 0;
+        _gravityValue = 0;
     }
     private IEnumerator GoUpAndFloat(float targetY)
     {
@@ -208,20 +217,16 @@ public class SavageDog : Entity, Idamageable
             }
             yield return null;
         }
-        _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
-        while (_actualAirTime < 2.5f - 0.5f)
+        _gravityValue = 0;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        OnFreeFall();
+        while (_gravityValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-            if (!_rb.isKinematic)
-            {
-                _rb.MovePosition(transform.position);
-            }
-            _actualAirTime += 0.1f;
-            yield return new WaitForSeconds(0.1f);
+            yield return null;
         }
         _groundDelay = 0;
         OnFreeFall();
-        _rb.constraints = RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
         _stuned = false;
         UseGravity = true;
     }
@@ -232,7 +237,7 @@ public class SavageDog : Entity, Idamageable
          StopCoroutine(_floatRoutine);
          _floatRoutine = null;
       }
-        OnFreeFall();
+        GetToGround();  
         _groundDelay = 0;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);

@@ -25,15 +25,28 @@ public class SavageView : MonoBehaviour
         _dogModel.OnHitStunt += OnHitGround;
         _dogModel.OnFreeFall += OnFreeFall;
         _dogModel.OnGrounded += OnGrounded;
+        _dogModel.GetToAir += GetToTheAir;
+        _dogModel.GetToGround += GetToGround;
     }
     private void OnHitGround()
     {
         _animator.SetTrigger("Hit");
     }
+    private void GetToGround()
+    {
+        _animator.SetBool("CancelAir", false);
+        _animator.SetTrigger("ToTheGround");
+    }
     private void OnFreeFall()
     {
-        print("AirFall");
-        _animator.SetTrigger("AerialDown");
+        //print("AirFall");
+        //_animator.SetTrigger("AerialDown");
+        _animator.SetBool("CancelAir", true);
+    }
+    private void GetToTheAir()
+    {
+        _animator.SetBool("CancelAir", false);
+        _animator.SetTrigger("ToTheAir");
     }
     private void OnGrounded(bool I)
     {
@@ -41,8 +54,8 @@ public class SavageView : MonoBehaviour
     }
     private void OnAirHit()
     {
-        print("AirHit");
-
+        //print("AirHit");
+        _animator.SetTrigger("HitMidAir");
     }
     private void OnMove(Vector3 Dir)
     {
