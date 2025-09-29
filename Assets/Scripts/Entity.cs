@@ -13,6 +13,7 @@ public class Entity : MonoBehaviour
     public LayerMask GroundLayer;
     protected RaycastHit _groundDetect;
     public float GroundDistanceDetector;
+    public Transform Tg;
     public enum KindOfEntity
     {
         Allies,

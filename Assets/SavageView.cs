@@ -77,7 +77,7 @@ public class SavageView : MonoBehaviour
     }
     public void Attack()
     {
-        Collider[] c = Physics.OverlapSphere(transform.position, 2.2f, _hitLayer);
+        Collider[] c = Physics.OverlapSphere(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance, _hitLayer);
 
         foreach (Collider col in c)
         {

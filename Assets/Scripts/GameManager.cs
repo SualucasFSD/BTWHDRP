@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 public enum EnemyCatalogue
 {
@@ -184,7 +185,12 @@ public class GameManager : MonoBehaviour
     {
         return _powers.Contains(p);
     }
-
+    public List<Transform> GetSeparationEntityes()
+    {
+        List < Transform > p= new List <Transform>();
+        p=_allies.Concat(_enemy).Select(j => j.transform).ToList();
+        return p;
+    }
     public void AddEntity(Entity p, Entity.KindOfEntity k)
     {
         if(k==Entity.KindOfEntity.Allies)

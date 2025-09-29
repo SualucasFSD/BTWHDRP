@@ -10,7 +10,6 @@ public class SavageDog : Entity, Idamageable
     public bool Stuned = false;
     private bool _inAirCombo=false;
     private Coroutine _orbsRoutine;
-    private float _groundDelay=0;
     private Coroutine _floatRoutine;
     public FsmSavageDog _fsm=new FsmSavageDog();
     private bool _isReady=false;
@@ -29,7 +28,6 @@ public class SavageDog : Entity, Idamageable
     public bool CanMove = true;
     private float _gravityValue;
     private float _attackTimer;
-    //[SerializeField] private float _velocity;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
@@ -56,7 +54,6 @@ public class SavageDog : Entity, Idamageable
     }
     private void OnEnable()
     {
-        //_fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
         _attackTimer = _attackDelay;
         if (_isReady)
         {
@@ -68,6 +65,7 @@ public class SavageDog : Entity, Idamageable
     {
         _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj, _rb,EnemyCatalogue.SavageDog));
         _fsm.AddState(FsmSavageDog.DogState.OnCombat, new SavageDogOnCombat(_fsm,this));
+        _fsm.AddState(FsmSavageDog.DogState.OnMidAir, new OnAir(this, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat)));
         _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
     }
     private void Update()
@@ -80,20 +78,12 @@ public class SavageDog : Entity, Idamageable
         {
             _gravityValue += Time.deltaTime*7f;
         }
-        _groundDelay += Time.deltaTime;
-        /*if (_groundDelay > 1.5f)
-        {
-            //Stuned=false;
-            OnGrounded(IsGrounded);
-        }*/
-        
         OnGrounded(IsGrounded);
-        /*if (Stuned)
-        {
-            _rb.angularVelocity = Vector3.zero;
-            return;
-        }*/
         _fsm.ArtificialUpdate();
+        if (Tg != null)
+        {
+          AddForce(IaMov.Instance.Separation(GameManager.Instance.GetSeparationEntityes(), 1.8f, this, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce)+IaMov.Instance.Arrive(this, Tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce) * 0.8f+IaMov.Instance.ObstacleAvoid(this, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius));
+        }
     }
     private void FixedUpdate()
     {
@@ -102,10 +92,6 @@ public class SavageDog : Entity, Idamageable
         {
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
         }
-        /*if (Stuned)
-        {
-            return;
-        }*/
         _fsm.ArtificialFixedUpdate();
         if (Dir == Vector3.zero)
         {
@@ -113,11 +99,9 @@ public class SavageDog : Entity, Idamageable
             return;
         }
     }
-    public void OnMovePj(Transform tg)
+    public void OnMovePj()
     {
-        if(Stuned)
-        { return; }
-        if (tg == null||_attackTimer<_attackDelay)
+        if (Tg == null||_attackTimer<_attackDelay)
         {
             Dir = Vector3.zero;
             if (OnMove != null)
@@ -131,16 +115,16 @@ public class SavageDog : Entity, Idamageable
         {
             _collider.material = _movMat;
         }
-        AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce));
         if (OnMove != null)
         {
             OnMove(Dir);
         }
-        Vector3 velocityChange = (Dir * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
-        _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
+        Vector3 velocityChange = (new Vector3(Dir.x,0,Dir.z) * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        _rb.AddForce(velocityChange, ForceMode.Acceleration);
     }
     public void OnRotatePj(Vector3 Direction)
     {
+        //transform.forward = new Vector3(Dir.x, 0, Dir.z);
         if (Direction.sqrMagnitude > 0.001f)
         {
             Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
@@ -172,7 +156,8 @@ public class SavageDog : Entity, Idamageable
     }
     private void AddForce(Vector3 target)
     {
-        if (target.magnitude == 0) { return; }
+        if (target.magnitude == 0) { Dir = Vector3.zero; return; }
+        print(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
         Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
     }
     private void OnDisable()
@@ -263,10 +248,10 @@ public class SavageDog : Entity, Idamageable
     }
     public override void FlyFunct(float height = 4)
     {
-        Stuned = true;
-        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
-
+        _fsm.ChangeState(FsmSavageDog.DogState.OnMidAir);
         UseGravity = false;
+        _collider.material = _stopMat;
+
         if (!_rb.isKinematic)
         {
             _rb.velocity = Vector3.zero;
@@ -279,7 +264,6 @@ public class SavageDog : Entity, Idamageable
             targetY = hit.point.y - _ceilingOffset;
         }
 
-        //gameObject.layer = _airLayer;
         GetToAir();
         _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         _floatRoutine=StartCoroutine(GoUpAndFloat(targetY));
@@ -290,7 +274,6 @@ public class SavageDog : Entity, Idamageable
     }
     private IEnumerator GoUpAndFloat(float targetY)
     {
-        _collider.material=_stopMat;
         while (transform.position.y < targetY)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
@@ -302,6 +285,7 @@ public class SavageDog : Entity, Idamageable
             }
             yield return null;
         }
+        UseGravity = true;
         _gravityValue = 0;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         OnFreeFall();
@@ -310,10 +294,6 @@ public class SavageDog : Entity, Idamageable
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             yield return null;
         }
-        _groundDelay = 0;
-        //OnFreeFall();
-        //Stuned = false;
-        UseGravity = true;
     }
     public override void GetToTheGround()
     {
@@ -323,15 +303,13 @@ public class SavageDog : Entity, Idamageable
          _floatRoutine = null;
       }
         GetToGround();  
-        _groundDelay = 0;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);
-        //Stuned = false;
         UseGravity = true;
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        /*Gizmos.color = Color.green;
         PathNode ant = null;
         if (_paths.Count > 0) { Gizmos.DrawRay(transform.position, _paths[0].transform.position - transform.position); }
         foreach (PathNode i in _paths)
@@ -341,7 +319,7 @@ public class SavageDog : Entity, Idamageable
                 Gizmos.DrawRay(ant.transform.position, i.transform.position - ant.transform.position);
             }
             ant = i;
-        }
+        }*/
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position, -Vector3.up * 10);
         if (_groundDetect.point != null)
@@ -352,5 +330,7 @@ public class SavageDog : Entity, Idamageable
                 Gizmos.DrawSphere(_groundDetect.point, 0.3f);
             }
         }
+       /* Gizmos.color=Color.red;
+        Gizmos.DrawRay(transform.position, Dir*Dir.magnitude);*/
     }
 }

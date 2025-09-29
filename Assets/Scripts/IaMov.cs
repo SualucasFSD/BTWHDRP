@@ -15,17 +15,6 @@ public class IaMov : MonoBehaviour
 
         return Seek(Obj,Desired,Velocity,RotForce);
     }
-    public Vector3 Seek(Entity Obj,Vector3 Target,float Velocity, float RotForce)
-    {
-        Vector3 DesirePosition;
-        DesirePosition = Target - Obj.transform.position;
-        DesirePosition.Normalize();
-        DesirePosition *= Velocity;
-        Vector3 Steering;
-        Steering = DesirePosition - Obj.Dir;
-        Steering = Vector3.ClampMagnitude(Steering, RotForce);
-        return Steering;
-    }
     public Vector3 ObstacleAvoid(Entity Obj,float Speed,float RotForce,float Area)
     {
         Vector3 position = Obj.transform.position;
@@ -43,6 +32,17 @@ public class IaMov : MonoBehaviour
             return steering;
         }
         return Vector3.zero;
+    }
+    public Vector3 Seek(Entity Obj, Vector3 Target, float Velocity, float RotForce)
+    {
+        Vector3 DesirePosition;
+        DesirePosition = Target - Obj.transform.position;
+        DesirePosition.Normalize();
+        DesirePosition *= Velocity;
+        Vector3 Steering;
+        Steering = DesirePosition - Obj.Dir;
+        Steering = Vector3.ClampMagnitude(Steering, RotForce);
+        return Steering;
     }
     public Vector3 Arrive(Entity Obj,Transform Target,float Speed,float RotForce)
     {
@@ -62,7 +62,7 @@ public class IaMov : MonoBehaviour
             return Steering;
         }
     }
-    private Vector3 Separation(List<Transform> Entity, float Radius,Entity Obj,float Speed,float RotForce)
+    public Vector3 Separation(List<Transform> Entity, float Radius,Entity Obj,float Speed,float RotForce)
     {
         Vector3 dir;
         Vector3 desired = Vector3.zero;

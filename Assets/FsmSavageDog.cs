@@ -5,7 +5,7 @@ public class FsmSavageDog
     public enum DogState
     {
         OnPatrol,
-        OnPursuit,
+        OnMidAir,
         OnCombat,
         OnStunt,
         OnDeath

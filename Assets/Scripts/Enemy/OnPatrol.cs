@@ -8,7 +8,7 @@ public class OnPatrol : IState
     private Entity _entity;
     private List<PathNode> _nodes = new List<PathNode>();
     private Action _combatState;
-    private Action<Transform> _movePos;
+    private Action _movePos;
     private Action<Vector3> _rotatePos;
     private LayerMask _nodesLayer;
 
@@ -23,9 +23,9 @@ public class OnPatrol : IState
     private Vector3 _rotationDirection;
     private EnemyCatalogue _kind;
 
-    private Transform _targetNode;
+    //private Transform _targetNode;
 
-    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action<Transform> movePos, Action<Vector3> rotatePos, Rigidbody rb, EnemyCatalogue kind)
+    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action movePos, Action<Vector3> rotatePos, Rigidbody rb, EnemyCatalogue kind)
     {
         _entity = entity;
         _nodesLayer = nodesLayer;
@@ -46,18 +46,19 @@ public class OnPatrol : IState
     public void OnExit()
     {
         _nodes.Clear();
-        _targetNode = null;
+        //_targetNode = null;
         _rotationDirection = Vector3.zero;
     }
 
     public void OnUpdate()
     {
+
         _pathTimer += Time.deltaTime;
 
         if (_nodes.Count <= 0)
         {
             _timer += Time.deltaTime;
-            _targetNode = null;
+           //_targetNode = null;
 
             if (_timer >= _idleTime && _pathTimer >= _pathCooldown)
             {
@@ -96,39 +97,15 @@ public class OnPatrol : IState
             {
                 _nodes.RemoveAt(0);
             }
-
-            _targetNode = (_nodes.Count > 0) ? _nodes[0].transform : null;
+            //_targetNode = (_nodes.Count > 0) ? _nodes[0].transform : null;
+            _entity.Tg= (_nodes.Count > 0) ? _nodes[0].transform : _entity.transform;
         }
-
         _entity.Detection(GameManager.Instance.EnemyConfiguration[_kind], _entity.transform, _combatState);
     }
 
     public void OnFixedUpdate()
     {
         _rotatePos(_rotationDirection);
-        /*if (_rotationDirection.sqrMagnitude > 0.001f)
-        {
-            Vector3 flatDir = new Vector3(_rotationDirection.x, 0f, _rotationDirection.z).normalized;
-
-            if (flatDir.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
-                Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
-
-                deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
-                if (angle > 180f) angle -= 360f;
-
-                if (Mathf.Abs(angle) > 1f)
-                {
-                    Vector3 torque = axis.normalized * angle * GameManager.Instance.EnemyConfiguration[_kind].RotForce;
-                    _rb.AddTorque(torque, ForceMode.Acceleration);
-                }
-                else
-                {
-                    _rb.angularVelocity = Vector3.zero;
-                }
-            }
-        }*/
-        _movePos(_targetNode);
+        _movePos();
     }
 }
