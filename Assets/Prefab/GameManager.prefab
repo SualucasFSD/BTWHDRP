@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5343779063303808974}
   - component: {fileID: 1437175095470188134}
   - component: {fileID: 7436805908561427502}
+  - component: {fileID: 187808189695472452}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -65,6 +66,7 @@ MonoBehaviour:
   ConfigurationEnemys:
   - {fileID: 11400000, guid: 2d88cdcb90ee30b49b2b05178d527e06, type: 2}
   - {fileID: 11400000, guid: a27911cd249a94840842ea903e432e06, type: 2}
+  - {fileID: 11400000, guid: 01df3127ea12d414899b3082955fac91, type: 2}
   PathNodes: []
   PreLoadPathNodes: []
   _blockLayer:
@@ -163,3 +165,16 @@ MonoBehaviour:
   _desiredText:
   - "\xBFDonde estoy? \nTengo que encontrar una salida..."
   _textSpeed: 0.1
+--- !u!114 &187808189695472452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4542858312741672864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b4853c0769a0f45a6cea2ac0a1b11b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 4147967759354319900, guid: e1a7bc7494e924f49b1d119b75f2d9c0, type: 3}

@@ -9,7 +9,7 @@ public class PoolGeneral<T>
     private Action<T> _turnOn;
 
     private List<T> _poolStock;
-
+    //private Dictionary<EnemyCatalogue, List<T>> _poolStockCategory;
     public PoolGeneral(Func<T> factoryMethod, Action<T> turnOff, Action<T> turnOn,int _stockInicial)
     {
         _factoryMethod = factoryMethod;
@@ -41,6 +41,7 @@ public class PoolGeneral<T>
     public void ReturnObj(T obj)
     {
         _turnOff(obj);
+        //_poolStockCategory[p].Add(obj);
         _poolStock.Add(obj);
     }
 }

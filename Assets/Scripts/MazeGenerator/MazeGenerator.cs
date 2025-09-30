@@ -6,7 +6,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 public class MazeGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject _father;
+   /* [SerializeField] private GameObject _father;
     [SerializeField] private PathNode[] _fatherPathNucleo;    
     [SerializeField] private Transform _Parent;
     [SerializeField] private MazeCell[] _wallWithoutTower;
@@ -206,5 +206,5 @@ public class MazeGenerator : MonoBehaviour
         {
             Gizmos.DrawWireSphere(_mazeGrid[_mazeWidth / 2, 0].transform.position - _mazeGrid[_mazeWidth / 2, 0].transform.forward * 30f, 10f);
         }
-    }
+    }*/
 }
