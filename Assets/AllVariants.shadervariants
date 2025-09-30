@@ -1,0 +1,691 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AllVariants
+  m_Shaders:
+  - first: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: _ALPHABLEND_ON
+        passType: 0
+      - keywords: _ALPHABLEND_ON _FADING_ON
+        passType: 0
+      - keywords: _ALPHABLEND_ON
+        passType: 8
+  - first: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
+    second:
+      variants:
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
+          _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 8
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+        passType: 8
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
+          _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 11
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+        passType: 11
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
+          _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 12
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+        passType: 12
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
+          _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 3fda5e465882bec4d8e64161b681806c,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 89daf81f8e8f6634da726cbca859ca38,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 95060fe3e070428418e64e6bed27b111,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: c4edd00ff2db5b24391a4fcb1762e459, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _EMISSIVE_COLOR_MAP
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _EMISSIVE_COLOR_MAP
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _EMISSIVE_COLOR_MAP
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _EMISSIVE_COLOR_MAP
+        passType: 13
+  - first: {fileID: 4800000, guid: 7252379db4c18b641b517f2c91bb57e1, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 29c4adff654862b40a2e9fb2015a42c3, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: ee2ce0be66f45d9449d71ba9b49c2acd, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 4819724840ee9444f9da841b477038ce,
+      type: 3}
+    second:
+      variants:
+      - keywords: _WINDQUALITY_BEST
+        passType: 8
+      - keywords: _WINDQUALITY_BEST
+        passType: 11
+      - keywords: _WINDQUALITY_BEST
+        passType: 12
+      - keywords: _WINDQUALITY_BEST
+        passType: 13
+  - first: {fileID: 4800000, guid: 1d64af84bdc970c4fae0c1e06dd95b73, type: 3}
+    second:
+      variants:
+      - keywords: _MATERIAL_AFFECTS_ALBEDO
+        passType: 13
+  - first: {fileID: 4800000, guid: eb607f5e8fc16e140b732f33d26c8c31, type: 3}
+    second:
+      variants:
+      - keywords: _TERRAIN_INSTANCED_PERPIXEL_NORMAL
+        passType: 8
+      - keywords: _TERRAIN_INSTANCED_PERPIXEL_NORMAL
+        passType: 11
+      - keywords: _TERRAIN_INSTANCED_PERPIXEL_NORMAL
+        passType: 13
+  - first: {fileID: 4800000, guid: 794f260d88f9fe74fa681fe5ab74a107, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 9d119ea62212af645b58c51d9b0f8276,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 1a97208aeec7fcc41b6a3d9445ad5ace,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: aefc63699cf4eff49a6bbb7c9ef5d160,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: df5f2e2cc73e4f047877a8e372c4aa63,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 31c75348c6538d447a918cbc5ec8c202,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 74f84d946208d344d9770d4442ae8612,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 6acc0c8e268c6f44481541a80a8bbb59,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 66ee0239388810543938add8081f0ce8,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 42b1199333fa13a4e817bf0e284250b9,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 704423dd55abc8c4fb82cb12399d130e,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: OUTLINE_ON
+        passType: 0
+      - keywords: OUTLINE_ON UNDERLAY_ON
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 2df058eb2f6aa1f4e967b6a74baca1be,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: d050c951f6d88a047aa5c46e3692b18f,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 9ad6e7b561ed43442a048712b9e953fc,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: f7be2a74e19f07d4c91a20d2d70ccc2b,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 84f73aa6a92b83a4ba1a69dade23a49b,
+      type: 3}
+    second:
+      variants:
+      - keywords: _NOISE_TYPE_GRADIENT
+        passType: 13
+      - keywords: _NOISE_TYPE_PERLIN_FBM
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 713a6f8cc6afcf64bbac7c8aff8f5e79,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: a3a1417037786704a899f94af57f658e,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 2ffcad356dd52d640b95ea724bbd2302,
+      type: 3}
+    second:
+      variants:
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 80f019e62c41f0d46a5093c60e86834a,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 384d88ff5b296a44b89f1fb2d4442c01,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 8d15d6f5e5a52744191f35449f64df30,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: bcebc9ce27c38914ab465c3189313b56,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: c28bb37ced75c094faa86ea19e772801,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: bc94c50a74daa04489c96618e0dfab75,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: d925dc339dec8744a98f374736c3f9af,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: -6465566751694194690, guid: 26cbd8da5db8c7242ae64afd9e28a7be,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 07db9a7a7d423a446ad72dab2fe4dab1, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: c071abb088c76054bb603238f21bce1c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 6782298872529e94c9587434963c67c5, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: b7261d938a155b74cb61a60a16d9f2aa, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 092c27d29de329c43aa5ad8ca20e4be9, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: a8d8823499ff50847aa460cb119c445d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800002, guid: e26704ea208c19349962bad7333160ca, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: b84f73c7c4a6c6443a3bfbb2f7a504f9, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800002, guid: b0733f1ce1454264b9b9d4596bd1c6f3, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: f0efff9416db4174984390120a80ee87, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800002, guid: 6b0555126b0690a4ca14ca27478a6d05, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800002, guid: fcbd5d407c8be6b4195087b231c03c38, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 98f2e9e37647a664b8393dcb8158862d,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: bdc7c6d3f6cb01f45bdb2e74937dc1fa,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
+      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
+        passType: 13

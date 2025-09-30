@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbae5e44e6a979044a7996b35f667883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  svc: {fileID: 20000000, guid: 80c41e0ddf564574e89a2c48e10356d8, type: 2}
   ConfigurationEnemys:
   - {fileID: 11400000, guid: 2d88cdcb90ee30b49b2b05178d527e06, type: 2}
   - {fileID: 11400000, guid: a27911cd249a94840842ea903e432e06, type: 2}
@@ -79,6 +80,7 @@ MonoBehaviour:
   Timer: 0
   Gameplay: {fileID: 0}
   LaunchAngle: 45
+  RoomsAvailable: 5
 --- !u!114 &1389652086471928854
 MonoBehaviour:
   m_ObjectHideFlags: 0

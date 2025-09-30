@@ -16,6 +16,7 @@ public enum PjPower
 }
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private ShaderVariantCollection svc;
     public List<EnemyStats> ConfigurationEnemys = new List<EnemyStats>();
     public Dictionary<EnemyCatalogue, EnemyStats> EnemyConfiguration = new Dictionary<EnemyCatalogue, EnemyStats>();
     private HashSet<PjPower> _powers;
@@ -42,6 +43,16 @@ public class GameManager : MonoBehaviour
         if(GenericUpdate != null) { GenericUpdate(); }
         //print(_enemy.Count + " Enemigos");
         //print(_allies.Count + " Ayudantes");
+    }
+
+    public void ReloadShaders()
+    {
+        if (svc != null)
+        {
+            Debug.Log("Precargando shaders...");
+            svc.WarmUp();
+            Debug.Log("Shaders precargados");
+        }
     }
     private void Awake()
     {
