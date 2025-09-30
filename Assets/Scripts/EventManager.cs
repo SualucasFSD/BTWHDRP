@@ -25,6 +25,7 @@ public class EventManager
         LifeUpdater,
         CameraSmooth,
         CameraDistance,
+        OnPjChangePosition,
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

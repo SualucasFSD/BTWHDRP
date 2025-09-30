@@ -114,7 +114,7 @@ public class MagueEnemyModel : Entity, Idamageable
         GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
         enabled = true;
         _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-        MagueFactory.instance.ReturnObj(this);
+        //MagueFactory.instance.ReturnObj(this);
     }
     public void MagicInstance(Transform _tg)
     {

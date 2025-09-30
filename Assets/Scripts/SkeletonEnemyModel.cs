@@ -208,7 +208,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Life;
        GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
        enabled = true;
-       EsqueletonFctory.instance.ReturnObj(this);
+       //EsqueletonFctory.instance.ReturnObj(this);
     }
     private void OnDrawGizmos()
     {

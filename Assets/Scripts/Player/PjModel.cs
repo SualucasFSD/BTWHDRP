@@ -86,6 +86,7 @@ public class PjModel : Entity, Idamageable
     private void Update()
     {
         EjecutePower();
+        EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position);
     }
     private void FixedUpdate()
     {

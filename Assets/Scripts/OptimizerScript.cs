@@ -7,7 +7,7 @@ public class OptimizerScript : MonoBehaviour
     public static OptimizerScript instance;
     public List<MazeCell> MazeCells = new List<MazeCell>();
     private List<PathNode> _pathNodes = new List<PathNode>();
-    private void Start()
+    private void Awake()
     {
         if(instance == null)
         {
@@ -50,9 +50,5 @@ public class OptimizerScript : MonoBehaviour
            yield return null;
         }
         Refresh(mid);
-    }
-    private void OnDestroy()
-    {
-
     }
 }

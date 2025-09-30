@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 public class MazeCell : MonoBehaviour
 {
     [SerializeField]
+    public GameObject Pivot;
     private GameObject[] _walls = new GameObject[4];
-    public int[] MazeArrayPosition = new int[2];
+    //public int[] MazeArrayPosition = new int[2];
     public Transform[] RigtLeftSpawnVector = new Transform[2];
     public bool IsVisited=false;
     public PathNode[] _primalPathNode;
@@ -16,6 +16,7 @@ public class MazeCell : MonoBehaviour
     private Color _color;
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
+    [SerializeField] private SpawnEnemies _spawn;
     private void Start()
     {
         OptimizerScript.instance.MazeCells.Add(this);
@@ -48,8 +49,10 @@ public class MazeCell : MonoBehaviour
         }
     }
     public void TurnOnLight()
-    {
-        _lights.SetActive(true);
+    {    if (_lights != null)
+        {
+            _lights.SetActive(true);
+        }
     }
     public void TurnOfMazeCell()
     {
@@ -99,9 +102,9 @@ public class MazeCell : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = _color;
         foreach (var N in _neighbords) { Gizmos.DrawLine(DDD.position, N.DDD.position); }
-    }
+    }*/
 }

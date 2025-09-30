@@ -27,7 +27,7 @@ public class FirstBoss : Entity, Idamageable
     [SerializeField] private bool[] _phase=new bool[3];
     [SerializeField] private float _impulseForce=10;
     [SerializeField] private float _rotationSpeed;
-    [SerializeField] private Spawner _spawner;
+    //[SerializeField] private Spawner _spawner;
     //[SerializeField] private GameObject _cruz;
     [SerializeField] private GameObject lifebarToClose;
     [SerializeField] private AreaBoss _Area;
@@ -302,7 +302,7 @@ public class FirstBoss : Entity, Idamageable
             _activated = false;
             _handsInUse = true;
             Destroy(_Area.gameObject);
-            Destroy(_spawner);
+            //Destroy(_spawner);
             //_nav.BuildNavMesh();
             Destroy(_handsPivot);
             Destroy(lifebarToClose);

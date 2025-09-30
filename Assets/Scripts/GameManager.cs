@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public Action GenericUpdate = delegate { };
     public Action GenericFixedUpdate = delegate { };
     public float LaunchAngle = 45f;
+    public int RoomsAvailable;
     private void FixedUpdate()
     {
         if (GenericFixedUpdate != null) { GenericFixedUpdate(); }
