@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6793.712, g: 6835.045, b: 8054.5938, a: 1}
+  m_IndirectSpecularColor: {r: 6796.085, g: 6836.346, b: 8047.9453, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2828,7 +2828,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -6513,7 +6513,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -11252,7 +11252,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -19247,6 +19247,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d972180aebe9f7f4ca0f55cd29634987, type: 3}
+--- !u!114 &1282830688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4568323857979390623, guid: 11b1d6e719bf1584890899964914f540,
+    type: 3}
+  m_PrefabInstance: {fileID: 782077477199061453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117a4545ddc76bf48b99c763884b0134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1290571254 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5138934356314045200, guid: d972180aebe9f7f4ca0f55cd29634987,
@@ -21521,7 +21533,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -22551,6 +22563,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d972180aebe9f7f4ca0f55cd29634987, type: 3}
+--- !u!114 &1504739400 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4446153281857525679, guid: 11b1d6e719bf1584890899964914f540,
+    type: 3}
+  m_PrefabInstance: {fileID: 782077477199061453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117a4545ddc76bf48b99c763884b0134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1504910690
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23686,10 +23710,8 @@ MonoBehaviour:
   _primalPathNode: []
   _pathNodesList: []
   _neighbords: []
-  DDD: {fileID: 0}
   _lights: {fileID: 0}
   _enemies: []
-  _spawn: {fileID: 0}
 --- !u!65 &1555988211
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23789,27 +23811,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1782647532}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1558291440 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2769756999121250087, guid: 11b1d6e719bf1584890899964914f540,
-    type: 3}
-  m_PrefabInstance: {fileID: 782077477199061453}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1558291447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558291440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0663f509b6bc9e84699c29d075687e98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemies: []
-  _enemiesSpawns: []
-  _mazeCell: {fileID: 0}
 --- !u!4 &1560994770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5138934356314045200, guid: d972180aebe9f7f4ca0f55cd29634987,
@@ -26262,6 +26263,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d972180aebe9f7f4ca0f55cd29634987, type: 3}
+--- !u!114 &1706467031 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3492420944644872426, guid: 11b1d6e719bf1584890899964914f540,
+    type: 3}
+  m_PrefabInstance: {fileID: 782077477199061453}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 117a4545ddc76bf48b99c763884b0134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1708916794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26527,7 +26540,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -28201,7 +28214,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -31174,7 +31187,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
@@ -33106,10 +33119,8 @@ MonoBehaviour:
   _primalPathNode: []
   _pathNodesList: []
   _neighbords: []
-  DDD: {fileID: 0}
   _lights: {fileID: 0}
   _enemies: []
-  _spawn: {fileID: 0}
 --- !u!65 &2129712841
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33720,14 +33731,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room1
       objectReference: {fileID: 0}
+    - target: {fileID: 8884515002043039700, guid: 11b1d6e719bf1584890899964914f540,
+        type: 3}
+      propertyPath: _primalPathNode.Array.data[0]
+      value: 
+      objectReference: {fileID: 1504739400}
+    - target: {fileID: 8884515002043039700, guid: 11b1d6e719bf1584890899964914f540,
+        type: 3}
+      propertyPath: _primalPathNode.Array.data[1]
+      value: 
+      objectReference: {fileID: 1282830688}
+    - target: {fileID: 8884515002043039700, guid: 11b1d6e719bf1584890899964914f540,
+        type: 3}
+      propertyPath: _primalPathNode.Array.data[2]
+      value: 
+      objectReference: {fileID: 1706467031}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2769756999121250087, guid: 11b1d6e719bf1584890899964914f540,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1558291447}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11b1d6e719bf1584890899964914f540, type: 3}
 --- !u!1001 &897199562598853654
 PrefabInstance:
@@ -34097,6 +34119,11 @@ PrefabInstance:
       propertyPath: KindOfEvent
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 888172659691865164, guid: e58323eb9e1b973408984ae1953b24b0,
+        type: 3}
+      propertyPath: _yellowSpeed
+      value: 0.08
+      objectReference: {fileID: 0}
     - target: {fileID: 1354654602495938923, guid: e58323eb9e1b973408984ae1953b24b0,
         type: 3}
       propertyPath: KindOfEvent
@@ -34233,7 +34260,7 @@ PrefabInstance:
     - target: {fileID: 1549112419769999096, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3171712125396228221, guid: 3cdaa232d5a6f5a448c2e7e439917591,
         type: 3}

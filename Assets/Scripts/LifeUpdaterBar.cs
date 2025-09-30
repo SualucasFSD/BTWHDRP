@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,43 +6,56 @@ public class LifeUpdaterBar : MonoBehaviour
 {
     [SerializeField] private Image _lifeBarSlider;
     [SerializeField] private Image _yellowBar;
+    [SerializeField] private float _yellowSpeed = 1f;
+
+    private Coroutine _yellowRoutine;
+
     private void Start()
     {
-        if(_lifeBarSlider==null)
+        if (_lifeBarSlider == null)
         {
             _lifeBarSlider = GetComponent<Image>();
         }
+
+        if (_yellowBar == null)
+        {
+            Debug.LogWarning("Yellow bar no asignada en LifeUpdaterBar");
+        }
+
         EventManager.Suscribe(EventManager.KindOfEvent.LifeUpdater, LifeUpdateImage);
     }
 
     private void LifeUpdateImage(params object[] p)
     {
-        StartCoroutine(YellowRouine((float)p[0]));
+        float target = (float)p[0];
+
         if (_lifeBarSlider != null)
         {
-            _lifeBarSlider.fillAmount = (float)p[0];
+            _lifeBarSlider.fillAmount = target;
         }
-        //if(_yellowBar.)
+
+        if (_yellowRoutine != null)
+        {
+            StopCoroutine(_yellowRoutine);
+        }
+
+        if (_yellowBar != null)
+        {
+            _yellowRoutine = StartCoroutine(YellowRoutine(target));
+        }
     }
-    IEnumerator YellowRouine(float i)
+
+    private IEnumerator YellowRoutine(float target)
     {
-        if(_yellowBar.fillAmount<i)
+        while (!Mathf.Approximately(_yellowBar.fillAmount, target))
         {
-            while (_yellowBar.fillAmount < i)
-            {
-              _yellowBar.fillAmount += Time.deltaTime/25;
-                yield return null;
-            }
+            _yellowBar.fillAmount = Mathf.MoveTowards(_yellowBar.fillAmount, target, _yellowSpeed * Time.deltaTime);
+            yield return null;
         }
-        else
-        {
-            while (_yellowBar.fillAmount > i)
-            {
-                _yellowBar.fillAmount -= Time.deltaTime/25;
-                yield return null;
-            }
-        }
+
+        _yellowRoutine = null;
     }
+
     private void OnDestroy()
     {
         EventManager.Unscribe(EventManager.KindOfEvent.LifeUpdater, LifeUpdateImage);

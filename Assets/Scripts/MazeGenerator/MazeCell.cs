@@ -5,31 +5,21 @@ public class MazeCell : MonoBehaviour
 {
     [SerializeField]
     public GameObject Pivot;
-    private GameObject[] _walls = new GameObject[4];
-    //public int[] MazeArrayPosition = new int[2];
     public Transform[] RigtLeftSpawnVector = new Transform[2];
     public bool IsVisited=false;
     public PathNode[] _primalPathNode;
     public List<PathNode> _pathNodesList=new List<PathNode>();
     public List<MazeCell> _neighbords=new List<MazeCell>();
-    public Transform DDD;
-    private Color _color;
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
-    [SerializeField] private SpawnEnemies _spawn;
     private void Start()
     {
         OptimizerScript.instance.MazeCells.Add(this);
-        _color = Random.ColorHSV();
+        OptimizerScript.instance.Activate(this);
     }
     public void Visit()
     {
         IsVisited = true;
-    }
-    public void ClearWall(int i)
-    {
-        _walls[i].SetActive(false);
-        //Destroy(_walls[i]);
     }
     public void PathNodeRefresh()
     {
@@ -101,10 +91,4 @@ public class MazeCell : MonoBehaviour
             _enemies.Remove(r.gameObject);
         }
     }
-
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.color = _color;
-        foreach (var N in _neighbords) { Gizmos.DrawLine(DDD.position, N.DDD.position); }
-    }*/
 }

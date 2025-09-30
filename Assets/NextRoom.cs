@@ -34,11 +34,13 @@ public class NextRoom : InteractuableGeneric
         if (_mazeSpawnPoint != null)
         {
             MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
-            Vector3 pivot=Room.Pivot.transform.position;
-            Vector3 offset=Room.transform.position - pivot;
-            Room.transform.position= _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position+offset;
+            Vector3 pivot = Room.Pivot.transform.position;
+            Vector3 offset = Room.transform.position - pivot;
+            Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
             Room._neighbords.Clear();
             Room._neighbords.Add(_mazeSpawnPoint);
+            Room._primalPathNode[2].Neighbords.Add(_mazeSpawnPoint._primalPathNode[(int)_leftRight]);
+            _mazeSpawnPoint._primalPathNode[(int)_leftRight].Neighbords.Add(Room._primalPathNode[2]);
             _mazeSpawnPoint._neighbords.Add(Room);
         }
         else

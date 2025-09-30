@@ -157,7 +157,6 @@ public class SavageDog : Entity, Idamageable
     private void AddForce(Vector3 target)
     {
         if (target.magnitude == 0) { Dir = Vector3.zero; return; }
-        print(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
         Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
     }
     private void OnDisable()
@@ -232,6 +231,7 @@ public class SavageDog : Entity, Idamageable
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
         _orbsRoutine = null;
     }
     public void Attack()
@@ -271,6 +271,10 @@ public class SavageDog : Entity, Idamageable
     private void MantainOnAir()
     {
         _gravityValue = 0;
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
     }
     private IEnumerator GoUpAndFloat(float targetY)
     {
