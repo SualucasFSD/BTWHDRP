@@ -380285,11 +380285,11 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.29166666
-    functionName: EjecuteVfx
+    functionName: EjecuteEffect
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
-    intParameter: 2
+    intParameter: 1
     messageOptions: 0
   - time: 0.5
     functionName: CauseDamage
@@ -380304,4 +380304,11 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
+    messageOptions: 0
+  - time: 0.75
+    functionName: FinishEffect
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 1
     messageOptions: 0
