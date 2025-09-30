@@ -53,7 +53,8 @@ public class InteractManager: MonoBehaviour
                if (Input.GetButtonDown("Interact"))
                {
                  _current.Interacting();
-               }
+                _canvasInteract.transform.position= Vector3.up * -10000f;
+            }
             }
         }
 

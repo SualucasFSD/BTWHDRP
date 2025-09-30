@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +7,17 @@ public class PathNode : MonoBehaviour
     [SerializeField] private List<PathNode> _neighbords = new List<PathNode>();
     [SerializeField] private MazeCell _mazeCellParent;
     public List<PathNode> Neighbords {  get { return _neighbords; } }
-    [SerializeField] private bool _isTesting;
+    [SerializeField] private bool _isTesting=false;
 
     // Para la búsqueda
     [HideInInspector] public float gCost;
     [HideInInspector] public float hCost;
     public float fCost => gCost + hCost;
     [HideInInspector] public PathNode cameFrom;
+    private void Awake()
+    {
+        _neighbords.Clear();
+    }
     private void Start()
     {
         RaycastHit point;

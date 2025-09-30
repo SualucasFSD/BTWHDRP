@@ -34,7 +34,10 @@ public class SavageDogOnCombat : IState
                 {
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance && !_entity.Stuned)
                     {
-                        _entity.Attack();
+                        if (_entity.CanAttack)
+                        {
+                            _entity.Attack();
+                        }
                     }
                     _entity.Tg = _tg.transform;
                     return;
@@ -46,7 +49,10 @@ public class SavageDogOnCombat : IState
                 {
                     if (Vector3.Distance(_entity.transform.position, _tg.transform.position) < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance && !_entity.Stuned)
                     {
-                        _entity.Attack();
+                        if (_entity.CanAttack)
+                        {
+                            _entity.Attack();
+                        }
                     }
                     _entity.Tg = _tg.transform;
                     return;

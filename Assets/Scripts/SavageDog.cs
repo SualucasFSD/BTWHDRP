@@ -28,6 +28,7 @@ public class SavageDog : Entity, Idamageable
     public bool CanMove = true;
     private float _gravityValue;
     private float _attackTimer;
+    public bool CanAttack=true;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
@@ -58,6 +59,7 @@ public class SavageDog : Entity, Idamageable
         if (_isReady)
         {
             _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+            Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         }
         GameManager.Instance.AddEntity(this, Kind);
     }
@@ -67,6 +69,7 @@ public class SavageDog : Entity, Idamageable
         _fsm.AddState(FsmSavageDog.DogState.OnCombat, new SavageDogOnCombat(_fsm,this));
         _fsm.AddState(FsmSavageDog.DogState.OnMidAir, new OnAir(this, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat)));
         _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+        _isReady = true;
     }
     private void Update()
     {
@@ -164,12 +167,18 @@ public class SavageDog : Entity, Idamageable
         //_fsm.ChangeState(FsmMague.MagueStates.OnDeath);
         GameManager.Instance.RemoveEntity(this, Kind);
     }
+    private void InvokeCanAttack()
+    {
+        CanAttack = true;
+    }
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection)
     {
         if (Life <= 0)
         {
             return;
         }
+        CanAttack = false;
+        Invoke(nameof(InvokeCanAttack), 1.5f);
         /*if (!IsDamageable) { return; }
         _stuntPercent += stunt;*/
         Life -= dmg;
@@ -220,6 +229,14 @@ public class SavageDog : Entity, Idamageable
         }
 
     }
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(15);
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
+        GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
+        enabled = true;
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
+    }
     IEnumerator SpawnOrbs()
     {
         for (int i = 0; i < 3; i++)
@@ -231,7 +248,8 @@ public class SavageDog : Entity, Idamageable
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }
-        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
+        StartCoroutine(Restart());
+        //GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
         _orbsRoutine = null;
     }
     public void Attack()
