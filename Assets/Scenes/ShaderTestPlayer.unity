@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6810.8057, g: 6851.4736, b: 8067.157, a: 1}
+  m_IndirectSpecularColor: {r: 6807.4287, g: 6848.466, b: 8063.3135, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -32400,6 +32400,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: IMPACTSwordParticle (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3724450011293734739, guid: fcc5f8b89e09d3a4f9894bf68e1edf84,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4718504989784986105, guid: fcc5f8b89e09d3a4f9894bf68e1edf84,
         type: 3}
@@ -69223,6 +69228,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 884987842068143487, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_ResetSeedOnPlay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 884987842068143487, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_InitialEventNameOverriden
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759055926942392252, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: Camera
@@ -69282,6 +69302,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8920272023926731858, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
