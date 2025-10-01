@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class FadeOutIn : MonoBehaviour
 {
+    public static FadeOutIn Instance;
     [SerializeField] private Material _FadeMat;
+    private void Awake()
+    {
+        _FadeMat = GetComponent<Material>();
+        if(Instance!=null)
+        {
+            FadeOut();
+            return;
+        }
+        Instance = this;
+    }
     private void Start()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.OnChangeScene, FadeIn);
@@ -15,7 +26,8 @@ public class FadeOutIn : MonoBehaviour
         StartCoroutine(FadeRoutine(1));
     }
     private IEnumerator FadeRoutine(int i)
-    { float j = 0;
+    {
+        float j;
         if(i==1)
         {
             _FadeMat.SetFloat("_lerp", 0);
@@ -30,6 +42,12 @@ public class FadeOutIn : MonoBehaviour
         else
         {
             j = 1;
+            while (j >= 0)
+            {
+                j -= 0.1f;
+                _FadeMat.SetFloat("_lerp", j);
+                yield return new WaitForSeconds(0.1f);
+            }
 
         }
     }
