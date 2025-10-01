@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]
 public class PjModel : Entity, Idamageable
 {
+    [Header("Materials")]
+    [SerializeField] private Material _damageBorders;
+    private Coroutine _damageRoutine;
     [Header("Mov Test")]
     [SerializeField] PhysicMaterial _movMaterial;
     [SerializeField] PhysicMaterial _standMaterial;
@@ -67,7 +71,8 @@ public class PjModel : Entity, Idamageable
     #endregion
     private void Awake()
     {
-        Kind=KindOfEntity.Allies;
+        _damageBorders.SetFloat("_Vignette_radius", 0);
+        Kind =KindOfEntity.Allies;
         _rb = GetComponent<Rigidbody>();
         _ownCollider = GetComponent<Collider>();
     }
@@ -340,6 +345,12 @@ public class PjModel : Entity, Idamageable
         }
         Life -=dmg;
         _bloodVfx?.Play();
+        if(_damageRoutine!=null)
+        {
+            StopCoroutine(_damageRoutine);
+        }
+        _damageBorders.SetFloat("_Vignette_radius",1);
+        StartCoroutine(DamageBorders());
         OnLifeUpdate(Life / _maxLife);
         if (Life < 0)
         {
@@ -370,7 +381,18 @@ public class PjModel : Entity, Idamageable
             _powerActivate.Add(Obj, Needed);
         }
     }
-
+    private IEnumerator DamageBorders()
+    {
+        float i = 1;
+        while(i>=0)
+        {
+            i -= 0.1f;
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            _damageBorders.SetFloat("_Vignette_radius", i);
+            yield return new WaitForSeconds(0.1f);
+        }
+        _damageRoutine=null;
+    }   
     public void EnemyKilled(object[] obj)
     {
         if (!_powerActivate.ContainsKey((EnemyCatalogue)obj[1]))

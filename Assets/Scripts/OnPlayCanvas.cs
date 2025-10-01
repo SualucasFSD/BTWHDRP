@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class OnPlayCanvas : MonoBehaviour
-{
+{ 
     [SerializeField] private GameObject PauseMenu;
     [SerializeField] private GameObject _deadPanel;
     [SerializeField] private Stack<GameObject> _panels= new Stack<GameObject>();

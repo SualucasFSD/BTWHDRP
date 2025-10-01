@@ -26,6 +26,8 @@ public class EventManager
         CameraSmooth,
         CameraDistance,
         OnPjChangePosition,
+        OnLoadScene,
+        OnChangeScene
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;
