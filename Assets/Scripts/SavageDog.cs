@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.VFX;
 using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
@@ -17,6 +18,7 @@ public class SavageDog : Entity, Idamageable
     [Header("Debug")]
     public List<PathNode> _paths = new List<PathNode>();
     [Header("Variables")]
+    [SerializeField] private VisualEffect _bloodVfx;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] private LayerMask _nodeLayer;
     [SerializeField] private PhysicMaterial _movMat;
@@ -178,6 +180,7 @@ public class SavageDog : Entity, Idamageable
             return;
         }
         CanAttack = false;
+        _bloodVfx?.Play();
         Invoke(nameof(InvokeCanAttack), 1.5f);
         /*if (!IsDamageable) { return; }
         _stuntPercent += stunt;*/
