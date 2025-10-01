@@ -5,6 +5,8 @@ public class EffectEvent : MonoBehaviour
 {
     [SerializeField] private ParticleSystem[] _particleSystems;
     [SerializeField] private VisualEffect[] _vfxSystems;
+    [SerializeField] private TrailRenderer[] _trailSystems;
+
 
     public void EjecuteEffect(int P)
     {
@@ -27,6 +29,30 @@ public class EffectEvent : MonoBehaviour
         else
         {
             Debug.LogWarning("Invalid particle system index or null reference");
+        }
+    }
+
+    public void EjecuteTrail(int P)
+    {
+        if (P >= 0 && P < _trailSystems.Length && _trailSystems[P] != null)
+        {
+            _trailSystems[P].enabled = true;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid trail system index or null reference");
+        }
+    }
+
+    public void FinishTrail(int P)
+    {
+        if (P >= 0 && P < _trailSystems.Length && _trailSystems[P] != null)
+        {
+            _trailSystems[P].enabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid trail system index or null reference");
         }
     }
 
