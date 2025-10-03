@@ -42116,7 +42116,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 648115724}
-  - component: {fileID: 648115723}
   m_Layer: 0
   m_Name: Factorys
   m_TagString: Untagged
@@ -42124,18 +42123,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &648115723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 648115722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a300fdbca0259745aa4a63ba263b05c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &648115724
 Transform:
   m_ObjectHideFlags: 0
@@ -51134,6 +51121,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 35.877087
       objectReference: {fileID: 0}
+    - target: {fileID: 2988313110906120424, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2999090410172057027, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -52433,6 +52425,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -91.65152
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6627446430192908579, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6655840703804749971, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
