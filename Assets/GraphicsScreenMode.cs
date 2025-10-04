@@ -37,7 +37,7 @@ public class GraphicsScreenMode : MonoBehaviour
     {
         Resolution res = Screen.currentResolution;
         FullScreenMode mode = (FullScreenMode)modeIndex;
-        Screen.SetResolution(res.width, res.height, mode, res.refreshRate);
+        Screen.SetResolution(res.width, res.height, mode, res.refreshRateRatio);
         Debug.Log("Modo de pantalla cambiado a: " + mode);
     }
 }

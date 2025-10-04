@@ -27,7 +27,8 @@ public class EventManager
         CameraDistance,
         OnPjChangePosition,
         OnLoadScene,
-        OnChangeScene
+        OnChangeScene,
+        OnChangeResolution
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;
