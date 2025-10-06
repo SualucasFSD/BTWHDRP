@@ -97,7 +97,10 @@ public class SavageDog : Entity, Idamageable
         {
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
         }
-        _fsm.ArtificialFixedUpdate();
+        if (!Stuned)
+        {
+            _fsm.ArtificialFixedUpdate();
+        }
         if (Dir == Vector3.zero)
         {
             _rb.angularVelocity = Vector3.zero;
@@ -106,7 +109,7 @@ public class SavageDog : Entity, Idamageable
     }
     public void OnMovePj()
     {
-        if (Tg == null||_attackTimer<_attackDelay)
+        if (Tg == null||_attackTimer<_attackDelay||Stuned)
         {
             Dir = Vector3.zero;
             if (OnMove != null)
@@ -129,8 +132,7 @@ public class SavageDog : Entity, Idamageable
     }
     public void OnRotatePj(Vector3 Direction)
     {
-        //transform.forward = new Vector3(Dir.x, 0, Dir.z);
-        if (Direction.sqrMagnitude > 0.001f)
+        if (Direction.sqrMagnitude > 0.001f||Stuned)
         {
             Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
 
@@ -179,6 +181,7 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
+        //Stuned=false;
         CanAttack = false;
         if (_bloodVfx != null)
         {
@@ -237,7 +240,6 @@ public class SavageDog : Entity, Idamageable
             yield return new WaitForSeconds(0.5f);
         }
         StartCoroutine(Restart());
-        //GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
     }
     public void Attack()
     {

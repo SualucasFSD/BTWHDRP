@@ -1,11 +1,14 @@
 using UnityEngine;
+
 [RequireComponent(typeof(Animator))]
 public class MagueEnemyView : MonoBehaviour
 {
-   [SerializeField] private Animator _anim;
-   [SerializeField]private MagueEnemyModel _model;
-    Vector2 _fixedDir;
-    private Vector2 _smoothAnimDir;
+    [SerializeField] private Animator _anim;
+    [SerializeField] private MagueEnemyModel _model;
+
+    private bool _isFalling = false;
+    private bool _isInAirHit = false;
+
     private void Awake()
     {
         if (_anim == null)
@@ -18,26 +21,83 @@ public class MagueEnemyView : MonoBehaviour
         }
         _model.OnCharging += OnCharging;
     }
+
     private void Start()
     {
         _model.OnMove += OnMove;
         _model.OnAttack += Shoot;
-    }
-    private void OnCharging()
-    {
-        _anim.SetBool("Attack", true);
+        _model.GetToGround += GetToGround;
+        _model.GetToAir += GetToTheAir;
+        _model.OnAirHit += OnAirHit;
+        _model.OnHitStunt += OnHitGround;
+        _model.OnGround += OnGrounded;
     }
 
-   private void OnMove(Vector3 Dir)
+    private void OnCharging() => _anim.SetBool("Attack", true);
+
+    private void OnHitGround() => _anim.SetTrigger("Hit");
+
+    private void OnAirHit()
     {
-        _fixedDir.x= transform.InverseTransformDirection(Dir.normalized).x;
-        _fixedDir.y = transform.InverseTransformDirection(Dir.normalized).z;
-        _smoothAnimDir = Vector2.Lerp(_smoothAnimDir, _fixedDir, Time.deltaTime * 10f);
-        _anim.SetFloat("xAxis", _smoothAnimDir.x);
-        _anim.SetFloat("zAxis", _smoothAnimDir.y);
+        if (_isFalling) return;
+        if (_isInAirHit) return;
+
+        _isInAirHit = true;
+        _anim.SetTrigger("HitMidAir");
+        Invoke(nameof(ResetAirHit), 0.6f);
     }
+
+    private void ResetAirHit() => _isInAirHit = false;
+
+    private void GetToGround()
+    {
+        if (_isInAirHit) return;
+        _isFalling = false;
+        _anim.SetTrigger("ToTheGround");
+    }
+
+    private void GetToTheAir()
+    {
+        _isFalling = true;
+        _anim.SetTrigger("ToTheAir");
+    }
+
+    private void OnGrounded(bool grounded)
+    {
+        _anim.SetBool("IsGrounded", grounded);
+    }
+
+    public void RecoverFromHitDelay()
+    {
+        StartCoroutine(RecoverDelay());
+    }
+
+    private System.Collections.IEnumerator RecoverDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _model.Stuned = false;
+    }
+
+    private void OnMove(Vector3 Dir)
+    {
+        if (Dir.sqrMagnitude < 0.01f)
+        {
+            _anim.SetFloat("zAxis", 0f);
+            _anim.SetFloat("xAxis", 0f);
+            return;
+        }
+        Vector3 localDir = transform.InverseTransformDirection(Dir.normalized);
+        _anim.SetFloat("zAxis", localDir.z);
+        _anim.SetFloat("xAxis", localDir.x);
+    }
+
+    private void OnAnimatorMove()
+    {
+        transform.parent.position += _anim.deltaPosition;
+    }
+
     public void Shoot()
     {
-      _anim.SetBool("Attack", false);
+        _anim.SetBool("Attack", false);
     }
 }

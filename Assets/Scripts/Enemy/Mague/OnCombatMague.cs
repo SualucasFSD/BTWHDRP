@@ -9,9 +9,8 @@ public class OnCombatMague : IState
     private List<PathNode> _pathNodes = new List<PathNode>();
     private GameObject _tg;
     private Vector3 _rotateDir;
-
     private float _magicTimer;
-    private int _acum;
+    private float _pathRetryTimer;
 
     public OnCombatMague(FsmMague fsm, MagueEnemyModel entity)
     {
@@ -21,9 +20,10 @@ public class OnCombatMague : IState
 
     public void OnEnter()
     {
-        _magicTimer = 0;
-        _acum = 0;
+        _magicTimer = 0f;
+        _pathRetryTimer = 0f;
 
+        _entity.BulletsStop();
         EventManager.Suscribe(EventManager.KindOfEvent.ReloadPath, PathReload);
         PathReload();
 
@@ -41,29 +41,7 @@ public class OnCombatMague : IState
 
     public void OnUpdate()
     {
-        if (_entity.IsCharging && _entity.NumbOfBullets < 3)
-        {
-            _magicTimer += Time.deltaTime;
-
-            if (_tg != null)
-            {
-                _rotateDir = _tg.transform.position - _entity.transform.position;
-            }
-            if (_magicTimer > 1.5f)
-            {
-                _entity.MagicInstance(_tg ? _tg.transform : null);
-                _magicTimer = 0;
-                _acum++;
-            }
-
-            if (_acum >= 3)
-            {
-                _acum = 0;
-                _entity.Shoot();
-            }
-
-            return;
-        }
+        if (_entity == null) return;
 
         if (_tg == null)
         {
@@ -78,14 +56,51 @@ public class OnCombatMague : IState
             }
         }
 
+        if (_entity.IsCharging && _entity.NumbOfBullets < 3 && !_entity.Stuned)
+        {
+            _magicTimer += Time.deltaTime;
+
+            if (_tg != null)
+                _rotateDir = _tg.transform.position - _entity.transform.position;
+
+            if (_magicTimer > 1.5f)
+            {
+                _entity.MagicInstance(_tg.transform);
+                _magicTimer = 0f;
+            }
+
+            if (_entity.NumbOfBullets >= 3)
+                _entity.Shoot();
+
+            return;
+        }
+
         if (_pathNodes == null || _pathNodes.Count == 0)
         {
-            PathReload();
-            if (_pathNodes == null || _pathNodes.Count == 0)
+            _pathRetryTimer += Time.deltaTime;
+
+            if (_tg != null)
             {
-                _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-                return;
+                if (GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position))
+                {
+                    _rotateDir = _tg.transform.position - _entity.transform.position;
+
+                    float dist = Vector3.Distance(_tg.transform.position, _entity.transform.position);
+                    if (dist < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].AttackDistance &&
+                        !_entity.IsCharging && !_entity.Stuned && _entity.IsGrounded)
+                    {
+                        _entity.StartCharging();
+                    }
+                }
             }
+
+            if (_pathRetryTimer > 2f)
+            {
+                PathReload();
+                _pathRetryTimer = 0f;
+            }
+
+            return;
         }
 
         PathNode currentNode = _pathNodes[0];
@@ -104,70 +119,32 @@ public class OnCombatMague : IState
 
         if (_tg != null)
         {
-            bool inRange = Vector3.Distance(_tg.transform.position, _entity.transform.position) <
-                           GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].AttackDistance;
-
-            bool hasLOS = GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position);
-
-            if (hasLOS && inRange)
+            if (GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position) &&
+                Vector3.Distance(_tg.transform.position, _entity.transform.position) <
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].AttackDistance)
             {
-                HandleCombat();
+                if (!_entity.IsCharging && !_entity.Stuned && _entity.IsGrounded)
+                    _entity.StartCharging();
             }
-        }
-    }
-
-    private void HandleCombat()
-    {
-        if (_tg == null) return;
-
-        _rotateDir = _tg.transform.position - _entity.transform.position;
-        _entity.Tg = _tg.transform;
-
-        if (Vector3.Distance(_entity.transform.position, _tg.transform.position) <
-            GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].AttackDistance)
-        {
-            _entity.StartCharging();
-        }
-    }
-
-    private void PathReload(params object[] objects)
-    {
-        if (_entity == null) return;
-
-        if (_tg == null)
-        {
-            _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-            return;
-        }
-
-        _pathNodes = PathFinding.Instance.Theta(GameManager.Instance.GetCloseNode(_entity.transform),GameManager.Instance.GetCloseNode(_tg.transform),_entity.transform,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Radius);
-
-        if (_pathNodes == null || _pathNodes.Count == 0)
-        {
-            _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-            return;
-        }
-
-        float totalDistance = 0f;
-        PathNode previous = null;
-        foreach (PathNode node in _pathNodes)
-        {
-            totalDistance += (previous == null)? Vector3.Distance(_entity.transform.position, node.transform.position): Vector3.Distance(previous.transform.position, node.transform.position);
-            previous = node;
-        }
-
-        if (totalDistance > 30)
-        {
-            _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-            _pathNodes.Clear();
         }
     }
 
     public void OnFixedUpdate()
     {
-        if (_entity == null || _entity.Tg == null) return;
-
         _entity.OnRotatePj(_rotateDir);
         _entity.OnMovePj();
     }
+
+    private void PathReload(params object[] objects)
+    {
+        if (_entity == null) return;
+        if (_tg == null) return;
+
+        _pathNodes = PathFinding.Instance.Theta(
+            GameManager.Instance.GetCloseNode(_entity.transform),
+            GameManager.Instance.GetCloseNode(_tg.transform),
+            _entity.transform,
+            GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Radius);
+    }
 }
+

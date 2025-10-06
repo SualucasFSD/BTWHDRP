@@ -9,6 +9,7 @@ public class SavageView : MonoBehaviour
     private Vector3 _smoothAnimDir;
     [SerializeField] private LayerMask _hitLayer;
     private List<Idamageable> _damageable = new List<Idamageable>();
+    private float currentVel = 0f;
     private void Awake()
     {
         if (_animator == null)
@@ -43,7 +44,6 @@ public class SavageView : MonoBehaviour
     }
     private void GetToGround()
     {
-        _animator.SetBool("CancelAir", false);
         _animator.SetTrigger("ToTheGround");
     }
     private void OnFreeFall()
@@ -52,7 +52,7 @@ public class SavageView : MonoBehaviour
     }
     private void GetToTheAir()
     {
-        _animator.SetBool("CancelAir", false);
+        _dogModel.Stuned=true;
         _animator.SetTrigger("ToTheAir");
     }
     private void OnGrounded(bool I)
@@ -67,14 +67,15 @@ public class SavageView : MonoBehaviour
     {
         _animator.SetTrigger("Attack1");
     }
-    public void RecoverFromHitDelay()
+    public void WakingUp()
     {
-        Invoke(nameof(InvokeIsGround), 1.5f);
+        _dogModel.CanMove = true;
     }
-    private void InvokeIsGround()
+    public void RecoverFromHitDelay()
     {
         _dogModel.Stuned=false;
     }
+
     public void Attack()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance, _hitLayer);
@@ -119,15 +120,11 @@ public class SavageView : MonoBehaviour
 
          _animator.SetFloat("zAxis", localDir.z);
          _animator.SetFloat("xAxis", localDir.x);*/
-        if (Dir.sqrMagnitude < 0.01f)
-        {
-            _animator.SetFloat("Vel", 0f);
-            return;
-        }
-        else    
-        {
-            _animator.SetFloat("Vel", 1);
-        }
+        float targetVel = Dir.sqrMagnitude < 0.01f ? 0f : 1f;
+
+        currentVel = Mathf.Lerp(currentVel, targetVel, Time.deltaTime * 5);
+
+        _animator.SetFloat("Vel", currentVel);
     }
     private void OnAnimatorMove()
     {
