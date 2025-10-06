@@ -28,7 +28,8 @@ public class EventManager
         OnPjChangePosition,
         OnLoadScene,
         OnChangeScene,
-        OnChangeResolution
+        OnChangeResolution,
+        MakeCameraShake
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

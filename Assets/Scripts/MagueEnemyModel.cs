@@ -131,7 +131,7 @@ public class MagueEnemyModel : Entity, Idamageable
 
         Life -= dmg;
         BulletsStop();
-
+        _collider.material = _stopMat;
         if (!IsGrounded)
         {
             OnAirHit();
@@ -167,7 +167,9 @@ public class MagueEnemyModel : Entity, Idamageable
     public void BulletsStop()
     {
         foreach (MagueBullet b in Bullets)
+        {
             Destroy(b.gameObject);
+        }
         NumbOfBullets = 0;
         Bullets.Clear();
     }
@@ -295,7 +297,9 @@ public class MagueEnemyModel : Entity, Idamageable
     {
         _gravityValue = 0;
         if (!_rb.isKinematic)
+        {
             _rb.velocity = Vector3.zero;
+        }
     }
 
     private IEnumerator GoUpAndFloat(float targetY)

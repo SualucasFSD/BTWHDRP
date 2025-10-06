@@ -109,7 +109,7 @@ public class SavageDog : Entity, Idamageable
     }
     public void OnMovePj()
     {
-        if (Tg == null||_attackTimer<_attackDelay||Stuned)
+        if (Tg == null||_attackTimer<_attackDelay||!CanAttack)
         {
             Dir = Vector3.zero;
             if (OnMove != null)
@@ -132,7 +132,7 @@ public class SavageDog : Entity, Idamageable
     }
     public void OnRotatePj(Vector3 Direction)
     {
-        if (Direction.sqrMagnitude > 0.001f||Stuned)
+        if (Direction.sqrMagnitude > 0.001f ||CanAttack)
         {
             Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
 
@@ -183,6 +183,7 @@ public class SavageDog : Entity, Idamageable
         }
         //Stuned=false;
         CanAttack = false;
+        _collider.material = _stopMat;
         if (_bloodVfx != null)
         {
             _bloodVfx.Play();

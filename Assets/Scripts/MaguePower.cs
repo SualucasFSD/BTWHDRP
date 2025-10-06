@@ -18,6 +18,7 @@ public class MaguePower : MonoBehaviour, IPjPower
     [SerializeField] private int _howMany;
     [SerializeField] private FallowObject _viewModel;
     private Coroutine _destroyRoutine;
+    private GameObject _shooter;
     private void Start()
     {
         if(_model == null)
@@ -39,7 +40,7 @@ public class MaguePower : MonoBehaviour, IPjPower
             TakeCloseEnemy();
             return;
         }
-
+        gameObject.transform.position=_shooter.transform.position;
         if (_destroyRoutine != null)
         {
             StopCoroutine(_destroyRoutine);
@@ -141,7 +142,8 @@ public class MaguePower : MonoBehaviour, IPjPower
 
     public void Active()
     {
-        Instantiate(_viewModel, transform.position + Vector3.up * 5, transform.rotation).Target = transform;
+        var p= Instantiate(_viewModel, transform.position + Vector3.up * 5, transform.rotation).Target = transform;
+        _shooter = p.gameObject;
         gameObject.SetActive(true);
         _model.EjecutePower += FalseUpdate;
     }
