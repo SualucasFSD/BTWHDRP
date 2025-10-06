@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
+
 [RequireComponent(typeof(Rigidbody))]
 public class MagueEnemyModel : Entity, Idamageable
 {
@@ -25,8 +25,8 @@ public class MagueEnemyModel : Entity, Idamageable
     [SerializeField] private Transform[] _bulletPos = new Transform[3];
     [SerializeField] private LifeOrb _lifeOrbPrefab;
 
+    public bool Stuned = false;
     public bool UseGravity = true;
-    public bool CanMove = true;
     public bool IsCharging = false;
 
     public int NumbOfBullets = 0;
@@ -38,7 +38,7 @@ public class MagueEnemyModel : Entity, Idamageable
 
     public FsmMague _fsm = new FsmMague();
 
-    //Eventos 
+    // Eventos 
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
     public event Action OnCharging = delegate { };
@@ -55,11 +55,10 @@ public class MagueEnemyModel : Entity, Idamageable
     {
         Kind = KindOfEntity.Enemy;
         if (_rb == null)
-        {
             _rb = GetComponent<Rigidbody>();
-        }
         _rb.useGravity = false;
     }
+
     private void OnEnable()
     {
         if (_isReady)
@@ -69,19 +68,23 @@ public class MagueEnemyModel : Entity, Idamageable
         }
         GameManager.Instance.AddEntity(this, Kind);
     }
+
     private void OnDisable()
     {
-        //_fsm.ChangeState(FsmMague.MagueStates.OnDeath);
         GameManager.Instance.RemoveEntity(this, Kind);
     }
+
     private void Start()
     {
-         GameManager.Instance.AddEntity(this, Kind);
-        _fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this,_nodeLayer,()=>_fsm.ChangeState(FsmMague.MagueStates.OnCombat),OnMovePj,OnRotatePj , EnemyCatalogue.Mague));
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
+        GameManager.Instance.AddEntity(this, Kind);
+        _fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmMague.MagueStates.OnCombat), OnMovePj, OnRotatePj, EnemyCatalogue.Mague));
         _fsm.AddState(FsmMague.MagueStates.OnCombat, new OnCombatMague(_fsm, this));
+        _fsm.AddState(FsmMague.MagueStates.OnMidAir, new OnAir(this, () => _fsm.ChangeState(FsmMague.MagueStates.OnCombat)));
         _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
         _isReady = true;
     }
+
     private void Update()
     {
         _fsm.ArtificialUpdate();
@@ -93,30 +96,42 @@ public class MagueEnemyModel : Entity, Idamageable
 
         if (Tg != null)
         {
-            AddForce(IaMov.Instance.Separation(GameManager.Instance.GetSeparationEntityes(), 1.8f, this,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce)+ IaMov.Instance.Arrive(this, Tg,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce) * 0.8f+ IaMov.Instance.ObstacleAvoid(this,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Radius));
+            AddForce(IaMov.Instance.Separation(GameManager.Instance.GetSeparationEntityes(), 1.8f, this,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce)
+            + IaMov.Instance.Arrive(this, Tg,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce) * 0.8f
+            + IaMov.Instance.ObstacleAvoid(this,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce,
+                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Radius));
         }
     }
+
     private void FixedUpdate()
     {
         IsGroundedDetector();
         if (UseGravity)
-        {
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
-        }
+
         _fsm.ArtificialFixedUpdate();
-        if (Dir == Vector3.zero&&!IsCharging)
+
+        if (Dir == Vector3.zero && !IsCharging)
         {
             _rb.angularVelocity = Vector3.zero;
             return;
         }
     }
+
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection)
     {
-        if(Life<=0)
-        {
+        if (Life <= 0)
             return;
-        }
+
         Life -= dmg;
+        BulletsStop();
+        _collider.material = _stopMat;
         if (!IsGrounded)
         {
             OnAirHit();
@@ -124,29 +139,32 @@ public class MagueEnemyModel : Entity, Idamageable
         }
         else
         {
+            Stuned = true;
             OnHitStunt();
         }
+
         _damageParticles.Play();
-        /*if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
-        }*/
+
         if (Life <= 0)
         {
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce;
             _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)
-            {
-              StartCoroutine(SpawnOrbs());
-            }
+                StartCoroutine(SpawnOrbs());
             BulletsStop();
             GameManager.Instance.RemoveEntity(this, Kind);
-            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,15);
-            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject,EnemyCatalogue.Mague);
+            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
+            EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Mague);
             enabled = false;
         }
+        else
+        {
+            if (pushDirection != Vector3.zero && IsGrounded)
+                _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
+        }
     }
-    private void BulletsStop()
+
+    public void BulletsStop()
     {
         foreach (MagueBullet b in Bullets)
         {
@@ -155,6 +173,7 @@ public class MagueEnemyModel : Entity, Idamageable
         NumbOfBullets = 0;
         Bullets.Clear();
     }
+
     IEnumerator Restart()
     {
         yield return new WaitForSeconds(15);
@@ -163,6 +182,7 @@ public class MagueEnemyModel : Entity, Idamageable
         enabled = true;
         GenericFactory.Instance.ReturnObj(EnemyCatalogue.Mague, this);
     }
+
     IEnumerator SpawnOrbs()
     {
         for (int i = 0; i < 3; i++)
@@ -176,33 +196,33 @@ public class MagueEnemyModel : Entity, Idamageable
         }
         StartCoroutine(Restart());
     }
+
     public void MagicInstance(Transform _tg)
     {
-       Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[NumbOfBullets].position, transform.rotation));
-       Bullets[NumbOfBullets].Tg = _tg;
-       Bullets[NumbOfBullets].Kind = Kind;
-       NumbOfBullets++;
+        Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[NumbOfBullets].position, transform.rotation));
+        Bullets[NumbOfBullets].Tg = _tg;
+        Bullets[NumbOfBullets].Kind = Kind;
+        NumbOfBullets++;
     }
+
     public void Shoot()
     {
         IsCharging = false;
         foreach (MagueBullet b in Bullets)
-        {
             b.Fire = true;
-        }
+
         Bullets.Clear();
         NumbOfBullets = 0;
-        if (OnAttack != null)
-        {
-            OnAttack();
-        }
+        OnAttack?.Invoke();
     }
+
     public void StartCharging()
     {
+        if (Stuned || !IsGrounded) return;
         IsCharging = true;
-        //Dir=Vector3.zero;
-        if (OnCharging != null) { OnCharging(); }
+        OnCharging?.Invoke();
     }
+
     public void OnMovePj()
     {
         if (Tg == null || IsCharging)
@@ -216,10 +236,13 @@ public class MagueEnemyModel : Entity, Idamageable
         _collider.material = _movMat;
         OnMove(Dir);
 
-        Vector3 velocityChange = (new Vector3(Dir.x, 0, Dir.z) *GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity)- new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        Vector3 velocityChange = (new Vector3(Dir.x, 0, Dir.z) *
+            GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity)
+            - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
 
         _rb.AddForce(velocityChange, ForceMode.Acceleration);
     }
+
     public void OnRotatePj(Vector3 Direction)
     {
         if (Direction.sqrMagnitude <= 0.001f) return;
@@ -229,7 +252,6 @@ public class MagueEnemyModel : Entity, Idamageable
 
         Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
         Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
-
         deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
         if (angle > 180f) angle -= 360f;
 
@@ -245,21 +267,23 @@ public class MagueEnemyModel : Entity, Idamageable
             _rb.angularVelocity = Vector3.zero;
         }
     }
+
     public override void FlyFunct(float height = 4)
     {
         BulletsStop();
+        Stuned = true;
         _fsm.ChangeState(FsmMague.MagueStates.OnMidAir);
         UseGravity = false;
         _collider.material = _stopMat;
 
         if (!_rb.isKinematic)
-        {
             _rb.velocity = Vector3.zero;
-        }
 
         float targetY = transform.position.y + height;
 
-        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius, Vector3.up, out RaycastHit hit, height + 0.5f, layerMask: GroundLayer))
+        if (Physics.SphereCast(transform.position,
+            GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius,
+            Vector3.up, out RaycastHit hit, height + 0.5f, GroundLayer))
         {
             targetY = hit.point.y - _ceilingOffset;
         }
@@ -268,6 +292,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         _floatRoutine = StartCoroutine(GoUpAndFloat(targetY));
     }
+
     private void MantainOnAir()
     {
         _gravityValue = 0;
@@ -276,6 +301,7 @@ public class MagueEnemyModel : Entity, Idamageable
             _rb.velocity = Vector3.zero;
         }
     }
+
     private IEnumerator GoUpAndFloat(float targetY)
     {
         while (transform.position.y < targetY)
@@ -294,6 +320,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         OnFreeFall();
     }
+
     public override void GetToTheGround()
     {
         if (_floatRoutine != null)
@@ -306,17 +333,13 @@ public class MagueEnemyModel : Entity, Idamageable
         _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);
         UseGravity = true;
     }
-    public void TakeHealt(float amount)
-    {
 
-    }
+    public void TakeHealt(float amount) { }
+
     private void AddForce(Vector3 target)
     {
-        if (target.magnitude == 0){ return; }
+        if (target.magnitude == 0) return;
         Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity);
     }
-    private void OnDestroy()
-    {
-       
-    }
 }
+

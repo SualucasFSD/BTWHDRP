@@ -344,6 +344,7 @@ public class PjModel : Entity, Idamageable
             _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
         }
         Life -=dmg;
+        EventManager.Ejecute(EventManager.KindOfEvent.MakeCameraShake);
         _bloodVfx?.Play();
         if(_damageRoutine!=null)
         {

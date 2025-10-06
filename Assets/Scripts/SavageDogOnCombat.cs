@@ -126,12 +126,12 @@ public class SavageDogOnCombat : IState
             previous = node;
         }
 
-        if (totalDistance > 30f)
+        /*if (totalDistance > 30f)
         {
             _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
             _pathNodes.Clear();
             return;
-        }
+        }*/
     }
 
     public void OnFixedUpdate()
