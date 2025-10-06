@@ -3,28 +3,35 @@ using UnityEngine;
 
 public class MazeCell : MonoBehaviour
 {
-    [SerializeField]
     public GameObject Pivot;
     public Transform[] RigtLeftSpawnVector = new Transform[2];
-    public bool IsVisited=false;
     public PathNode[] _primalPathNode;
     public List<PathNode> _pathNodesList=new List<PathNode>();
     public List<MazeCell> _neighbords=new List<MazeCell>();
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
+    private void Awake()
+    {
+        _pathNodesList=new List<PathNode> ();
+        _neighbords=new List<MazeCell>();
+    }
     private void Start()
     {
         OptimizerScript.instance.MazeCells.Add(this);
-        OptimizerScript.instance.Activate(this);
-    }
-    public void Visit()
-    {
-        IsVisited = true;
     }
     public void PathNodeRefresh()
     {
+        if (_pathNodesList.Count <= 0 || _pathNodesList == null)
+        {
+            print("No Se Cargo");
+        }
+        else
+        {
+            print(_pathNodesList.Count);
+        }
        foreach(PathNode node in _pathNodesList)
         {
+           // node.Neighbords.Clear();
             foreach(PathNode n in _pathNodesList)
             {
                 if(node==n)
@@ -62,18 +69,16 @@ public class MazeCell : MonoBehaviour
     }
     private void OnDestroy()
     {
-        if(OptimizerScript.instance.MazeCells.Contains(this))
-        {
-            OptimizerScript.instance.MazeCells.Remove(this);
-        }
+       OptimizerScript.instance.MazeCells.Remove(this);
     }
     private void OnTriggerEnter(Collider other)
     {
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
-        if (p != null) { OptimizerScript.instance.Refresh(this); return; }
+        if (p != null) { OptimizerScript.instance.Refresh(this); print("Refreshing"); return; }
         Entity r=other.gameObject.GetComponent<Entity>();
         if(r != null)
         {
+            print("Enemy In"+ gameObject.name+r.name);
             if(_enemies.Contains(r.gameObject))
             {
                 return;
@@ -84,10 +89,11 @@ public class MazeCell : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
-        if (p != null) {return;}
+        if (p != null) {return; }
         Entity r = other.gameObject.GetComponent<Entity>();
         if (r != null)
         {
+            print("Enemy Out" + gameObject.name+ r.name);
             _enemies.Remove(r.gameObject);
         }
     }

@@ -3,29 +3,54 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 [RequireComponent(typeof(Rigidbody))]
 public class MagueEnemyModel : Entity, Idamageable
 {
+    [Header("References")]
     [SerializeField] private Rigidbody _rb;
-    public FsmMague _fsm = new FsmMague();
-    public LayerMask _nodeLayer;
+    [SerializeField] private Collider _collider;
+    [SerializeField] private PhysicMaterial _stopMat;
+    [SerializeField] private PhysicMaterial _movMat;
+    [SerializeField] private ParticleSystem _damageParticles;
+    [SerializeField] private AudioSource _mySource;
+
+    [Header("Stats")]
+    [SerializeField] private float _ceilingOffset = 1.5f;
+    [SerializeField] private float _groundImpulse = 2500f;
+    [SerializeField] private LayerMask _nodeLayer;
+
+    [Header("Prefabs")]
+    [SerializeField] private MagueBullet _bulletPrefab;
+    [SerializeField] private Transform[] _bulletPos = new Transform[3];
+    [SerializeField] private LifeOrb _lifeOrbPrefab;
+
+    public bool UseGravity = true;
+    public bool CanMove = true;
     public bool IsCharging = false;
-    private float _stuntPercent;
-    //Eventos
+
+    public int NumbOfBullets = 0;
+    private bool _isReady = false;
+    private float _gravityValue;
+
+    private Coroutine _floatRoutine;
+    private List<MagueBullet> Bullets = new List<MagueBullet>();
+
+    public FsmMague _fsm = new FsmMague();
+
+    //Eventos 
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
-    public event Action OnCharging= delegate { };
+    public event Action OnCharging = delegate { };
     public event Action<float> OnDamage = delegate { };
     public event Action OnDeath = delegate { };
-    [SerializeField] private Animator _anim;
-    [SerializeField] private MagueBullet _bulletPrefab;
-    private List<MagueBullet> Bullets=new List<MagueBullet>();
-    [SerializeField] private Transform[] _bulletPos=new Transform[3];
-    [SerializeField] private LifeOrb _lifeOrbPrefab;
-    [SerializeField] ParticleSystem _damageParticles;
-    [SerializeField] AudioSource _mySource;
-    private int _numbOfBullets=0;
-    private bool _isReady=false;
+    public event Action GetToAir = delegate { };
+    public event Action OnFreeFall = delegate { };
+    public event Action GetToGround = delegate { };
+    public event Action OnAirHit = delegate { };
+    public event Action OnHitStunt = delegate { };
+    public event Action<bool> OnGround = delegate { };
+
     private void Awake()
     {
         Kind = KindOfEntity.Enemy;
@@ -37,10 +62,10 @@ public class MagueEnemyModel : Entity, Idamageable
     }
     private void OnEnable()
     {
-        //_fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
         if (_isReady)
         {
             _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
+            Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
         }
         GameManager.Instance.AddEntity(this, Kind);
     }
@@ -52,60 +77,83 @@ public class MagueEnemyModel : Entity, Idamageable
     private void Start()
     {
          GameManager.Instance.AddEntity(this, Kind);
-        //_fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this,_nodeLayer,()=>_fsm.ChangeState(FsmMague.MagueStates.OnCombat),OnMovePj, _rb, EnemyCatalogue.Mague));
+        _fsm.AddState(FsmMague.MagueStates.OnPatrol, new OnPatrol(this,_nodeLayer,()=>_fsm.ChangeState(FsmMague.MagueStates.OnCombat),OnMovePj,OnRotatePj , EnemyCatalogue.Mague));
         _fsm.AddState(FsmMague.MagueStates.OnCombat, new OnCombatMague(_fsm, this));
-        _fsm.AddState(FsmMague.MagueStates.OnDeath, new OnDeath());
-        _fsm.AddState(FsmMague.MagueStates.OnStunt, new OnStunt(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntTime, () => _fsm.ChangeState(FsmMague.MagueStates.OnCombat), _anim, "Stunt"));
         _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
         _isReady = true;
     }
     private void Update()
     {
         _fsm.ArtificialUpdate();
+
+        if (_gravityValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce)
+            _gravityValue += Time.deltaTime * 7f;
+
+        OnGround(IsGrounded);
+
+        if (Tg != null)
+        {
+            AddForce(IaMov.Instance.Separation(GameManager.Instance.GetSeparationEntityes(), 1.8f, this,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce)+ IaMov.Instance.Arrive(this, Tg,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce) * 0.8f+ IaMov.Instance.ObstacleAvoid(this,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Radius));
+        }
     }
     private void FixedUpdate()
     {
+        IsGroundedDetector();
+        if (UseGravity)
+        {
+            _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
+        }
         _fsm.ArtificialFixedUpdate();
-        _rb.AddForce(-transform.up * Mathf.Pow(GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce, 2), ForceMode.Acceleration);
-        _rb.MovePosition(transform.position + Dir*Time.fixedDeltaTime);
+        if (Dir == Vector3.zero&&!IsCharging)
+        {
+            _rb.angularVelocity = Vector3.zero;
+            return;
+        }
     }
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection)
     {
-        _stuntPercent += stunt;
+        if(Life<=0)
+        {
+            return;
+        }
         Life -= dmg;
+        if (!IsGrounded)
+        {
+            OnAirHit();
+            MantainOnAir();
+        }
+        else
+        {
+            OnHitStunt();
+        }
         _damageParticles.Play();
-        SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
-        //lifebar.value=life/maxlife;
-        //y ejecuto OnTakeDamageEvento
+        /*if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
+        }*/
         if (Life <= 0)
         {
-            if (_lifeOrbPrefab!=null)
+            _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce;
+            _collider.material = _stopMat;
+            if (_lifeOrbPrefab != null)
             {
-                StartCoroutine(SpawnOrbs());
+              StartCoroutine(SpawnOrbs());
             }
-            foreach(MagueBullet b in Bullets)
-            {
-                Destroy(b.gameObject);
-            }
-            Bullets.Clear();
-            _numbOfBullets = 0;
+            BulletsStop();
             GameManager.Instance.RemoveEntity(this, Kind);
-            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,30);
+            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection,15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject,EnemyCatalogue.Mague);
             enabled = false;
-            StartCoroutine(Restart());
         }
-        if (_stuntPercent>= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].StuntResistance)
+    }
+    private void BulletsStop()
+    {
+        foreach (MagueBullet b in Bullets)
         {
-            _stuntPercent = 0;
-            foreach (MagueBullet b in Bullets)
-            {
-                Destroy(b.gameObject);
-            }
-            _numbOfBullets=0;
-            Bullets.Clear();
-            _fsm.ChangeState(FsmMague.MagueStates.OnStunt);
+            Destroy(b.gameObject);
         }
+        NumbOfBullets = 0;
+        Bullets.Clear();
     }
     IEnumerator Restart()
     {
@@ -113,15 +161,27 @@ public class MagueEnemyModel : Entity, Idamageable
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
         GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
         enabled = true;
-        _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
-        //MagueFactory.instance.ReturnObj(this);
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.Mague, this);
+    }
+    IEnumerator SpawnOrbs()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * 5;
+            LifeOrb p = Instantiate(_lifeOrbPrefab, transform.position + Vector3.up * 1.2f, transform.rotation);
+            p.transform.parent = GameManager.Instance.Gameplay;
+            p.Amount = Random.Range(15, 25);
+            GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
+            yield return new WaitForSeconds(0.5f);
+        }
+        StartCoroutine(Restart());
     }
     public void MagicInstance(Transform _tg)
     {
-       Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[_numbOfBullets].position, transform.rotation));
-       Bullets[_numbOfBullets].Tg = _tg;
-       Bullets[_numbOfBullets].Kind = Kind;
-       _numbOfBullets++;
+       Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[NumbOfBullets].position, transform.rotation));
+       Bullets[NumbOfBullets].Tg = _tg;
+       Bullets[NumbOfBullets].Kind = Kind;
+       NumbOfBullets++;
     }
     public void Shoot()
     {
@@ -131,7 +191,7 @@ public class MagueEnemyModel : Entity, Idamageable
             b.Fire = true;
         }
         Bullets.Clear();
-        _numbOfBullets = 0;
+        NumbOfBullets = 0;
         if (OnAttack != null)
         {
             OnAttack();
@@ -140,37 +200,111 @@ public class MagueEnemyModel : Entity, Idamageable
     public void StartCharging()
     {
         IsCharging = true;
-        Dir=Vector3.zero;
+        //Dir=Vector3.zero;
         if (OnCharging != null) { OnCharging(); }
     }
-    IEnumerator SpawnOrbs()
+    public void OnMovePj()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            Vector2 offset = Random.insideUnitCircle * 5;
-            LifeOrb p = Instantiate(_lifeOrbPrefab, transform.position + Vector3.up * 1.2f, transform.rotation);
-            p.transform.parent = GameManager.Instance.Gameplay;
-            p.Amount = Random.Range(20, 30);
-            GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-    public void OnMovePj(Transform tg)
-    {
-       if(tg == null)
+        if (Tg == null || IsCharging)
         {
             Dir = Vector3.zero;
-            if (OnMove != null)
-            {
-                OnMove(Vector3.zero);
-            }
+            OnMove(Vector3.zero);
+            _collider.material = _stopMat;
             return;
         }
-        AddForce(IaMov.Instance.Arrive(this, tg, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce));
-        if (OnMove != null)
+
+        _collider.material = _movMat;
+        OnMove(Dir);
+
+        Vector3 velocityChange = (new Vector3(Dir.x, 0, Dir.z) *GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity)- new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+
+        _rb.AddForce(velocityChange, ForceMode.Acceleration);
+    }
+    public void OnRotatePj(Vector3 Direction)
+    {
+        if (Direction.sqrMagnitude <= 0.001f) return;
+
+        Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
+        if (flatDir.sqrMagnitude <= 0.001f) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
+        Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
+
+        deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
+        if (angle > 180f) angle -= 360f;
+
+        if (Mathf.Abs(angle) > 1f)
         {
-            OnMove(Dir);
+            float rotForce = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce;
+            Vector3 torqueP = axis.normalized * angle * rotForce;
+            Vector3 torqueD = -_rb.angularVelocity * 10f;
+            _rb.AddTorque(torqueP + torqueD, ForceMode.Acceleration);
         }
+        else
+        {
+            _rb.angularVelocity = Vector3.zero;
+        }
+    }
+    public override void FlyFunct(float height = 4)
+    {
+        BulletsStop();
+        _fsm.ChangeState(FsmMague.MagueStates.OnMidAir);
+        UseGravity = false;
+        _collider.material = _stopMat;
+
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
+
+        float targetY = transform.position.y + height;
+
+        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius, Vector3.up, out RaycastHit hit, height + 0.5f, layerMask: GroundLayer))
+        {
+            targetY = hit.point.y - _ceilingOffset;
+        }
+
+        GetToAir();
+        _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        _floatRoutine = StartCoroutine(GoUpAndFloat(targetY));
+    }
+    private void MantainOnAir()
+    {
+        _gravityValue = 0;
+        if (!_rb.isKinematic)
+        {
+            _rb.velocity = Vector3.zero;
+        }
+    }
+    private IEnumerator GoUpAndFloat(float targetY)
+    {
+        while (transform.position.y < targetY)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            if (!_rb.isKinematic)
+            {
+                Vector3 pos = transform.position;
+                pos.y = Mathf.MoveTowards(pos.y, targetY, 50f * Time.deltaTime);
+                _rb.MovePosition(pos);
+            }
+            yield return null;
+        }
+        UseGravity = true;
+        _gravityValue = 0;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        OnFreeFall();
+    }
+    public override void GetToTheGround()
+    {
+        if (_floatRoutine != null)
+        {
+            StopCoroutine(_floatRoutine);
+            _floatRoutine = null;
+        }
+        GetToGround();
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        _rb.AddForce(-Vector3.up * _groundImpulse, ForceMode.Impulse);
+        UseGravity = true;
     }
     public void TakeHealt(float amount)
     {

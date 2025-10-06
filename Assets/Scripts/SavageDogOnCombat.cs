@@ -18,10 +18,7 @@ public class SavageDogOnCombat : IState
     public void OnEnter()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.ReloadPath, PathReload);
-        _tg = GameManager.Instance.GetCloseEnemy(
-            GameManager.Instance.RefreshEnemy(_entity.Kind),
-            _entity.transform
-        );
+        _tg = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(_entity.Kind),_entity.transform);
     }
 
     public void OnExit()
@@ -35,10 +32,7 @@ public class SavageDogOnCombat : IState
     {
         if (_tg == null)
         {
-            _tg = GameManager.Instance.GetCloseEnemy(
-                GameManager.Instance.RefreshEnemy(_entity.Kind),
-                _entity.transform
-            );
+            _tg = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(_entity.Kind),_entity.transform);
 
             if (_tg == null)
             {
@@ -61,10 +55,7 @@ public class SavageDogOnCombat : IState
         }
         else
         {
-            if (GameManager.Instance.SphereLineOfSight(
-                _entity.transform.position,
-                _tg.transform.position,
-                GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius))
+            if (GameManager.Instance.SphereLineOfSight(_entity.transform.position,_tg.transform.position,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius))
             {
                 HandleCombat();
                 return;
@@ -119,12 +110,7 @@ public class SavageDogOnCombat : IState
             return;
         }
 
-        _pathNodes = PathFinding.Instance.Theta(
-            GameManager.Instance.GetCloseNode(_entity.transform),
-            GameManager.Instance.GetCloseNode(_tg.transform),
-            _entity.transform,
-            GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius
-        );
+        _pathNodes = PathFinding.Instance.Theta(GameManager.Instance.GetCloseNode(_entity.transform),GameManager.Instance.GetCloseNode(_tg.transform),_entity.transform,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius);
 
         if (_pathNodes == null || _pathNodes.Count == 0)
         {
@@ -136,9 +122,7 @@ public class SavageDogOnCombat : IState
         PathNode previous = null;
         foreach (PathNode node in _pathNodes)
         {
-            totalDistance += (previous == null)
-                ? Vector3.Distance(_entity.transform.position, node.transform.position)
-                : Vector3.Distance(previous.transform.position, node.transform.position);
+            totalDistance += (previous == null)? Vector3.Distance(_entity.transform.position, node.transform.position): Vector3.Distance(previous.transform.position, node.transform.position);
             previous = node;
         }
 

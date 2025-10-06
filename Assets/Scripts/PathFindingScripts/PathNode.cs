@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class PathNode : MonoBehaviour
 {
-    [SerializeField] private List<PathNode> _neighbords = new List<PathNode>();
-    [SerializeField] private MazeCell _mazeCellParent;
-    public List<PathNode> Neighbords {  get { return _neighbords; } }
-    [SerializeField] private bool _isTesting=false;
+    public List<PathNode> Neighbords;
+    private MazeCell _mazeCellParent;
 
     // Para la búsqueda
     [HideInInspector] public float gCost;
@@ -16,7 +14,7 @@ public class PathNode : MonoBehaviour
     [HideInInspector] public PathNode cameFrom;
     private void Awake()
     {
-        _neighbords.Clear();
+       Neighbords= new List<PathNode>();
     }
     private void Start()
     {
@@ -25,9 +23,10 @@ public class PathNode : MonoBehaviour
         {
             transform.position = point.point + Vector3.up * 1.5f;
         }
-        if(_mazeCellParent != null && !_isTesting)
+        _mazeCellParent=GetComponentInParent<MazeCell>();
+        if(_mazeCellParent != null)
         {
-            _mazeCellParent._pathNodesList.Add(this);
+            _mazeCellParent._pathNodesList.Add(this); 
             return;
         }
         GameManager.Instance.PreLoadPathNodes.Add(this);
@@ -48,7 +47,7 @@ public class PathNode : MonoBehaviour
             }
             if (GameManager.Instance.SphereLineOfSight(transform.position, N.transform.position, 0.6f) && Vector3.Distance(transform.position, N.transform.position) < 20)
             {
-                _neighbords.Add(N);
+                Neighbords.Add(N);
             }
         }
         yield return null;
@@ -56,7 +55,7 @@ public class PathNode : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        foreach( PathNode node in _neighbords ) { Gizmos.DrawLine(node.transform.position,transform.position); }
+        foreach( PathNode node in Neighbords ) { Gizmos.DrawLine(node.transform.position,transform.position); }
     }
     private void OnDestroy()
     {

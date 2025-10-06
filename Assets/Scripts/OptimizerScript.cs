@@ -11,7 +11,7 @@ public class OptimizerScript : MonoBehaviour
     {
         if(instance == null)
         {
-            instance = this;
+           instance = this;
         }
     }
     public void Refresh(MazeCell p)
@@ -29,7 +29,11 @@ public class OptimizerScript : MonoBehaviour
                     _pathNodes.Add(node);
                 }
            }
-           else if(cell!=p) { cell.TurnOfMazeCell(); }
+           else if(cell!=p)
+           {
+                print("Desactivo " + cell.name);
+                cell.TurnOfMazeCell();
+           }
         }
         foreach(PathNode n in p._pathNodesList)
         {
@@ -40,15 +44,7 @@ public class OptimizerScript : MonoBehaviour
     }
     public void Activate(MazeCell mid)
     {
-        StartCoroutine(PathfindingNodeRefresh(mid));
-    }
-    private IEnumerator PathfindingNodeRefresh(MazeCell mid)
-    {
-        foreach(MazeCell m in MazeCells)
-        {
-           m.PathNodeRefresh();
-           yield return null;
-        }
+        mid.PathNodeRefresh();
         Refresh(mid);
     }
 }

@@ -9,8 +9,8 @@ public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
     public bool Stuned = false;
-    private bool _inAirCombo=false;
-    private Coroutine _orbsRoutine;
+   // private bool _inAirCombo=false;
+    //private Coroutine _orbsRoutine;
     private Coroutine _floatRoutine;
     public FsmSavageDog _fsm=new FsmSavageDog();
     private bool _isReady=false;
@@ -67,7 +67,7 @@ public class SavageDog : Entity, Idamageable
     }
     private void Start()
     {
-        _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj, _rb,EnemyCatalogue.SavageDog));
+        _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj,EnemyCatalogue.SavageDog));
         _fsm.AddState(FsmSavageDog.DogState.OnCombat, new SavageDogOnCombat(_fsm,this));
         _fsm.AddState(FsmSavageDog.DogState.OnMidAir, new OnAir(this, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat)));
         _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
@@ -180,34 +180,33 @@ public class SavageDog : Entity, Idamageable
             return;
         }
         CanAttack = false;
-        _bloodVfx?.Play();
+        if (_bloodVfx != null)
+        {
+            _bloodVfx.Play();
+        }
         Invoke(nameof(InvokeCanAttack), 1.5f);
-        /*if (!IsDamageable) { return; }
-        _stuntPercent += stunt;*/
         Life -= dmg;
         if (!IsGrounded)
         {
+            OnAirHit();
             MantainOnAir();
         }
-        //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnTakeDamage);
-        //SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);
-        //_damageParticles.Play();
-        //lifebar.value=life/maxlife;
-        if (Life <= 0 && _orbsRoutine == null)
+        else
+        {
+            OnHitStunt();
+        }
+        if (Life <= 0)
         {
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
             _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)
             {
-                _orbsRoutine = StartCoroutine(SpawnOrbs());
+               StartCoroutine(SpawnOrbs());
             }
             GameManager.Instance.RemoveEntity(this, Kind);
-            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 50);
+            GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
             enabled = false;
-            //gameObject.SetActive(false);
-            //_fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnPatrol);
-            //StartCoroutine(Restart());
         }
         else
         {
@@ -215,20 +214,6 @@ public class SavageDog : Entity, Idamageable
             {
                 _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
             }
-        }
-       /* if (_stuntPercent >= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].StuntResistance)
-        {
-            _stuntPercent = 0;
-            _fsm.ChangeState(FsmEnemyEsqueleton.AgentStates.OnStunt);
-        }*/
-        if (IsGrounded&&!_inAirCombo)
-        {
-            OnHitStunt();
-        }
-        else
-        {
-            OnAirHit();
-            MantainOnAir();
         }
 
     }
@@ -253,7 +238,6 @@ public class SavageDog : Entity, Idamageable
         }
         StartCoroutine(Restart());
         //GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
-        _orbsRoutine = null;
     }
     public void Attack()
     {
@@ -314,11 +298,6 @@ public class SavageDog : Entity, Idamageable
         _gravityValue = 0;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         OnFreeFall();
-        while (_gravityValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
-        {
-            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-            yield return null;
-        }
     }
     public override void GetToTheGround()
     {

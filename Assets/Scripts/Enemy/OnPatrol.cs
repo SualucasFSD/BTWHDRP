@@ -10,7 +10,6 @@ public class OnPatrol : IState
     private readonly Action _movePos;
     private readonly Action<Vector3> _rotatePos;
     private readonly LayerMask _nodesLayer;
-    private readonly Rigidbody _rb;
     private readonly EnemyCatalogue _kind;
 
     private List<PathNode> _nodes = new List<PathNode>();
@@ -22,14 +21,13 @@ public class OnPatrol : IState
     private float _pathTimer;
     private float _resetTimer;
 
-    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action movePos, Action<Vector3> rotatePos, Rigidbody rb, EnemyCatalogue kind)
+    public OnPatrol(Entity entity, LayerMask nodesLayer, Action combatState, Action movePos, Action<Vector3> rotatePos, EnemyCatalogue kind)
     {
         _entity = entity;
         _nodesLayer = nodesLayer;
         _combatState = combatState;
         _movePos = movePos;
         _rotatePos = rotatePos;
-        _rb = rb;
         _kind = kind;
     }
 

@@ -6,8 +6,8 @@ public class FsmMague
     public enum MagueStates
     {
         OnPatrol,
-        OnPursuit,
         OnCombat,
+        OnMidAir,
         OnStunt,
         OnDeath
     }
