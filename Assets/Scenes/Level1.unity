@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5649.442, g: 5693.141, b: 6711.454, a: 1}
+  m_IndirectSpecularColor: {r: 5649.0513, g: 5692.6606, b: 6711.1025, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -19435,6 +19435,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2890756224583562029, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: _myBlack
+      value: 
+      objectReference: {fileID: 1674662352}
     - target: {fileID: 5466995703051014422, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: ExternalForcesModule.enabled
@@ -22021,6 +22026,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21113aa48b0d1854b8759b27bea1a12e, type: 3}
+--- !u!225 &1674662352 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 4375500280952874873, guid: e58323eb9e1b973408984ae1953b24b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 8862528992837283015}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1677771027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27933,6 +27944,9 @@ MonoBehaviour:
   _camRadius: 0.3
   _minDistance: 0
   _targets: []
+  ShakeEnabled: 1
+  ShakeIntensity: 0.5
+  ShakeDuration: 0.3
 --- !u!1001 &8862528992837283015
 PrefabInstance:
   m_ObjectHideFlags: 0
