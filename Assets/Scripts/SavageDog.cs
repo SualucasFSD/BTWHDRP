@@ -243,7 +243,7 @@ public class SavageDog : Entity, Idamageable
             Vector2 offset = Random.insideUnitCircle * 5;
             LifeOrb p = Instantiate(_lifeOrbPrefab, transform.position + Vector3.up * 1.2f, transform.rotation);
             p.transform.parent = GameManager.Instance.Gameplay;
-            p.Amount = Random.Range(15, 25);
+            p.Amount = Random.Range(50, 75);
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }

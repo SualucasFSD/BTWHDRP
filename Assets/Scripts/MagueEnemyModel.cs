@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
 public class MagueEnemyModel : Entity, Idamageable
@@ -12,7 +13,7 @@ public class MagueEnemyModel : Entity, Idamageable
     [SerializeField] private Collider _collider;
     [SerializeField] private PhysicMaterial _stopMat;
     [SerializeField] private PhysicMaterial _movMat;
-    [SerializeField] private ParticleSystem _damageParticles;
+    [SerializeField] private VisualEffect _damageParticles;
     [SerializeField] private AudioSource _mySource;
 
     [Header("Stats")]
@@ -196,7 +197,7 @@ public class MagueEnemyModel : Entity, Idamageable
             Vector2 offset = Random.insideUnitCircle * 5;
             LifeOrb p = Instantiate(_lifeOrbPrefab, transform.position + Vector3.up * 1.2f, transform.rotation);
             p.transform.parent = GameManager.Instance.Gameplay;
-            p.Amount = Random.Range(15, 25);
+            p.Amount = Random.Range(50, 75);
             GameManager.Instance.LaunchProjectile(p.gameObject, transform.position + new Vector3(offset.x, 0, offset.y));
             yield return new WaitForSeconds(0.5f);
         }

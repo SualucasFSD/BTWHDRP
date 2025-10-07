@@ -293,7 +293,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 93c6713ae0453c8489c6b636e9919810, type: 3}
+  - {fileID: 2100000, guid: ae687980c07651743aa6401278dfa9c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -399,7 +399,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 93c6713ae0453c8489c6b636e9919810, type: 3}
+  - {fileID: 2100000, guid: ae687980c07651743aa6401278dfa9c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -642,7 +642,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 93c6713ae0453c8489c6b636e9919810, type: 3}
+  - {fileID: 2100000, guid: ae687980c07651743aa6401278dfa9c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -748,7 +748,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 93c6713ae0453c8489c6b636e9919810, type: 3}
+  - {fileID: 2100000, guid: ae687980c07651743aa6401278dfa9c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -842,8 +842,8 @@ MonoBehaviour:
   _interactObj: []
   _offset: {x: 0, y: 0, z: -0.5}
   _rooms:
-  - {fileID: 0}
-  - {fileID: 7765312220004777451}
+  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
+  - {fileID: 2452270631820095212, guid: 3fb682100057533488e3dd7fe5e5100b, type: 3}
   _spawnPoint: {fileID: 0}
   _node: {fileID: 0}
   _mazeSpawnPoint: {fileID: 7765312220004777451}
@@ -1364,8 +1364,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1407977303939456349}
   - component: {fileID: 7765312220004777451}
-  - component: {fileID: 4841457262364168907}
-  - component: {fileID: 7748036288716487189}
   - component: {fileID: 3961977223218250724}
   m_Layer: 8
   m_Name: Patio
@@ -1428,48 +1426,6 @@ MonoBehaviour:
   _neighbords: []
   _lights: {fileID: 0}
   _enemies: []
---- !u!65 &4841457262364168907
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7077171652149376914}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 260095
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 389.55832, y: 360.16693, z: 79.28543}
-  m_Center: {x: -194.27914, y: 200.37003, z: 105.82466}
---- !u!65 &7748036288716487189
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7077171652149376914}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 260095
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 68.25371, y: 393.74356, z: 537.36304}
-  m_Center: {x: 2247.266, y: 150.95512, z: 2331.0674}
 --- !u!65 &3961977223218250724
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1489,8 +1445,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 68.25371, y: 393.74356, z: 537.36304}
-  m_Center: {x: -2665, y: 150.95512, z: 2331.0674}
+  m_Size: {x: 4954.3457, y: 393.74356, z: 2505.1377}
+  m_Center: {x: -212.45079, y: 150.95512, z: 1347.1787}
 --- !u!1 &7165656881641839364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,7 +1498,7 @@ MonoBehaviour:
   _offset: {x: 0, y: 0, z: -0.5}
   _rooms:
   - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
-  - {fileID: 7765312220004777451}
+  - {fileID: 2452270631820095212, guid: 3fb682100057533488e3dd7fe5e5100b, type: 3}
   _spawnPoint: {fileID: 0}
   _node: {fileID: 0}
   _mazeSpawnPoint: {fileID: 7765312220004777451}
