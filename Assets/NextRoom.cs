@@ -63,6 +63,7 @@ public class NextRoom : InteractuableGeneric
             _mazeSpawnPoint._primalPathNode[(int)_leftRight].Neighbords.Add(Room._primalPathNode[2]);
             _mazeSpawnPoint._neighbords.Add(Room);
             StartCoroutine(Active(Room));
+            GameManager.Instance.DificultLevel += 0.5f;
         }
         else
         {
@@ -74,6 +75,7 @@ public class NextRoom : InteractuableGeneric
             Room._primalPathNode[2].Neighbords.Add(_node);
             _node.Neighbords.Add(Room._primalPathNode[2]);
             StartCoroutine(Active(Room));
+            GameManager.Instance.DificultLevel += 0.5f;
         }
         GameManager.Instance.RoomsAvailable--;
         //Codigo Para Abrir Puerta

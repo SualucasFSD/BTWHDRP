@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class MazeCell : MonoBehaviour
@@ -12,6 +13,8 @@ public class MazeCell : MonoBehaviour
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
     private NextRoom[] _nextRooms;
+    private bool _isActive=false;
+
     private void Awake()
     {
         _pathNodesList=new List<PathNode> ();
@@ -20,6 +23,40 @@ public class MazeCell : MonoBehaviour
     private void Start()
     {
         OptimizerScript.instance.MazeCells.Add(this);
+        if (_principalDoor != null)
+            _principalDoor.SetActive(false);
+    }
+    private IEnumerator SpawnEnemies()
+    {
+        yield return null;
+        yield return null;
+
+        int enemyCount = Mathf.FloorToInt(5 * GameManager.Instance.DificultLevel);
+        int pathNodeCount = _pathNodesList.Count;
+        List<Vector3> usedPositions = new List<Vector3>();
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Transform node = _pathNodesList[i % pathNodeCount].transform;
+            Vector3 spawnPosition = node.position;
+
+            int duplicates = usedPositions.FindAll(p => Vector3.Distance(p, spawnPosition) < 0.1f).Count;
+            if (duplicates > 0)
+            {
+                float angle = 360f * (duplicates / 6f);
+                Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 1.5f;
+                spawnPosition += offset;
+            }
+
+            usedPositions.Add(spawnPosition);
+
+            EnemyCatalogue selectedType = (Random.value < 0.5f) ? EnemyCatalogue.Mague : EnemyCatalogue.SavageDog;
+
+            Entity p= GenericFactory.Instance.GetObj(selectedType, spawnPosition);
+            _enemies.Add(p.gameObject);
+            p.Cell=this;
+            
+        }
     }
     public void PathNodeRefresh()
     {
@@ -80,7 +117,18 @@ public class MazeCell : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
-        if (p != null) { OptimizerScript.instance.Refresh(this); print("Refreshing"); _principalDoor.SetActive(true); return; }
+        if (p != null)
+        {
+            OptimizerScript.instance.Refresh(this);
+            //print("Refreshing");
+            _principalDoor.SetActive(true);
+            if(!_isActive)
+            {
+                StartCoroutine(SpawnEnemies());
+                _isActive = true;
+            }
+            return;
+        }
         Entity r=other.gameObject.GetComponent<Entity>();
         if(r != null)
         {

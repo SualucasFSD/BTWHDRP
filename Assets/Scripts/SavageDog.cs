@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
 {
@@ -31,7 +32,6 @@ public class SavageDog : Entity, Idamageable
     private float _gravityValue;
     private float _attackTimer;
     public bool CanAttack=true;
-    private MazeCell _cell;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
@@ -58,7 +58,7 @@ public class SavageDog : Entity, Idamageable
     }
     private void OnEnable()
     {
-        _cell = GetComponentInParent<MazeCell>();
+        //_cell = GetComponentInParent<MazeCell>();
         _attackTimer = _attackDelay;
         if (_isReady)
         {
@@ -171,6 +171,7 @@ public class SavageDog : Entity, Idamageable
     private void OnDisable()
     {
         //_fsm.ChangeState(FsmMague.MagueStates.OnDeath);
+        Cell=null;  
         GameManager.Instance.RemoveEntity(this, Kind);
     }
     private void InvokeCanAttack()
@@ -203,9 +204,9 @@ public class SavageDog : Entity, Idamageable
         }
         if (Life <= 0)
         {
-            if (_cell != null)
+            if (Cell != null)
             {
-                _cell.OnEnemyKilledInside(gameObject);
+                Cell.OnEnemyKilledInside(gameObject);
             }
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
             _collider.material = _stopMat;
