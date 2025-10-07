@@ -7,6 +7,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
     [SerializeField] private GameObject[] _mesh;
     [SerializeField] private float _maxLife = 100f;
     [SerializeField] private ParticleSystem _damageEffect;
+    [SerializeField] private bool _isDestroyable;
     private float _life;
     private int _currentStateIndex = -1;
 
@@ -32,13 +33,16 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
             _damageEffect.Play();
         }
 
-        if (_life <= 0)
+        if (_life <= 0&&_isDestroyable)
         {
             // destruir el objeto
-            // Destroy(gameObject);
+            Invoke(nameof(InvokeDestroyable),1.5f);
         }
     }
-
+    private void InvokeDestroyable()
+    {
+        Destroy(gameObject);
+    }
     public void TakeHealt(float amount)
     {
         /*_life += amount;
