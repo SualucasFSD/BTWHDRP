@@ -14,6 +14,7 @@ public class Entity : MonoBehaviour
     protected RaycastHit _groundDetect;
     public float GroundDistanceDetector;
     public Transform Tg;
+    public MazeCell Cell;
     public enum KindOfEntity
     {
         Allies,
