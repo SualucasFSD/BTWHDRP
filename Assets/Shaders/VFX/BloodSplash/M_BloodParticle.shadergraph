@@ -5,6 +5,9 @@
     "m_Properties": [
         {
             "m_Id": "d64208a4e81542e6abb9719cbaaf9f49"
+        },
+        {
+            "m_Id": "5a15eb5faff74120880e945f146f5851"
         }
     ],
     "m_Keywords": [],
@@ -1328,6 +1331,36 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "5a15eb5faff74120880e945f146f5851",
+    "m_Guid": {
+        "m_GuidSerialized": "7816ff39-6c53-4df3-8225-edaf70cb353f"
+    },
+    "m_Name": "Texture2D",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "Texture2D",
+    "m_DefaultReferenceName": "_Texture2D",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"39146dcf9bf15234ab42ebbf475ca01b\",\"type\":3}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "5e41ac56ee1646759acc3d4a62b4cca0",
     "m_Id": 0,
@@ -1943,6 +1976,9 @@
     "m_ChildObjectList": [
         {
             "m_Id": "d64208a4e81542e6abb9719cbaaf9f49"
+        },
+        {
+            "m_Id": "5a15eb5faff74120880e945f146f5851"
         }
     ]
 }
@@ -2088,7 +2124,7 @@
     "m_ShaderOutputName": "Emission",
     "m_StageCapability": 2,
     "m_Value": {
-        "x": 1.4980393648147584,
+        "x": 0.0,
         "y": 0.0,
         "z": 0.0
     },
@@ -2418,7 +2454,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Occlusion",
     "m_StageCapability": 2,
-    "m_Value": 0.0,
+    "m_Value": 1.0,
     "m_DefaultValue": 1.0,
     "m_Labels": []
 }
