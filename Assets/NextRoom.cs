@@ -22,11 +22,20 @@ public class NextRoom : InteractuableGeneric
     }
     private void Start()
     {
-        InteractManager.Instance.AddInteract(this);
+        //InteractManager.Instance.AddInteract(this);
         if (GameManager.Instance.RoomsAvailable < 0)
         {
           InteractManager.Instance.RemoveInteract(this);
+            Destroy(this);
         }
+    }
+    private void OnEnable()
+    {
+        InteractManager.Instance.AddInteract(this);
+    }
+    private void OnDisable()
+    {
+        InteractManager.Instance.RemoveInteract(this);
     }
     public override void Activate()
     {
@@ -34,7 +43,8 @@ public class NextRoom : InteractuableGeneric
         if(GameManager.Instance.RoomsAvailable==0)
         {
            MazeCell Room= Instantiate(_lastRoom);
-           Vector3 pivot = Room.Pivot.transform.position;
+            Room.transform.rotation = transform.rotation;
+            Vector3 pivot = Room.Pivot.transform.position;
            Vector3 offset = Room.transform.position - pivot;
            Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
            Room._neighbords.Add(_mazeSpawnPoint);
@@ -44,6 +54,7 @@ public class NextRoom : InteractuableGeneric
         if (_mazeSpawnPoint != null)
         {
             MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
+            Room.transform.rotation = transform.rotation;
             Vector3 pivot = Room.Pivot.transform.position;
             Vector3 offset = Room.transform.position - pivot;
             Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
@@ -56,6 +67,7 @@ public class NextRoom : InteractuableGeneric
         else
         {
             MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
+            Room.transform.rotation = transform.rotation;
             Vector3 pivot = Room.Pivot.transform.position;
             Vector3 offset = Room.transform.position - pivot;
             Room.transform.position = _spawnPoint.position + offset;

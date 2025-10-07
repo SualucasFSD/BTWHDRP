@@ -42,42 +42,8 @@ public class GenericFactory : MonoBehaviour
         _pool.ReturnObj(type, obj);
     }
 
-    public Entity GetObj(EnemyCatalogue type)
+    public Entity GetObj(EnemyCatalogue type,Vector3 pos)
     {
-        return _pool.GetObject(type);
+        return _pool.GetObject(type,pos);
     }
 }
-/*using UnityEngine;
-
-public class GenericFactory : MonoBehaviour
-{
-  public static GenericFactory Instance { get; private set; }
-
-    private EnemyPool<Entity> _pool;
-
-    [SerializedDictionary("EnemyCatalogue", "Entity")] public SerializedDictionary<EnemyCatalogue,Entity> _prefabs=new SerializedDictionary<EnemyCatalogue, Entity>();
-    [SerializeField] private int _initialAmount;
-    [SerializeField] private Transform _parent;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-        _pool = new EnemyPool<Entity>(InstantiatePrefab, (bullet) => bullet.gameObject.SetActive(false), (bullet) => bullet.gameObject.SetActive(true), _initialAmount);
-    }
-    private Entity InstantiatePrefab(EnemyCatalogue p)
-    {
-       return Instantiate(_prefabs[p],_parent);
-    }
-    public void ReturnObj(EnemyCatalogue p, Entity Obj)
-    {
-        _pool.ReturnObj(p,Obj);
-    }
-    public Entity GetObj(EnemyCatalogue p)
-    {
-        return _pool.GetObject(p);
-    }
-}*/

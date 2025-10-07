@@ -32,7 +32,7 @@ public class MagueEnemyModel : Entity, Idamageable
     public int NumbOfBullets = 0;
     private bool _isReady = false;
     private float _gravityValue;
-
+    private MazeCell _cell;
     private Coroutine _floatRoutine;
     private List<MagueBullet> Bullets = new List<MagueBullet>();
 
@@ -61,6 +61,7 @@ public class MagueEnemyModel : Entity, Idamageable
 
     private void OnEnable()
     {
+        _cell = GetComponentInParent<MazeCell>();
         if (_isReady)
         {
             _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
@@ -147,6 +148,10 @@ public class MagueEnemyModel : Entity, Idamageable
 
         if (Life <= 0)
         {
+            if(_cell!=null)
+            {
+                _cell.OnEnemyKilledInside(gameObject);
+            }
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce;
             _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)

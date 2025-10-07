@@ -18,11 +18,6 @@ public class PathNode : MonoBehaviour
     }
     private void Start()
     {
-        RaycastHit point;
-        if (Physics.Raycast(transform.position, -Vector3.up, out point))
-        {
-            transform.position = point.point + Vector3.up * 1.5f;
-        }
         _mazeCellParent=GetComponentInParent<MazeCell>();
         if(_mazeCellParent != null)
         {
@@ -35,6 +30,11 @@ public class PathNode : MonoBehaviour
     }
     private void ReloadEvent(params object[] obj)
     {
+        RaycastHit point;
+        if (Physics.Raycast(transform.position, -Vector3.up, out point))
+        {
+            transform.position = point.point + Vector3.up * 1.5f;
+        }
         StartCoroutine(ReloadRoutine());
     }
     public IEnumerator ReloadRoutine()

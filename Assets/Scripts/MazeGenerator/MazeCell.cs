@@ -4,12 +4,14 @@ using UnityEngine;
 public class MazeCell : MonoBehaviour
 {
     public GameObject Pivot;
+    [SerializeField] private GameObject _principalDoor;
     public Transform[] RigtLeftSpawnVector = new Transform[2];
     public PathNode[] _primalPathNode;
     public List<PathNode> _pathNodesList=new List<PathNode>();
     public List<MazeCell> _neighbords=new List<MazeCell>();
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
+    private NextRoom[] _nextRooms;
     private void Awake()
     {
         _pathNodesList=new List<PathNode> ();
@@ -21,6 +23,11 @@ public class MazeCell : MonoBehaviour
     }
     public void PathNodeRefresh()
     {
+        _nextRooms = GetComponentsInChildren<NextRoom>();
+        foreach (NextRoom r in _nextRooms)
+        {
+            r.enabled = false;
+        }
         if (_pathNodesList.Count <= 0 || _pathNodesList == null)
         {
             print("No Se Cargo");
@@ -31,7 +38,6 @@ public class MazeCell : MonoBehaviour
         }
        foreach(PathNode node in _pathNodesList)
         {
-           // node.Neighbords.Clear();
             foreach(PathNode n in _pathNodesList)
             {
                 if(node==n)
@@ -74,7 +80,7 @@ public class MazeCell : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
-        if (p != null) { OptimizerScript.instance.Refresh(this); print("Refreshing"); return; }
+        if (p != null) { OptimizerScript.instance.Refresh(this); print("Refreshing"); _principalDoor.SetActive(true); return; }
         Entity r=other.gameObject.GetComponent<Entity>();
         if(r != null)
         {
@@ -104,6 +110,20 @@ public class MazeCell : MonoBehaviour
         {
             Gizmos.DrawWireCube(_primalPathNode[2].transform.position, new Vector3(1, 1, 1));
         }
-        //Gizmos.DrawWireSphere(transform.position, 2);
+    }
+    public void OnEnemyKilledInside(GameObject p)
+    {
+        _enemies.Remove(p);
+        Comprobate();
+    }
+    private void Comprobate()
+    {
+      if(_enemies.Count<=0)
+      {
+            foreach (NextRoom r in _nextRooms)
+            {
+                r.enabled = true;
+            }
+        }
     }
 }

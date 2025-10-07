@@ -45,18 +45,22 @@ public class InteractManager: MonoBehaviour
             }
 
             _current = nearest;
+          if (_current != null)
+          {
+            _canvasInteract.transform.position = _current.transform.TransformPoint(_current._offset);
+            _canvasInteract.transform.LookAt(Camera.main.transform.position);
 
-            if (_current != null)
+            if (Input.GetButtonDown("Interact"))
             {
-                _canvasInteract.transform.position = _current.transform.position + _current._offset;
-                _canvasInteract.transform.LookAt(Camera.main.transform.position);
-               if (Input.GetButtonDown("Interact"))
-               {
-                 _current.Interacting();
-                _canvasInteract.transform.position= Vector3.up * -10000f;
+                _current.Interacting();
+                _canvasInteract.transform.position = Vector3.up * -10000f;
             }
-            }
+          }
+        else
+        {
+            _canvasInteract.transform.position = Vector3.up * -10000f;
         }
+    }
 
         public void AddInteract(Interact p)
         {
