@@ -97,4 +97,13 @@ public class MazeCell : MonoBehaviour
             _enemies.Remove(r.gameObject);
         }
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        if (_primalPathNode[2]!=null)
+        {
+            Gizmos.DrawWireCube(_primalPathNode[2].transform.position, new Vector3(1, 1, 1));
+        }
+        //Gizmos.DrawWireSphere(transform.position, 2);
+    }
 }

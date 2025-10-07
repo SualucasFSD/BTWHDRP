@@ -85,4 +85,10 @@ public class NextRoom : InteractuableGeneric
     {
         InteractManager.Instance.RemoveInteract(this);
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position,new Vector3(1,1,1));
+        //Gizmos.DrawWireSphere(transform.position, 2);
+    }
 }
