@@ -31,6 +31,7 @@ public class NextRoom : InteractuableGeneric
     }
     private void OnEnable()
     {
+        print("Listo");
         InteractManager.Instance.AddInteract(this);
     }
     private void OnDisable()
@@ -39,6 +40,10 @@ public class NextRoom : InteractuableGeneric
     }
     public override void Activate()
     {
+        foreach(var i in _interactObj)
+        {
+            i.SetActive(false);
+        }
         InteractManager.Instance.RemoveInteract(this);
         if(GameManager.Instance.RoomsAvailable==0)
         {

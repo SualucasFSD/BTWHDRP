@@ -3,7 +3,7 @@ using UnityEngine;
 public class Interact : MonoBehaviour
 {
     public bool _isActive=false;
-    [SerializeField] private GameObject[] _interactObj;
+    public GameObject[] _interactObj;
     public Vector3 _offset;
     public virtual void Interacting()
     {

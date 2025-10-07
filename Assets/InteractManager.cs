@@ -13,11 +13,12 @@ public class InteractManager: MonoBehaviour
 
         private void Awake()
         {
-            if (Instance != null && Instance != this)
+            if (Instance != null)
             {
                 Destroy(gameObject);
                 return;
             }
+        //print("Ready");
             Instance = this;
         _canvasInteract = Instantiate(_prefab);
         _canvasInteract.transform.position = Vector3.up * -10000f;

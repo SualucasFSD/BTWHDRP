@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5649.065, g: 5692.567, b: 6711.1025, a: 1}
+  m_IndirectSpecularColor: {r: 5652.654, g: 5695.5527, b: 6711.97, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6080,35 +6080,15 @@ GameObject:
   - component: {fileID: 473212464}
   - component: {fileID: 473212463}
   - component: {fileID: 473212462}
-  - component: {fileID: 473212461}
+  - component: {fileID: 473212465}
+  - component: {fileID: 473212466}
   m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!65 &473212461
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 473212460}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_IsActive: 1
 --- !u!23 &473212462
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6116,7 +6096,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 473212460}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -6168,12 +6148,50 @@ Transform:
   m_GameObject: {fileID: 473212460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.63, y: 2.2, z: 43.873}
+  m_LocalPosition: {x: -5.63, y: 2.632, z: 44.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &473212465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473212460}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76dd3d6eea7a0724cb5e05baa4aac4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isActive: 0
+  _interactObj:
+  - {fileID: 622948693}
+  - {fileID: 1626576807}
+  _offset: {x: 0, y: 0, z: -0.5}
+  _rooms:
+  - {fileID: 2452270631820095212, guid: 3fb682100057533488e3dd7fe5e5100b, type: 3}
+  - {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577, type: 3}
+  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
+  _spawnPoint: {fileID: 473212464}
+  _node: {fileID: 1545463995}
+  _mazeSpawnPoint: {fileID: 0}
+  _leftRight: 0
+  _lastRoom: {fileID: 0}
+--- !u!114 &473212466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473212460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b7079110bbeee4997aa6ecd60804a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &474811286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1144501088173105929, guid: 21113aa48b0d1854b8759b27bea1a12e,
@@ -8543,7 +8561,7 @@ MonoBehaviour:
       Value: {fileID: 3367560071767597638, guid: e72d11765f16257489d932e2327d3c4a,
         type: 3}
   _initialAmount: 3
-  _parent: {fileID: 0}
+  _parent: {fileID: 530272009}
 --- !u!4 &648870927 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5138934356314045200, guid: d972180aebe9f7f4ca0f55cd29634987,
@@ -17882,44 +17900,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6038473819531558864, guid: f1b40c7aaa4c6414881f24071bfbc6dd,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1318732543}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1b40c7aaa4c6414881f24071bfbc6dd, type: 3}
---- !u!1 &1318732538 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6038473819531558864, guid: f1b40c7aaa4c6414881f24071bfbc6dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1318732537}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1318732543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1318732538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76dd3d6eea7a0724cb5e05baa4aac4bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isActive: 0
-  _interactObj:
-  - {fileID: 622948693}
-  - {fileID: 1626576807}
-  _offset: {x: 0, y: 2, z: -0.5}
-  _rooms:
-  - {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577, type: 3}
-  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
-  - {fileID: 2452270631820095212, guid: 3fb682100057533488e3dd7fe5e5100b, type: 3}
-  _spawnPoint: {fileID: 473212464}
-  _node: {fileID: 1545463995}
-  _mazeSpawnPoint: {fileID: 0}
-  _leftRight: 0
-  _lastRoom: {fileID: 0}
 --- !u!4 &1320771675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4777241432033539465, guid: 7281ccc67fc828643b72f04ffb50b97a,
@@ -23061,7 +23043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbae5e44e6a979044a7996b35f667883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  svc: {fileID: 0}
+  svc: {fileID: 20000000, guid: c111b11a7bb1e634eb0714890d6442f8, type: 2}
   ConfigurationEnemys:
   - {fileID: 11400000, guid: 2d88cdcb90ee30b49b2b05178d527e06, type: 2}
   - {fileID: 11400000, guid: a27911cd249a94840842ea903e432e06, type: 2}
@@ -23078,8 +23060,8 @@ MonoBehaviour:
   Timer: 0
   Gameplay: {fileID: 530272009}
   LaunchAngle: 45
-  RoomsAvailable: 100
-  DificultLevel: 1
+  RoomsAvailable: 10
+  DificultLevel: 0
 --- !u!114 &1716337315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28718,10 +28700,10 @@ SceneRoots:
   - {fileID: 2013410475}
   - {fileID: 530272009}
   - {fileID: 911289774}
-  - {fileID: 303757767}
   - {fileID: 708281700}
   - {fileID: 958128001}
   - {fileID: 1852297853}
   - {fileID: 1007622907}
   - {fileID: 8862528992837283015}
   - {fileID: 473212464}
+  - {fileID: 303757767}
