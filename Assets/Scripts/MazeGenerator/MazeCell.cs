@@ -33,26 +33,26 @@ public class MazeCell : MonoBehaviour
 
         int enemyCount = Mathf.FloorToInt(5 * GameManager.Instance.DificultLevel);
         int pathNodeCount = _pathNodesList.Count;
-        List<Vector3> usedPositions = new List<Vector3>();
+        //List<Vector3> usedPositions = new List<Vector3>();
 
         for (int i = 0; i < enemyCount; i++)
         {
             Transform node = _pathNodesList[i % pathNodeCount].transform;
             Vector3 spawnPosition = node.position;
 
-            int duplicates = usedPositions.FindAll(p => Vector3.Distance(p, spawnPosition) < 0.1f).Count;
+            /*int duplicates = usedPositions.FindAll(p => Vector3.Distance(p, spawnPosition) < 0.1f).Count;
             if (duplicates > 0)
             {
-                float angle = 360f * (duplicates / 6f);
+                float angle = 360f * (duplicates / 1f);
                 Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 1.5f;
                 spawnPosition += offset;
             }
 
             usedPositions.Add(spawnPosition);
-
+             */
             EnemyCatalogue selectedType = (Random.value < 0.5f) ? EnemyCatalogue.Mague : EnemyCatalogue.SavageDog;
 
-            Entity p= GenericFactory.Instance.GetObj(selectedType, spawnPosition);
+            Entity p= GenericFactory.Instance.GetObj(selectedType, _pathNodesList[Random.Range(0,_pathNodesList.Count)].transform.position);
             _enemies.Add(p.gameObject);
             p.Cell=this;
             
