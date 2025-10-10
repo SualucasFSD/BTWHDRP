@@ -22,8 +22,8 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private VisualEffect _bloodVfx;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] private LayerMask _nodeLayer;
-    [SerializeField] private PhysicMaterial _movMat;
-    [SerializeField] private PhysicMaterial _stopMat;
+    [SerializeField] private PhysicsMaterial _movMat;
+    [SerializeField] private PhysicsMaterial _stopMat;
     [SerializeField] private float _ceilingOffset;
     [SerializeField] private float _groundImpulse=2500f;
     [SerializeField] private float _attackDelay=2.5f;
@@ -129,39 +129,18 @@ public class SavageDog : Entity, Idamageable
         {
             OnMove(Dir);
         }
-        Vector3 velocityChange = (new Vector3(Dir.x,0,Dir.z) * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+        Vector3 velocityChange = (new Vector3(Dir.x,0,Dir.z) * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity) - new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
         _rb.AddForce(velocityChange, ForceMode.Acceleration);
     }
     public void OnRotatePj(Vector3 Direction)
     {
-        if (Direction.sqrMagnitude > 0.001f ||CanAttack)
-        {
-            Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
+        if (_rb == null) return;
+        if (Direction.sqrMagnitude <= 0.001f && !CanAttack) return;
 
-            if (flatDir.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
-                Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
+        Direction.y = 0f;
+        if (Direction.sqrMagnitude < 0.0001f) return;
 
-                deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
-                if (angle > 180f) angle -= 360f;
-
-                if (Mathf.Abs(angle) > 1f)
-                {
-                    float rotForce = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce;
-
-                    Vector3 torqueP = axis.normalized * angle * rotForce;
-
-                    Vector3 torqueD = -_rb.angularVelocity * 10f;
-
-                    _rb.AddTorque(torqueP + torqueD, ForceMode.Acceleration);
-                }
-                else
-                {
-                    _rb.angularVelocity = Vector3.zero;
-                }
-            }
-        }
+        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, Quaternion.LookRotation(Direction.normalized, Vector3.up), GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce * Time.fixedDeltaTime));
     }
     private void AddForce(Vector3 target)
     {
@@ -269,7 +248,7 @@ public class SavageDog : Entity, Idamageable
 
         if (!_rb.isKinematic)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
 
         float targetY = transform.position.y + height;
@@ -288,7 +267,7 @@ public class SavageDog : Entity, Idamageable
         _gravityValue = 0;
         if (!_rb.isKinematic)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
     private IEnumerator GoUpAndFloat(float targetY)

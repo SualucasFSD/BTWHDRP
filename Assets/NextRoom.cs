@@ -31,7 +31,7 @@ public class NextRoom : InteractuableGeneric
     }
     private void OnEnable()
     {
-        print("Listo");
+        //print("Listo");
         InteractManager.Instance.AddInteract(this);
     }
     private void OnDisable()

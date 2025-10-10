@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
 
         if (denominator <= 0)
         {
-            Debug.LogWarning("No hay solución real: angulo muy bajo o objetivo demasiado alto");
+            Debug.LogWarning("No hay soluciï¿½n real: angulo muy bajo o objetivo demasiado alto");
             return;
         }
 
@@ -277,6 +277,6 @@ public class GameManager : MonoBehaviour
 
         Vector3 finalVelocity = velocityXZ + Vector3.up * velocityY;
 
-        _rb.velocity = finalVelocity;
+        _rb.linearVelocity = finalVelocity;
     }
 }

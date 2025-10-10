@@ -28,7 +28,7 @@ public class ParabelShoot : MonoBehaviour
         float angleRad = LaunchAngle * Mathf.Deg2Rad;
         float gravity = Mathf.Abs(Physics.gravity.y);
 
-        // Fórmula completa
+        // Fï¿½rmula completa
         float cosAngle = Mathf.Cos(angleRad);
         float sinAngle = Mathf.Sin(angleRad);
 
@@ -37,19 +37,19 @@ public class ParabelShoot : MonoBehaviour
 
         if (denominator <= 0)
         {
-            Debug.LogWarning("No hay solución real: angulo muy bajo o objetivo demasiado alto");
+            Debug.LogWarning("No hay soluciï¿½n real: angulo muy bajo o objetivo demasiado alto");
             return;
         }
 
         float velocity = Mathf.Sqrt(numerator / denominator);
 
-        // Dirección final del disparo
+        // Direcciï¿½n final del disparo
         Vector3 velocityXZ = toTargetXZ.normalized * velocity * cosAngle;
         float velocityY = velocity * sinAngle;
 
         Vector3 finalVelocity = velocityXZ + Vector3.up * velocityY;
 
-        _rb.velocity = finalVelocity;
+        _rb.linearVelocity = finalVelocity;
     }
 }
 

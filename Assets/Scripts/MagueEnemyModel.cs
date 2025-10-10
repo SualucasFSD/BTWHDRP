@@ -11,8 +11,8 @@ public class MagueEnemyModel : Entity, Idamageable
     [Header("References")]
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Collider _collider;
-    [SerializeField] private PhysicMaterial _stopMat;
-    [SerializeField] private PhysicMaterial _movMat;
+    [SerializeField] private PhysicsMaterial _stopMat;
+    [SerializeField] private PhysicsMaterial _movMat;
     [SerializeField] private VisualEffect _damageParticles;
     [SerializeField] private AudioSource _mySource;
 
@@ -245,34 +245,20 @@ public class MagueEnemyModel : Entity, Idamageable
 
         Vector3 velocityChange = (new Vector3(Dir.x, 0, Dir.z) *
             GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Velocity)
-            - new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+            - new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
 
         _rb.AddForce(velocityChange, ForceMode.Acceleration);
     }
 
     public void OnRotatePj(Vector3 Direction)
-    {
+    { 
+        if (_rb == null) return;
         if (Direction.sqrMagnitude <= 0.001f) return;
 
-        Vector3 flatDir = new Vector3(Direction.x, 0f, Direction.z).normalized;
-        if (flatDir.sqrMagnitude <= 0.001f) return;
+        Direction.y = 0f;
+        if (Direction.sqrMagnitude < 0.0001f) return;
 
-        Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
-        Quaternion deltaRot = targetRot * Quaternion.Inverse(_rb.rotation);
-        deltaRot.ToAngleAxis(out float angle, out Vector3 axis);
-        if (angle > 180f) angle -= 360f;
-
-        if (Mathf.Abs(angle) > 1f)
-        {
-            float rotForce = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].RotForce;
-            Vector3 torqueP = axis.normalized * angle * rotForce;
-            Vector3 torqueD = -_rb.angularVelocity * 10f;
-            _rb.AddTorque(torqueP + torqueD, ForceMode.Acceleration);
-        }
-        else
-        {
-            _rb.angularVelocity = Vector3.zero;
-        }
+        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, Quaternion.LookRotation(Direction.normalized, Vector3.up), GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].RotForce * Time.fixedDeltaTime));
     }
 
     public override void FlyFunct(float height = 4)
@@ -284,7 +270,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _collider.material = _stopMat;
 
         if (!_rb.isKinematic)
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
 
         float targetY = transform.position.y + height;
 
@@ -305,7 +291,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _gravityValue = 0;
         if (!_rb.isKinematic)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
 

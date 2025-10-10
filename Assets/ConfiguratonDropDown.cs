@@ -16,16 +16,16 @@ public class ConfiguratonDropDown : MonoBehaviour
         switch (index)
         {
             case 0:
-                GraphicsSettings.renderPipelineAsset = lowAsset;
+                GraphicsSettings.defaultRenderPipeline = lowAsset;
                 break;
             case 1:
-                GraphicsSettings.renderPipelineAsset = mediumAsset;
+                GraphicsSettings.defaultRenderPipeline = mediumAsset;
                 break;
             case 2:
-                GraphicsSettings.renderPipelineAsset = highAsset;
+                GraphicsSettings.defaultRenderPipeline = highAsset;
                 break;
             default:
-                Debug.LogWarning("Index de calidad inválido");
+                Debug.LogWarning("Index de calidad invï¿½lido");
                 break;
         }
 

@@ -42,10 +42,10 @@ public class Pause : MonoBehaviour
 
             if (!rb.isKinematic)
             {
-                savedVelocities[rb] = rb.velocity;
+                savedVelocities[rb] = rb.linearVelocity;
                 savedAngularVelocities[rb] = rb.angularVelocity;
 
-                rb.velocity = Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.isKinematic = true;
             }
@@ -80,7 +80,7 @@ public class Pause : MonoBehaviour
                 rb.isKinematic = false;
 
                 if (savedVelocities.TryGetValue(rb, out var v))
-                    rb.velocity = v;
+                    rb.linearVelocity = v;
                 if (savedAngularVelocities.TryGetValue(rb, out var av))
                     rb.angularVelocity = av;
             }

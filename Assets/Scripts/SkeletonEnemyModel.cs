@@ -242,7 +242,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
 
         _useGravity = false;
         if (!_rb.isKinematic)
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
 
         float targetY = transform.position.y + height;
 
