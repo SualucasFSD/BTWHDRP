@@ -11,8 +11,8 @@ public class MagueEnemyModel : Entity, Idamageable
     [Header("References")]
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Collider _collider;
-    [SerializeField] private PhysicsMaterial _stopMat;
-    [SerializeField] private PhysicsMaterial _movMat;
+    /*[SerializeField] private PhysicsMaterial _stopMat;
+    [SerializeField] private PhysicsMaterial _movMat;*/
     [SerializeField] private VisualEffect _damageParticles;
     [SerializeField] private AudioSource _mySource;
 
@@ -33,7 +33,7 @@ public class MagueEnemyModel : Entity, Idamageable
     public int NumbOfBullets = 0;
     private bool _isReady = false;
     private float _gravityValue;
-    //private MazeCell _cell;
+    private bool _isDead=false;
     private Coroutine _floatRoutine;
     private List<MagueBullet> Bullets = new List<MagueBullet>();
 
@@ -60,21 +60,35 @@ public class MagueEnemyModel : Entity, Idamageable
         _rb.useGravity = false;
     }
 
+    /*private void OnEnable()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            if (_isReady)
+            {
+                _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
+                Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
+            }
+            GameManager.Instance.AddEntity(this, Kind);
+        }
+    }*/
     private void OnEnable()
     {
-        //_cell = GetComponentInParent<MazeCell>();
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(DelayedInit());
+        }
+    }
+
+    private IEnumerator DelayedInit()
+    {
+        yield return null;
         if (_isReady)
         {
             _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
             Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
         }
         GameManager.Instance.AddEntity(this, Kind);
-    }
-
-    private void OnDisable()
-    {
-        Cell=null;
-        GameManager.Instance.RemoveEntity(this, Kind);
     }
 
     private void Start()
@@ -90,6 +104,10 @@ public class MagueEnemyModel : Entity, Idamageable
 
     private void Update()
     {
+        if(_isDead)
+        {
+            return;
+        }
         _fsm.ArtificialUpdate();
 
         if (_gravityValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce)
@@ -114,6 +132,10 @@ public class MagueEnemyModel : Entity, Idamageable
 
     private void FixedUpdate()
     {
+        if (_isDead)
+        {
+            return;
+        }
         IsGroundedDetector();
         if (UseGravity)
             _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
@@ -134,7 +156,6 @@ public class MagueEnemyModel : Entity, Idamageable
 
         Life -= dmg;
         BulletsStop();
-        _collider.material = _stopMat;
         if (!IsGrounded)
         {
             OnAirHit();
@@ -155,14 +176,16 @@ public class MagueEnemyModel : Entity, Idamageable
                 Cell.OnEnemyKilledInside(gameObject);
             }
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce;
-            _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)
+            {
                 StartCoroutine(SpawnOrbs());
+            }
             BulletsStop();
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Mague);
-            enabled = false;
+            Cell = null;
+            _isDead=true;
         }
         else
         {
@@ -183,10 +206,25 @@ public class MagueEnemyModel : Entity, Idamageable
 
     IEnumerator Restart()
     {
-        yield return new WaitForSeconds(15);
+        /*yield return new WaitForSeconds(15);
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
         GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
-        enabled = true;
+        _isDead = false;
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.Mague, this);*/
+        yield return new WaitForSeconds(15);
+
+        GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
+        _isDead = false;
+        Stuned = false;
+        UseGravity = true;
+        _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce;
+        Dir = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
+        _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
+
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].Life;
+
         GenericFactory.Instance.ReturnObj(EnemyCatalogue.Mague, this);
     }
 
@@ -236,11 +274,11 @@ public class MagueEnemyModel : Entity, Idamageable
         {
             Dir = Vector3.zero;
             OnMove(Vector3.zero);
-            _collider.material = _stopMat;
+            //_collider.material = _stopMat;
             return;
         }
 
-        _collider.material = _movMat;
+        //_collider.material = _movMat;
         OnMove(Dir);
 
         Vector3 velocityChange = (new Vector3(Dir.x, 0, Dir.z) *
@@ -267,7 +305,7 @@ public class MagueEnemyModel : Entity, Idamageable
         Stuned = true;
         _fsm.ChangeState(FsmMague.MagueStates.OnMidAir);
         UseGravity = false;
-        _collider.material = _stopMat;
+        //_collider.material = _stopMat;
 
         if (!_rb.isKinematic)
             _rb.linearVelocity = Vector3.zero;

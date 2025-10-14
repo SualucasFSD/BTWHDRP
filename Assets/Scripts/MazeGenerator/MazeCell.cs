@@ -33,30 +33,38 @@ public class MazeCell : MonoBehaviour
 
         int enemyCount = Mathf.FloorToInt(5 * GameManager.Instance.DificultLevel);
         int pathNodeCount = _pathNodesList.Count;
-        //List<Vector3> usedPositions = new List<Vector3>();
+
+        if (pathNodeCount == 0)
+        {
+            yield break;
+        }
+
+        List<int> shuffledIndices = new List<int>();
+        for (int i = 0; i < pathNodeCount; i++)
+            shuffledIndices.Add(i);
+        for (int i = 0; i < shuffledIndices.Count; i++)
+        {
+            int rand = Random.Range(i, shuffledIndices.Count);
+            (shuffledIndices[i], shuffledIndices[rand]) = (shuffledIndices[rand], shuffledIndices[i]);
+        }
 
         for (int i = 0; i < enemyCount; i++)
         {
-            Transform node = _pathNodesList[i % pathNodeCount].transform;
-            Vector3 spawnPosition = node.position;
+            int nodeIndex = shuffledIndices[i % pathNodeCount];
+            Transform node = _pathNodesList[nodeIndex].transform;
 
-            /*int duplicates = usedPositions.FindAll(p => Vector3.Distance(p, spawnPosition) < 0.1f).Count;
-            if (duplicates > 0)
-            {
-                float angle = 360f * (duplicates / 1f);
-                Vector3 offset = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * 1.5f;
-                spawnPosition += offset;
-            }
+            Vector3 spawnPosition = node.position + Vector3.up * 1f;
 
-            usedPositions.Add(spawnPosition);
-             */
-            EnemyCatalogue selectedType = (Random.value < 0.5f) ? EnemyCatalogue.Mague : EnemyCatalogue.SavageDog;
+            EnemyCatalogue selectedType = (Random.value < 0.5f)
+                ? EnemyCatalogue.Mague
+                : EnemyCatalogue.SavageDog;
 
-            Entity p= GenericFactory.Instance.GetObj(selectedType, _pathNodesList[Random.Range(0,_pathNodesList.Count)].transform.position);
-            _enemies.Add(p.gameObject);
-            p.Cell=this;
-            
+            Entity enemy = GenericFactory.Instance.GetObj(selectedType, spawnPosition);
+            _enemies.Add(enemy.gameObject);
+            enemy.Cell = this;
         }
+
+        GameManager.Instance.DificultLevel += 0.1f;
     }
     public void PathNodeRefresh()
     {
@@ -116,39 +124,17 @@ public class MazeCell : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if(_isActive)
+        {
+            return;
+        }
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
         if (p != null)
         {
             OptimizerScript.instance.Refresh(this);
-            //print("Refreshing");
             _principalDoor.SetActive(true);
-            if(!_isActive)
-            {
-                StartCoroutine(SpawnEnemies());
-                _isActive = true;
-            }
-            return;
-        }
-        Entity r=other.gameObject.GetComponent<Entity>();
-        if(r != null)
-        {
-            print("Enemy In"+ gameObject.name+r.name);
-            if(_enemies.Contains(r.gameObject))
-            {
-                return;
-            }
-            _enemies.Add(r.gameObject);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        PlayerController p = other.gameObject.GetComponent<PlayerController>();
-        if (p != null) {return; }
-        Entity r = other.gameObject.GetComponent<Entity>();
-        if (r != null)
-        {
-            print("Enemy Out" + gameObject.name+ r.name);
-            _enemies.Remove(r.gameObject);
+            StartCoroutine(SpawnEnemies());
+            _isActive=true;
         }
     }
     private void OnDrawGizmos()

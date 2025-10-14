@@ -4,14 +4,11 @@ using System;
 using UnityEngine;
 using UnityEngine.VFX;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
 [RequireComponent(typeof(Rigidbody))]
 public class SavageDog : Entity, Idamageable
 {
     private Rigidbody _rb;
     public bool Stuned = false;
-   // private bool _inAirCombo=false;
-    //private Coroutine _orbsRoutine;
     private Coroutine _floatRoutine;
     public FsmSavageDog _fsm=new FsmSavageDog();
     private bool _isReady=false;
@@ -22,8 +19,6 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private VisualEffect _bloodVfx;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] private LayerMask _nodeLayer;
-    [SerializeField] private PhysicsMaterial _movMat;
-    [SerializeField] private PhysicsMaterial _stopMat;
     [SerializeField] private float _ceilingOffset;
     [SerializeField] private float _groundImpulse=2500f;
     [SerializeField] private float _attackDelay=2.5f;
@@ -32,6 +27,7 @@ public class SavageDog : Entity, Idamageable
     private float _gravityValue;
     private float _attackTimer;
     public bool CanAttack=true;
+    private bool _isDead=false;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
     public event Action OnAttack = delegate { };
@@ -58,8 +54,19 @@ public class SavageDog : Entity, Idamageable
     }
     private void OnEnable()
     {
-        //_cell = GetComponentInParent<MazeCell>();
-        _attackTimer = _attackDelay;
+        if (gameObject.activeInHierarchy)
+        {
+            _attackTimer = _attackDelay;
+            StartCoroutine(DelayedInit());
+        }
+    }
+
+    private IEnumerator DelayedInit()
+    {
+        Debug.Log($"{name} spawn pos antes del delay: {transform.position}");
+        yield return null;
+        Debug.Log($"{name} spawn pos después del delay: {transform.position}");
+        yield return null;
         if (_isReady)
         {
             _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
@@ -77,7 +84,11 @@ public class SavageDog : Entity, Idamageable
     }
     private void Update()
     {
-        if(_attackTimer<_attackDelay)
+        if (_isDead)
+        {
+            return;
+        }
+        if (_attackTimer<_attackDelay)
         {
             _attackTimer += Time.deltaTime;
         }
@@ -94,6 +105,10 @@ public class SavageDog : Entity, Idamageable
     }
     private void FixedUpdate()
     {
+        if (_isDead)
+        {
+            return;
+        }
         IsGroundedDetector();
         if (UseGravity)
         {
@@ -118,12 +133,7 @@ public class SavageDog : Entity, Idamageable
             {
                 OnMove(Vector3.zero);
             }
-            _collider.material=_stopMat;
             return;
-        }
-        if (CanMove)
-        {
-            _collider.material = _movMat;
         }
         if (OnMove != null)
         {
@@ -147,12 +157,6 @@ public class SavageDog : Entity, Idamageable
         if (target.magnitude == 0) { Dir = Vector3.zero; return; }
         Dir = Vector3.ClampMagnitude(Dir + target, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Velocity);
     }
-    private void OnDisable()
-    {
-        //_fsm.ChangeState(FsmMague.MagueStates.OnDeath);
-        Cell=null;  
-        GameManager.Instance.RemoveEntity(this, Kind);
-    }
     private void InvokeCanAttack()
     {
         CanAttack = true;
@@ -163,9 +167,7 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
-        //Stuned=false;
         CanAttack = false;
-        _collider.material = _stopMat;
         if (_bloodVfx != null)
         {
             _bloodVfx.Play();
@@ -188,7 +190,6 @@ public class SavageDog : Entity, Idamageable
                 Cell.OnEnemyKilledInside(gameObject);
             }
             _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
-            _collider.material = _stopMat;
             if (_lifeOrbPrefab != null)
             {
                StartCoroutine(SpawnOrbs());
@@ -196,7 +197,7 @@ public class SavageDog : Entity, Idamageable
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
-            enabled = false;
+            _isDead = true;
         }
         else
         {
@@ -209,11 +210,26 @@ public class SavageDog : Entity, Idamageable
     }
     IEnumerator Restart()
     {
-        yield return new WaitForSeconds(15);
+        /*yield return new WaitForSeconds(15);
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
-        enabled = true;
-        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);
+        _isDead=false;
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog,this);*/
+        yield return new WaitForSeconds(15);
+
+        GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
+        _isDead = false;
+        Stuned = false;
+        UseGravity = true;
+        _gravityValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
+        Dir = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
+        _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
+
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog, this);
     }
     IEnumerator SpawnOrbs()
     {
@@ -244,7 +260,6 @@ public class SavageDog : Entity, Idamageable
     {
         _fsm.ChangeState(FsmSavageDog.DogState.OnMidAir);
         UseGravity = false;
-        _collider.material = _stopMat;
 
         if (!_rb.isKinematic)
         {

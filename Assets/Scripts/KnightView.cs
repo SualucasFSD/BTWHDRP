@@ -179,10 +179,6 @@ public class KnightView : PjView
                 {
                     _pjModel.DesactiveGravity();
                 }
-                if(IsInvoking(nameof(ActiveGravInvoke)))
-                {
-                  CancelInvoke(nameof(ActiveGravInvoke));
-                }
             }
         }
     }
@@ -205,10 +201,6 @@ public class KnightView : PjView
         if(_combosFinish.Count<=0)
         {
             ComboResetGeneral();
-            if (!_pjModel._useGravity)
-            {
-                _pjModel.ActiveGravity();
-            }
             return false;
         }
         return false;
@@ -253,10 +245,7 @@ public class KnightView : PjView
             }
         }
         ComboResetGeneral();
-        if (!_pjModel._useGravity)
-        {
-            _pjModel.ActiveGravity();
-        }
+        _pjModel.ActiveGravity();
     }
 
     //Cancelacion del combo
@@ -279,45 +268,26 @@ public class KnightView : PjView
         ComboResetGeneral();
         if (!_pjModel.IsGrounded)
         {
-            _pjModel.DesactiveGravity();
+            _pjModel._gravityValue = 0;
         }
         _animator.SetTrigger("Dodge");
         EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
     }
     public void EndDodge()
     {
+        print("Finalice dodge");
         _pjModel.IsDodging = false;
         if(!_pjModel.IsGrounded)
         {
             _pjModel.StopPJ();
             _animator.SetTrigger("IsFalling");
         }
-        if (!_pjModel._useGravity)
-        {
-            Invoke(nameof(ActiveGravInvoke), 0.5f);
-        }
+        gameObject.layer = 11;
     }
     #endregion
-    private void ActiveGravInvoke()
-    {
-       _pjModel.ActiveGravity();
-    }
     #region ComboManager Section
-    public void TurnOffTrail()
-    {
-        if (_trail != null)
-        {
-            _trail.gameObject.SetActive(false);
-            _trail.Stop();
-        }
-    }
     public void CauseDamage()
     {
-        /*if (_trail != null)
-        {
-            _trail.gameObject.SetActive(true);
-            _trail.Play();
-        }*/
         Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
         foreach (Collider collider in c)
         {
@@ -343,6 +313,31 @@ public class KnightView : PjView
                 continue;
             }
         }
+        /*Collider[] colliders = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject == gameObject) continue;
+
+            Entity j = collider.GetComponent<Entity>();
+            if (j == null) continue;
+            Vector3 closestPoint = collider.ClosestPoint(transform.position);
+
+            float verticalDifference = Mathf.Abs(transform.position.y - closestPoint.y);
+
+            if (verticalDifference < 1f)
+            {
+                Idamageable l = j.GetComponent<Idamageable>();
+                if (l == null) continue;
+
+                float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
+                if (backFrontAngle > _angle)
+                {
+                    // Calcula la dirección de empuje ignorando la componente vertical
+                    Vector3 pushDirection = new Vector3((j.transform.position - transform.position).x, 0f, (j.transform.position - transform.position).z).normalized;
+                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2f, pushDirection);
+                }
+            }
+        }*/
     }
     public void CauseDamageInAir()
     {
@@ -422,7 +417,7 @@ public class KnightView : PjView
         }
         _pjModel.GetDown();
     }
-    public void DashToTarget(Transform target, float dashForce, float stopDistance = 0.5f, float maxDistance = 5f)
+    /*public void DashToTarget(Transform target, float dashForce, float stopDistance = 0.5f, float maxDistance = 5f)
     {
         if (target == null) return;
 
@@ -441,7 +436,7 @@ public class KnightView : PjView
                 rb.AddForce(impulse.normalized * dashForce, ForceMode.VelocityChange);
             }
         }
-    }
+    }*/
     #endregion
     private void OnAnimatorMove()
     {

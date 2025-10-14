@@ -29,7 +29,8 @@ public class GraphicsScreenMode : MonoBehaviour
 
         foreach (var item in displayModeDropdown.GetComponentsInChildren<TMP_Text>(true))
         {
-            item.enableWordWrapping = false;
+            item.textWrappingMode = TMPro.TextWrappingModes.NoWrap;
+            //item.enableWordWrapping = false;
             item.margin = new Vector4(-5, 5, 10, 5);
         }
     }
