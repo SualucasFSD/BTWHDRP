@@ -63,9 +63,6 @@ public class SavageDog : Entity, Idamageable
 
     private IEnumerator DelayedInit()
     {
-        Debug.Log($"{name} spawn pos antes del delay: {transform.position}");
-        yield return null;
-        Debug.Log($"{name} spawn pos después del delay: {transform.position}");
         yield return null;
         if (_isReady)
         {
@@ -197,6 +194,7 @@ public class SavageDog : Entity, Idamageable
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
+            Debug.Log("Murio");
             _isDead = true;
         }
         else

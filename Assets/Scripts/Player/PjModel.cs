@@ -406,8 +406,8 @@ public class PjModel : Entity, Idamageable
 
         if(_powerActivate[(EnemyCatalogue)obj[1]].Item1<=0)
         {
-            if (!_myAbilityText.isPlaying)
-                _myAbilityText.StartCoroutine(_myAbilityText.OnAbilityAcquired());
+            /*if (!_myAbilityText.isPlaying)
+                _myAbilityText.StartCoroutine(_myAbilityText.OnAbilityAcquired());*/
             _powerActivate[(EnemyCatalogue)obj[1]].Item2.Active();
             _powerActivate.Remove((EnemyCatalogue)obj[1]);
         }
@@ -472,6 +472,7 @@ public class PjModel : Entity, Idamageable
 
     private void OnDestroy()
     {
+        EventManager.Unscribe(EventManager.KindOfEvent.OnEnemyKilled, EnemyKilled);
         EventManager.Unscribe(EventManager.KindOfEvent.JumpPj, JumpExecute);
         EventManager.Unscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
     }

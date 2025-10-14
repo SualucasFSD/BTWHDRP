@@ -76,7 +76,7 @@ public class MaguePower : MonoBehaviour, IPjPower
         bullet.Tg = _tg;
         bullet.Kind = Kind;
         bullet.transform.parent = transform;
-
+       
         _bullets.Add(bullet);
         _numbOfBullets++;
     }

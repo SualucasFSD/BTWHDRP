@@ -6,7 +6,7 @@ ShaderVariantCollection:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ShaderVariant
+  m_Name: ShadersPrecom
   m_Shaders:
   - first: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
     second:
@@ -18,6 +18,11 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: 33a2079f6a2db4c4eb2e44b33f4ddf6b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
   - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -26,10 +31,6 @@ ShaderVariantCollection:
   - first: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH
-        passType: 4
-      - keywords: 
-        passType: 8
       - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
@@ -46,11 +47,6 @@ ShaderVariantCollection:
         passType: 0
       - keywords: PROCEDURAL_INSTANCING_ON SHADOWS_DEPTH _ALPHABLEND_ON
         passType: 8
-      - keywords: 
-        passType: 13
-  - first: {fileID: 10490, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
       - keywords: 
         passType: 13
   - first: {fileID: 9000, guid: 0000000000000000f000000000000000, type: 0}
@@ -91,6 +87,11 @@ ShaderVariantCollection:
   - first: {fileID: 9103, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
+      - keywords: UIE_FORCE_GAMMA
+        passType: 0
+  - first: {fileID: 19011, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
       - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
@@ -98,168 +99,173 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON
         passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-        passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
-          _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
-        passType: 8
-      - keywords: _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
-          _TRANSPARENT_WRITES_MOTION_VEC
-        passType: 8
-      - keywords: _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+      - keywords: _DOUBLESIDED_ON
         passType: 8
       - keywords: 
         passType: 11
       - keywords: 
         passType: 12
-      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON
         passType: 12
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON
         passType: 12
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 12
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON _MASKMAP
         passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+      - keywords: _MASKMAP
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _MASKMAP
+          _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _ENABLE_FOG_ON_TRANSPARENT _MASKMAP
-          _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+          _TRANSPARENT_WRITES_MOTION_VEC
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _ALPHATEST_ON _DISABLE_DECALS
-          _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _MASKMAP _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
-          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
-          _MASKMAP _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
-          _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _MASKMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: DECALS_OFF
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON
         passType: 13
-      - keywords: PROBE_VOLUMES_OFF
-        passType: 13
-      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-        passType: 13
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
           _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+      - keywords: _ALPHATEST_ON _MASKMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
+      - keywords: _DISABLE_DECALS _DOUBLESIDED_ON
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: _DOUBLESIDED_ON
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
+      - keywords: _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP
+      - keywords: _DOUBLESIDED_ON _NORMALMAP
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+      - keywords: _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
-          _TRANSPARENT_WRITES_MOTION_VEC
+      - keywords: _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _MASKMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+        passType: 13
+      - keywords: _NORMALMAP
+        passType: 13
+      - keywords: _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
         passType: 13
+  - first: {fileID: 4800000, guid: 035941b63024d1943af48811c1db20d9, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 2fcfb8d92f45e4549b3f0bad5d0654bf, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 02ae56f4306413c4a96dcf005cde1971, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 7e3722d0388000848acb25fd3cc8c088, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: cef5ba33ee5063d4c8b495d2292e394d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 8ea49ef16606acd489439e676ab84040, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 3d1574f1cdfa0ce4995f9bc79ed7f8ec, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 42dfcc8fe803ece4096c58630689982f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: e22fc1942c664490980b8793dd4a163d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: b22ad378c678348729d3a3f981b9f270, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 67d6171b0acc6554aad48c845ec7e67f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 2ad7ce40f0dbaf64dadef1f58d8524d3, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: BILINEAR
+        passType: 0
+      - keywords: NEAREST_DEPTH
+        passType: 0
   - first: {fileID: 4800000, guid: c1d1d149a043a5349ba367da6c2051ba, type: 3}
     second:
       variants:
@@ -273,6 +279,8 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: c7c2bd17b06ceb4468e14081aaf1b96f, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 0
       - keywords: SHOW_LIGHT_CATEGORIES USE_FPTL_LIGHTLIST
         passType: 0
   - first: {fileID: 4800000, guid: e874aca2df8300a488258738c31f85cf, type: 3}
@@ -320,20 +328,6 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
-        passType: 13
-  - first: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
-        passType: 13
   - first: {fileID: 4800000, guid: 0024f9d09a828734192f3e1cd5931745, type: 3}
     second:
       variants:
@@ -344,110 +338,12 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 00dd221e34a6ab349a1196b0f2fab693, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: AREA_SHADOW_MEDIUM PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF SHADOW_LOW
-        passType: 0
-  - first: {fileID: 4800000, guid: 2fcfb8d92f45e4549b3f0bad5d0654bf, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 02ae56f4306413c4a96dcf005cde1971, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: dedaf4ea0d134ca4aad1d95a558c46e5, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: AREA_SHADOW_MEDIUM PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF SHADOW_LOW
-        passType: 0
-      - keywords: AREA_SHADOW_MEDIUM SHADOW_LOW VARIANT0
-        passType: 0
-  - first: {fileID: 4800000, guid: bfa43a48695613b4ea19c58858ae1a61, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: AREA_SHADOW_MEDIUM SHADOW_HIGH
-        passType: 0
-      - keywords: AREA_SHADOW_MEDIUM SHADOW_LOW
-        passType: 0
   - first: {fileID: 4800000, guid: 2e37131331fbdca449b1a2bc47a639ca, type: 3}
     second:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 8371b763f09c7304889c22aa97ebdfd2, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 035941b63024d1943af48811c1db20d9, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 8ea49ef16606acd489439e676ab84040, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 3d1574f1cdfa0ce4995f9bc79ed7f8ec, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 42dfcc8fe803ece4096c58630689982f, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: e22fc1942c664490980b8793dd4a163d, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: b22ad378c678348729d3a3f981b9f270, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 67d6171b0acc6554aad48c845ec7e67f, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: CHECKERBOARD_DOWNSAMPLE
-        passType: 0
-      - keywords: MIN_DOWNSAMPLE
-        passType: 0
-  - first: {fileID: 4800000, guid: 2ad7ce40f0dbaf64dadef1f58d8524d3, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: BILINEAR
-        passType: 0
-      - keywords: NEAREST_DEPTH
-        passType: 0
   - first: {fileID: 4800000, guid: d05913e251bed7a4992c921c62e1b647, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 123ed592ad5c2494b8aed301fd609e7b, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 5685fd17e71045e4ca9fefca38a7c177, type: 3}
     second:
       variants:
       - keywords: 
@@ -457,14 +353,17 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+      - keywords: NO_WATER
+        passType: 0
   - first: {fileID: 4800000, guid: 9bd32a6ece529fd4f9408b8d7e00c10d, type: 3}
     second:
       variants:
       - keywords: 
         passType: 0
-      - keywords: AREA_SHADOW_MEDIUM SHADOW_HIGH USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH PUNCTUAL_SHADOW_HIGH
+          USE_FPTL_LIGHTLIST
         passType: 0
-      - keywords: AREA_SHADOW_MEDIUM SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW USE_FPTL_LIGHTLIST
         passType: 0
   - first: {fileID: 4800000, guid: 48db2705cf2856d4e893eb30a6892d1b, type: 3}
     second:
@@ -481,17 +380,16 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 001a47fa123e95a4bba13ecb0442d944, type: 3}
-    second:
-      variants:
-      - keywords: LAYER1_STATIC LAYER2_OFF
+      - keywords: LOCAL_SKY
         passType: 0
-  - first: {fileID: 4800000, guid: 12f1a69ddf916f042ae6ce8a994506f3, type: 3}
+  - first: {fileID: 4800000, guid: 001a47fa123e95a4bba13ecb0442d944, type: 3}
     second:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: 286ed840dd86d4d4988916f3df5a1429, type: 3}
+      - keywords: LAYER1_STATIC LAYER2_OFF
+        passType: 0
+  - first: {fileID: 4800000, guid: 8d9fbe0862434a2298748d335b9abea5, type: 3}
     second:
       variants:
       - keywords: 
@@ -521,6 +419,26 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: c243aac96dda5fa40bed693ed5ba02c4, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 123ed592ad5c2494b8aed301fd609e7b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 5685fd17e71045e4ca9fefca38a7c177, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 4d2c6daf0d4968748bb5b82d5016fdea, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: 595434cc3b6405246b6cd3086d0b6f7d, type: 3}
     second:
       variants:
@@ -531,21 +449,6 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 4800000, guid: c243aac96dda5fa40bed693ed5ba02c4, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: 7e3722d0388000848acb25fd3cc8c088, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: cef5ba33ee5063d4c8b495d2292e394d, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
   - first: {fileID: 4800000, guid: e6255f98cf405eb45ab6f9006cf11e1f, type: 3}
     second:
       variants:
@@ -556,12 +459,26 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: bfa43a48695613b4ea19c58858ae1a61, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH PUNCTUAL_SHADOW_HIGH
+        passType: 0
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+        passType: 0
   - first: {fileID: 4800000, guid: e3cab24f27741f44d8af1e94d006267c, type: 3}
     second:
       variants:
       - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: 93d40cc9a6e13994f86f576a624efa18, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 8371b763f09c7304889c22aa97ebdfd2, type: 3}
     second:
       variants:
       - keywords: 
@@ -575,6 +492,8 @@ ShaderVariantCollection:
     second:
       variants:
       - keywords: 
+        passType: 0
+      - keywords: DECAL_SURFACE_GRADIENT
         passType: 0
   - first: {fileID: 4800000, guid: 6e6a4a3dbb788234594aa74f2d6aeb6f, type: 3}
     second:
@@ -599,6 +518,8 @@ ShaderVariantCollection:
       - keywords: APPLY_AFTER_POST
         passType: 0
       - keywords: APPLY_AFTER_POST DITHER
+        passType: 0
+      - keywords: APPLY_AFTER_POST DITHER FXAA
         passType: 0
   - first: {fileID: 4800000, guid: 3330c1503ea8c6d4d9408df3f64227eb, type: 3}
     second:
@@ -628,6 +549,11 @@ ShaderVariantCollection:
         passType: 0
       - keywords: 
         passType: 13
+  - first: {fileID: 4800000, guid: 97abfc9f0525e1849b417eaae10f0329, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: 017a05924c0b0484ca29717ed0c60343, type: 3}
     second:
       variants:
@@ -653,6 +579,81 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: 12f1a69ddf916f042ae6ce8a994506f3, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: c4d81c6e573560444bb1ea11ae4acfcb, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 020d64d10886f754e91664d240248c13, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: cf863cbd7bbd44a43b414caed214ba29, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 039c5248164c71b4aa6d780131c1bfaf, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: d3f0849180c2d0944bc71060693df100, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: b3c92426a88625841ab15ca6a7917248, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 620b55b8040a88d468e94abe55bed5ba, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 12dc59547ea167a4ab435097dd0f9add, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 3b21275fd12d65f49babb5286f040f2d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 3a80877c579b9144ebdcc6d923bca303, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: bf54e6528c79a224e96346799064c393, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: db8bd7436dc2c5f4c92655307d198381, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: b9e837111f2fc4d4f989635f98174c98, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: c4edd00ff2db5b24391a4fcb1762e459, type: 3}
     second:
       variants:
@@ -664,12 +665,7 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-  - first: {fileID: 4800000, guid: 1d64af84bdc970c4fae0c1e06dd95b73, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
-      - keywords: DECALS_3RT
+      - keywords: _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800000, guid: eb607f5e8fc16e140b732f33d26c8c31, type: 3}
     second:
@@ -680,14 +676,19 @@ ShaderVariantCollection:
         passType: 11
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
+      - keywords: DECALS_OFF
         passType: 13
       - keywords: USE_FPTL_LIGHTLIST
+        passType: 13
+  - first: {fileID: 4800000, guid: 1d64af84bdc970c4fae0c1e06dd95b73, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+      - keywords: DECALS_3RT
         passType: 13
   - first: {fileID: 4800000, guid: 794f260d88f9fe74fa681fe5ab74a107, type: 3}
     second:
@@ -700,49 +701,25 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
-        passType: 8
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT
-        passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
-        passType: 8
       - keywords: _DOUBLESIDED_ON
         passType: 8
-      - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 8
       - keywords: 
-        passType: 12
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
-        passType: 12
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT
         passType: 12
       - keywords: _DOUBLESIDED_ON
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_FPTL_LIGHTLIST _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_FPTL_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_FPTL_LIGHTLIST _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
-          _DOUBLESIDED_ON
-        passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_FPTL_LIGHTLIST _DISABLE_SSR_TRANSPARENT
-        passType: 13
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
-        passType: 13
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-        passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_FPTL_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
         passType: 13
       - keywords: _DOUBLESIDED_ON
         passType: 13
@@ -754,13 +731,9 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: _SURFACE_TYPE_TRANSPARENT
         passType: 13
@@ -773,16 +746,12 @@ ShaderVariantCollection:
       type: 3}
     second:
       variants:
-      - keywords: 
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 8
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
           _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
@@ -792,11 +761,9 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT
-        passType: 8
       - keywords: 
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 80f019e62c41f0d46a5093c60e86834a,
       type: 3}
@@ -804,34 +771,28 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT
-        passType: 8
       - keywords: 
-        passType: 12
-      - keywords: _DISABLE_SSR_TRANSPARENT
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: DECALS_4RT LIGHT_LAYERS PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1
         passType: 13
-      - keywords: DECALS_4RT PROBE_VOLUMES_L1 _DISABLE_SSR_TRANSPARENT
-        passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT
+      - keywords: DECALS_4RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
         passType: 13
   - first: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
     second:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: -6465566751694194690, guid: bdc7c6d3f6cb01f45bdb2e74937dc1fa,
-      type: 3}
+  - first: {fileID: 4800000, guid: 07db9a7a7d423a446ad72dab2fe4dab1, type: 3}
     second:
       variants:
       - keywords: 
-        passType: 8
-      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _ADD_PRECOMPUTED_VELOCITY _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+  - first: {fileID: 4800006, guid: c2dfb00f2769ccc4ba7411443f48cb95, type: 3}
+    second:
+      variants:
+      - keywords: _ALPHATEST_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: c02bf1d81bc7b734880d619858931cdd,
       type: 3}
@@ -840,13 +801,6 @@ ShaderVariantCollection:
       - keywords: 
         passType: 8
       - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 13
-  - first: {fileID: 4800002, guid: 53b606266a1a0a146a9ef3858a21c593, type: 3}
-    second:
-      variants:
-      - keywords: 
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 7422f2763c6b13f469d2822471a94884,
       type: 3}
@@ -854,23 +808,23 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800002, guid: 53b606266a1a0a146a9ef3858a21c593, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+      - keywords: INSTANCING_ON
+        passType: 13
   - first: {fileID: -6465566751694194690, guid: cbb6199bacbddc440bcd754b1042c578,
       type: 3}
     second:
       variants:
-      - keywords: 
+      - keywords: _DOUBLESIDED_ON
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
-        passType: 8
-      - keywords: _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
-        passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+          _TRANSPARENT_WRITES_MOTION_VEC
         passType: 13
       - keywords: _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
         passType: 13
@@ -878,19 +832,11 @@ ShaderVariantCollection:
       type: 3}
     second:
       variants:
-      - keywords: 
+      - keywords: _DOUBLESIDED_ON
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
-        passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
@@ -900,13 +846,9 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 8
-      - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: _SURFACE_TYPE_TRANSPARENT
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: _SURFACE_TYPE_TRANSPARENT
         passType: 13
@@ -926,11 +868,6 @@ ShaderVariantCollection:
       - keywords: 
         passType: 0
   - first: {fileID: 4800000, guid: cf81c85f95fe47e1a27f6ae460cf182c, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: c4d81c6e573560444bb1ea11ae4acfcb, type: 3}
     second:
       variants:
       - keywords: 
@@ -1006,18 +943,11 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
+      - keywords: DECALS_OFF
         passType: 13
-      - keywords: PROBE_VOLUMES_OFF
-        passType: 13
-  - first: {fileID: 4800000, guid: c8b6a681c7b4e2e4785ffab093907f9e, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
   - first: {fileID: 4800000, guid: 91d9e1751d0a17749819762ebf2b6846, type: 3}
     second:
       variants:
@@ -1049,16 +979,16 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
+      - keywords: DECALS_OFF
         passType: 13
   - first: {fileID: 4800000, guid: 3ef2b84260e542d4e8640a7e20bb5203, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 13
       - keywords: DOTS_INSTANCING_ON
         passType: 13
   - first: {fileID: 4800000, guid: dd89cf5b9246416f84610a006f916af7, type: 3}
@@ -1074,16 +1004,24 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: 6510c57cccce5674092bdc0dd1ae98c1, type: 3}
     second:
       variants:
-      - keywords: _AXF_BRDF_TYPE_SVBRDF
+      - keywords: 
         passType: 8
       - keywords: _AXF_BRDF_TYPE_SVBRDF
+        passType: 8
+      - keywords: 
         passType: 11
       - keywords: _AXF_BRDF_TYPE_SVBRDF
+        passType: 11
+      - keywords: 
         passType: 12
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST _AXF_BRDF_TYPE_SVBRDF
+      - keywords: _AXF_BRDF_TYPE_SVBRDF
+        passType: 12
+      - keywords: 
         passType: 13
-      - keywords: PROBE_VOLUMES_OFF _AXF_BRDF_TYPE_SVBRDF
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST _AXF_BRDF_TYPE_SVBRDF
+        passType: 13
+      - keywords: DECALS_OFF _AXF_BRDF_TYPE_SVBRDF
         passType: 13
       - keywords: _AXF_BRDF_TYPE_SVBRDF
         passType: 13
@@ -1100,10 +1038,16 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: f7ada0af4f174f0694ca6a487b8f543d, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 4
       - keywords: DIRECTIONAL
         passType: 4
+      - keywords: 
+        passType: 5
       - keywords: POINT
         passType: 5
+      - keywords: 
+        passType: 8
       - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 4800000, guid: 48bb5f55d8670e349b6e614913f9d910, type: 3}
@@ -1130,12 +1074,10 @@ ShaderVariantCollection:
         passType: 11
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
+      - keywords: DECALS_OFF
         passType: 13
       - keywords: USE_FPTL_LIGHTLIST
         passType: 13
@@ -1185,15 +1127,13 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF
         passType: 13
-      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF PROBE_VOLUMES_OFF SCREEN_SPACE_SHADOWS_OFF
-          SHADOW_LOW USE_FPTL_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DECALS_OFF DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+          SCREEN_SPACE_SHADOWS_OFF USE_FPTL_LIGHTLIST
         passType: 13
-      - keywords: DECALS_OFF PROBE_VOLUMES_OFF
-        passType: 13
-      - keywords: PROBE_VOLUMES_OFF
+      - keywords: DECALS_OFF
         passType: 13
   - first: {fileID: 4800000, guid: bc93937138cb1054e98cf187d5a71cbb, type: 3}
     second:
@@ -1213,8 +1153,12 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: 85187c2149c549c5b33f0cdb02836b17, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 4
       - keywords: DIRECTIONAL
         passType: 4
+      - keywords: 
+        passType: 8
       - keywords: SHADOWS_DEPTH
         passType: 8
   - first: {fileID: 4800000, guid: 9c442dc870b456e48b615cd8add0e9ef, type: 3}
@@ -1225,36 +1169,86 @@ ShaderVariantCollection:
   - first: {fileID: 4800004, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
     second:
       variants:
-      - keywords: _SURFACE_TYPE_TRANSPARENT
+      - keywords: INSTANCING_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800008, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
     second:
       variants:
-      - keywords: _SURFACE_TYPE_TRANSPARENT
+      - keywords: INSTANCING_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800000, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
     second:
       variants:
-      - keywords: AREA_SHADOW_MEDIUM PROBE_VOLUMES_L1 SHADOW_HIGH USE_CLUSTERED_LIGHTLIST
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_HIGH INSTANCING_ON PROBE_VOLUMES_L1
+          PUNCTUAL_SHADOW_HIGH USE_CLUSTERED_LIGHTLIST
         passType: 13
-      - keywords: USE_CLUSTERED_LIGHTLIST
+      - keywords: INSTANCING_ON USE_CLUSTERED_LIGHTLIST
         passType: 13
   - first: {fileID: 4800010, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
     second:
       variants:
-      - keywords: 
+      - keywords: INSTANCING_ON
         passType: 13
   - first: {fileID: 4800002, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
     second:
       variants:
-      - keywords: _SURFACE_TYPE_TRANSPARENT
+      - keywords: INSTANCING_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800000, guid: 53b606266a1a0a146a9ef3858a21c593, type: 3}
     second:
       variants:
-      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT PROBE_VOLUMES_L1 SCREEN_SPACE_SHADOWS_ON
-          SHADOW_HIGH USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: AREA_SHADOW_MEDIUM DECALS_4RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_HIGH
+          INSTANCING_ON PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_HIGH SCREEN_SPACE_SHADOWS_ON
+          USE_CLUSTERED_LIGHTLIST _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
+      - keywords: INSTANCING_ON _DOUBLESIDED_ON _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: _DOUBLESIDED_ON
+        passType: 13
+  - first: {fileID: 4800000, guid: c7715b638c6f5c849a6ec12234ae264c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 0178fcb869bafef4690d177d31d17db8, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 120ea264a7bdc294f86074ea0303c88f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: a4d8d31aecf938048b2f9876df2ecb15, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: a796fe586e0ddba4cae031b0ab585286, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800000, guid: 2b06b6233ca86cd4886e99d0e9d1124e, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: c2dfb00f2769ccc4ba7411443f48cb95, type: 3}
+    second:
+      variants:
+      - keywords: _ALPHATEST_ON
+        passType: 13
+  - first: {fileID: 4800002, guid: c2dfb00f2769ccc4ba7411443f48cb95, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: 4800004, guid: c2dfb00f2769ccc4ba7411443f48cb95, type: 3}
+    second:
+      variants:
+      - keywords: 
         passType: 13
