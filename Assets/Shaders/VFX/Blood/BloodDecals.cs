@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
-using UnityEngine.SocialPlatforms;
-
 public class BloodDecals : MonoBehaviour
 {
     [SerializeField] GameObject _myDecalPref;
@@ -38,11 +36,8 @@ public class BloodDecals : MonoBehaviour
 
             Quaternion rotation = Quaternion.LookRotation(hitNomral);
 
-            var x = Instantiate(_myDecalPref, spawnPos, rotation, other.transform);
+            GameObject x = Instantiate(_myDecalPref, spawnPos, rotation, other.transform);
             Instantiate(_bloodSpill, pos.intersection, rotation, x.transform);
-
-            StartCoroutine(DespawnDecal(x.GetComponent<DecalProjector>()));
-
         }    
     }
 

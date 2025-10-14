@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     public float LaunchAngle = 45f;
     public int RoomsAvailable;
     public float DificultLevel=0;
+
+    //Por ahora
+    public event Action DecalUpdate= delegate { };
     private void FixedUpdate()
     {
         if (GenericFixedUpdate != null) { GenericFixedUpdate(); }
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if(GenericUpdate != null) { GenericUpdate(); }
+        DecalUpdate();
         //print(_enemy.Count + " Enemigos");
         //print(_allies.Count + " Ayudantes");
     }
