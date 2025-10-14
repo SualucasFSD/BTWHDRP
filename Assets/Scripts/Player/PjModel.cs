@@ -30,15 +30,14 @@ public class PjModel : Entity, Idamageable
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
     public bool IsDodging=false;
-    public bool _useGravity=true;
     public float RotationSpeedMultiply=1;
     //Privates
+    private float _delayGrav;
     public float _airTime;
+    public float _gravityValue;
     private Vector3 _dodgeDir;
     private float _jumpTimerReset = 0;
     private int _actualJumps = 0;
-    private float _rotationD = 15f;
-    private float _alignmentEpsilon = 0.5f;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
     private bool _isStoped=false;
@@ -76,7 +75,8 @@ public class PjModel : Entity, Idamageable
     }
     private void Start()
     {
-        if(CameraManager.Instance!=null)
+        _gravityValue = _gravityForce;
+        if (CameraManager.Instance!=null)
         {
             Camera=CameraManager.Instance;
         }
@@ -87,7 +87,23 @@ public class PjModel : Entity, Idamageable
         EventManager.Suscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
     }
     private void Update()
-    {
+    {   
+        if(IsDodging)
+        {
+            gameObject.layer = 18;
+        }
+        else
+        {
+            gameObject.layer = 11;
+        }
+        if(_delayGrav<=1)
+        {
+          _delayGrav += Time.deltaTime;
+        }
+        if (_gravityValue <= _gravityForce && _delayGrav > 0.5f)
+        {
+            _gravityValue += Time.deltaTime * 12f;
+        }
         EjecutePower();
         EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position);
     }
@@ -95,10 +111,7 @@ public class PjModel : Entity, Idamageable
     {
         IsGroundedDetector();
 
-        if (_useGravity)
-        {
-            _rb.AddForce(-transform.up * Mathf.Pow(_gravityForce,2), ForceMode.Acceleration);
-        }
+        _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
 
         if (!IsGrounded)
         {
@@ -154,14 +167,11 @@ public class PjModel : Entity, Idamageable
             rawDir.Normalize();
             Dir = camForward * rawDir.z + camRight * rawDir.x;
 
-            //_rb.linearDamping = Mathf.Lerp(_rb.linearDamping, 1.5f, Time.deltaTime * 10f);
             if (OnAttacking) return;
             OnMovement(Dir, running);
         }
         else
         {
-            //_rb.linearDamping= Mathf.Lerp(_rb.linearDamping, 8f, Time.deltaTime * 10f);
-
             _dodgeDir = Vector3.zero;
             Dir = Vector3.zero;
             if (OnAttacking) return;
@@ -200,6 +210,7 @@ public class PjModel : Entity, Idamageable
     {
         if(IsGrounded||_actualJumps <_maxJumps && !IsDodging)
         {
+            //gameObject.layer = 11;
             _actualJumps++;
             OnJump();
         }
@@ -214,10 +225,9 @@ public class PjModel : Entity, Idamageable
     {
         if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
+            //gameObject.layer = 18;
             IsDodging = true;
             _dodgeReset = false;
-            //_ownCollider.material = _movMaterial;
-            //_rb.velocity = new Vector3(0, _rb.velocity.y, 0);
             OnDodge();
         }
     }
@@ -271,7 +281,7 @@ public class PjModel : Entity, Idamageable
             StopMove();
             if (!IsGrounded)
             {
-               OnAttackSecondLongAir();
+                OnAttackSecondLongAir();
                 return;
             }
             OnAttackSecondLong();
@@ -334,7 +344,10 @@ public class PjModel : Entity, Idamageable
         }
         Life -=dmg;
         EventManager.Ejecute(EventManager.KindOfEvent.MakeCameraShake);
-        _bloodVfx?.Play();
+        if(_bloodVfx!=null)
+        {
+            _bloodVfx.Play();
+        }
         if(_damageRoutine!=null)
         {
             StopCoroutine(_damageRoutine);
@@ -410,8 +423,10 @@ public class PjModel : Entity, Idamageable
     }
     public void DesactiveGravity()
     {
-        _useGravity = false;
-        _rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
+        //_useGravity = false;
+        _delayGrav=0;
+        _gravityValue = 0;
+        _rb.constraints = /*RigidbodyConstraints.FreezePositionY |*/ RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
         _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
     }
     public void StopPJ()
@@ -429,14 +444,15 @@ public class PjModel : Entity, Idamageable
     }
     public void ActiveGravity()
     {
-        _useGravity = true;
+        _gravityValue=_gravityForce;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
     #endregion
     public void GetDown()
     {
-        //_ownCollider.material = _movMaterial;
-        _rb.AddForce(-Vector3.up * 2500, ForceMode.Impulse);
+        _gravityValue = _gravityForce;
+        _delayGrav = 2;
+        _rb.AddForce(-Vector3.up * 5000, ForceMode.Impulse);
     }
     private void OnDrawGizmos()
     {

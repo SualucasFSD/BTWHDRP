@@ -54,8 +54,8 @@ public class PathNode : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        foreach( PathNode node in Neighbords ) { Gizmos.DrawLine(node.transform.position,transform.position); }
+        /*Gizmos.color = Color.yellow;
+        foreach( PathNode node in Neighbords ) { Gizmos.DrawLine(node.transform.position,transform.position); }*/
     }
     private void OnDestroy()
     {

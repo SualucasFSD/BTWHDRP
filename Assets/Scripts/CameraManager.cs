@@ -404,7 +404,6 @@ public class CameraManager : MonoBehaviour
     public float ShakeDuration = 0.3f;
     private Vector3 _shakeOffset = Vector3.zero;
     private float _shakeTimeRemaining = 0f;
-    private Coroutine _shakeRoutine = null;
     private void Awake()
     {
         if (Instance == null)
