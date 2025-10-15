@@ -16,7 +16,7 @@ public class SavageDog : Entity, Idamageable
     [Header("Debug")]
     public List<PathNode> _paths = new List<PathNode>();
     [Header("Variables")]
-    [SerializeField] private VisualEffect _bloodVfx;
+    [SerializeField] private ParticleSystem _bloodVfx;
     [SerializeField] private LifeOrb _lifeOrbPrefab;
     [SerializeField] private LayerMask _nodeLayer;
     [SerializeField] private float _ceilingOffset;

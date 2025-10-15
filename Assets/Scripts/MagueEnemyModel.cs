@@ -13,7 +13,7 @@ public class MagueEnemyModel : Entity, Idamageable
     [SerializeField] private Collider _collider;
     /*[SerializeField] private PhysicsMaterial _stopMat;
     [SerializeField] private PhysicsMaterial _movMat;*/
-    [SerializeField] private VisualEffect _damageParticles;
+    [SerializeField] private ParticleSystem _damageParticles;
     [SerializeField] private AudioSource _mySource;
 
     [Header("Stats")]

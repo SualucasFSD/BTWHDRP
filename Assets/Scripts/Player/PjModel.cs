@@ -14,7 +14,7 @@ public class PjModel : Entity, Idamageable
     public CameraManager Camera;
     public bool ManualMovement = true; 
     public bool OnAttacking=false;
-    [SerializeField] private VisualEffect _bloodVfx;
+    [SerializeField] private ParticleSystem _bloodVfx;
     [Header("Configuracion Player")]
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private Rigidbody _rb;
