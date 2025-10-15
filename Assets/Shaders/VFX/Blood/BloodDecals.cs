@@ -34,14 +34,14 @@ public class BloodDecals : MonoBehaviour
 
             Vector3 spawnPos = _hitPos + hitNomral * _offset;
 
-            Quaternion rotation = Quaternion.LookRotation(hitNomral);
+            Quaternion rotation = Quaternion.LookRotation(-hitNomral);
 
             GameObject x = Instantiate(_myDecalPref, spawnPos, rotation, other.transform);
             Instantiate(_bloodSpill, pos.intersection, rotation, x.transform);
         }    
     }
 
-    IEnumerator DespawnDecal(DecalProjector _myDecal)
+    /*IEnumerator DespawnDecal(DecalProjector _myDecal)
     {
         yield return new WaitForSeconds(_decalDuration);
         float elapsed = 0f;
@@ -52,5 +52,5 @@ public class BloodDecals : MonoBehaviour
             yield return null;
         }
         Destroy(_myDecal.gameObject);
-    }
+    }*/
 }
