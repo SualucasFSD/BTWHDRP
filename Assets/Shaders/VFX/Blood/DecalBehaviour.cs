@@ -38,12 +38,11 @@ public class DecalBehaviour : MonoBehaviour
 
         if(_elapsed >= _lerpDuration)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
     void InvokeDecal()
     {
-        //print("InvokeBool");
         _fading = true;
     }
 }

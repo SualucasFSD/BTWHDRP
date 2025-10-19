@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.HighDefinition;
 public class BloodDecals : MonoBehaviour
 {
     [SerializeField] GameObject _myDecalPref;

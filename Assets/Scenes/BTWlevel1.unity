@@ -18226,7 +18226,7 @@ MonoBehaviour:
   _isActive: 0
   _interactObj: []
   _offset: {x: 1, y: 1, z: 1}
-  EnemyCatalogue: 2
+  EnemyCatalogue: 1
 --- !u!65 &1314642325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30557,6 +30557,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knight
       objectReference: {fileID: 0}
+    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: Combos.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775489382544464290, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: 'Combos.Array.data[14]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 26f5dff0d6ca4954e913c535a7a85c4d,
+        type: 2}
     - target: {fileID: 2890756224583562029, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: _myBlack
@@ -30681,7 +30692,7 @@ MonoBehaviour:
   _minPitch: -30
   _maxPitch: 60
   _camRadius: 0.3
-  _minDistance: 0
+  _minDistance: 0.5
   _targets: []
   ShakeEnabled: 1
   ShakeIntensity: 0.3

@@ -264,6 +264,10 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondCombo()
     {
+        /*if(IsDodging)
+        {
+
+        }*/
         if (OnAttackSecond != null && !IsDodging)
         {
             StopMove();
