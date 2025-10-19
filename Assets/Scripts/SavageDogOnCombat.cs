@@ -30,6 +30,10 @@ public class SavageDogOnCombat : IState
 
     public void OnUpdate()
     {
+        if (_entity.Life <= 0)
+        {
+            return;
+        }
         if (_tg == null)
         {
             _tg = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(_entity.Kind),_entity.transform);

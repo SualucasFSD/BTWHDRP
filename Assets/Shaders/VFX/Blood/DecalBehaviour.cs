@@ -10,7 +10,7 @@ public class DecalBehaviour : MonoBehaviour
     [SerializeField] DecalProjector _myDecal;
     private float _elapsed=0;
     [SerializeField] bool _fading = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     private void Awake()
     {
         _myDecal = GetComponent<DecalProjector>();
@@ -43,7 +43,7 @@ public class DecalBehaviour : MonoBehaviour
     }
     void InvokeDecal()
     {
-        print("InvokeBool");
+        //print("InvokeBool");
         _fading = true;
     }
 }

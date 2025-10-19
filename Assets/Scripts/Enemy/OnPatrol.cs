@@ -50,6 +50,10 @@ public class OnPatrol : IState
 
     public void OnUpdate()
     {
+        if (_entity.Life <= 0)
+        {
+            return;
+        }
         _pathTimer += Time.deltaTime;
 
         if (_nodes == null || _nodes.Count == 0)

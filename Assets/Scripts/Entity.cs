@@ -147,6 +147,10 @@ public class Entity : MonoBehaviour
             IsGrounded = false;
         }
     }
+    public virtual void EnableAgain()
+    {
+
+    }
     public virtual void FlyFunct(float height = 4f)
     {
 

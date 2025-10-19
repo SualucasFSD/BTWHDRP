@@ -11,7 +11,7 @@ public class EnemyPool<T> where T : Entity
 
     private Dictionary<EnemyCatalogue, List<T>> _poolStockCategory = new Dictionary<EnemyCatalogue, List<T>>();
 
-    public EnemyPool(Func<EnemyCatalogue, T> factoryMethod, Action<T> turnOff, Action<T> turnOn, IEnumerable<EnemyCatalogue> types, int initialStock/*, Dictionary<EnemyCatalogue, List<T>> _poolCategory*/)
+    public EnemyPool(Func<EnemyCatalogue, T> factoryMethod, Action<T> turnOff, Action<T> turnOn, IEnumerable<EnemyCatalogue> types, int initialStock)
     {
         _factoryMethod = factoryMethod;
         _turnOff = turnOff;
@@ -50,6 +50,7 @@ public class EnemyPool<T> where T : Entity
         result.transform.position = position;
 
         _turnOn(result);
+        result.EnableAgain();
         return result;
     }
 

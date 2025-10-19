@@ -10,7 +10,7 @@ public class ErrorKiller : MonoBehaviour
     {
         int errorCount = 0;
 
-        foreach (GameObject go in FindObjectsOfType<GameObject>(true))
+        foreach (GameObject go in FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
             Transform t = go.transform;
 

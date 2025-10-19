@@ -9,20 +9,7 @@ public class BloodDecals : MonoBehaviour
     [SerializeField] ParticleSystem _bloodSpill;
     [SerializeField] ParticleSystem _myPS;
     [SerializeField] float _offset = .01f;
-    [SerializeField] float _lerpDuration = 1f;
-    [SerializeField] float _decalDuration = 5f;
     List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnParticleCollision(GameObject other)
     {
         int _eventCount = _myPS.GetCollisionEvents(other, collisionEvents);
@@ -40,17 +27,4 @@ public class BloodDecals : MonoBehaviour
             Instantiate(_bloodSpill, pos.intersection, rotation, x.transform);
         }    
     }
-
-    /*IEnumerator DespawnDecal(DecalProjector _myDecal)
-    {
-        yield return new WaitForSeconds(_decalDuration);
-        float elapsed = 0f;
-        while (elapsed <= _lerpDuration)
-        {
-            _myDecal.fadeFactor = Mathf.Lerp(1, 0, elapsed / _lerpDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        Destroy(_myDecal.gameObject);
-    }*/
 }

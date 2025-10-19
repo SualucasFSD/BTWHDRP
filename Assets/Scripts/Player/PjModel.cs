@@ -100,7 +100,7 @@ public class PjModel : Entity, Idamageable
         {
           _delayGrav += Time.deltaTime;
         }
-        if (_gravityValue <= _gravityForce && _delayGrav > 0.5f)
+        if (_gravityValue <= _gravityForce && _delayGrav > 1f)
         {
             _gravityValue += Time.deltaTime * 12f;
         }
@@ -120,6 +120,7 @@ public class PjModel : Entity, Idamageable
         }
         else
         {
+            _gravityValue = _gravityForce;
             _jumpTimerReset += Time.deltaTime;
             OnLanding();
             if (_jumpTimerReset > 0.5f)
@@ -336,7 +337,7 @@ public class PjModel : Entity, Idamageable
     }
     #endregion
     #region Genericos
-    public void TakeDamage(float dmg, float exp, Vector3 pushDirection)
+    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false)
     {
         if (pushDirection != Vector3.zero)
         {

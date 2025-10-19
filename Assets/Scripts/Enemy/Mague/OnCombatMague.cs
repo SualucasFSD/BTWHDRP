@@ -41,7 +41,13 @@ public class OnCombatMague : IState
 
     public void OnUpdate()
     {
-        if (_entity == null) return;
+        if (_entity.Life <= 0)
+        {
+            _entity.BulletsStop();
+            _fsm.ChangeState(FsmMague.MagueStates.OnPatrol);
+            return;
+        }
+        if (_entity == null) { return; }
 
         if (_tg == null)
         {

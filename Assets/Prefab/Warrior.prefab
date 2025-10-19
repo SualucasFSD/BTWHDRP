@@ -6165,7 +6165,7 @@ MonoBehaviour:
   Camera: {fileID: 0}
   ManualMovement: 1
   OnAttacking: 0
-  _bloodVfx: {fileID: 4401118116284093051}
+  _bloodVfx: {fileID: 0}
   _rotationSpeed: 400
   _rb: {fileID: 4650900223648113256}
   _maxLife: 500
@@ -28158,6 +28158,7 @@ GameObject:
   - component: {fileID: 1775489382544464290}
   - component: {fileID: 98417204031912408}
   - component: {fileID: 4546026740537839163}
+  - component: {fileID: 6301115389312243324}
   m_Layer: 15
   m_Name: Warrior
   m_TagString: Untagged
@@ -28280,6 +28281,21 @@ MonoBehaviour:
   - {fileID: 3273429903604467693}
   - {fileID: 783148202507585861}
   - {fileID: 7393172417026529125}
+--- !u!114 &6301115389312243324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5259217550114732991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e79c4e30b893da458880bec655eac4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RagdollOnOff
+  mainCollider: {fileID: 3602131948303079390}
+  BasicEnemyRig: {fileID: 3215826356813125849}
+  BasicEnemyAnimator: {fileID: 119310098994115958}
 --- !u!1 &5261890859707616657
 GameObject:
   m_ObjectHideFlags: 0

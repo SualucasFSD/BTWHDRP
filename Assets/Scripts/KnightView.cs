@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.GraphicsBuffer;
 
 public class KnightView : PjView
 {
@@ -22,6 +19,7 @@ public class KnightView : PjView
     private float _stuntDmg;
     private float _angle;
     private float _flyAngle;
+    private bool _getGround;
     private Transform _target;
     private void Start()
     {
@@ -74,7 +72,6 @@ public class KnightView : PjView
     }
     private void OnJump()
     {
-        //EndDodge();
         _pjModel.IsDodging = false;
         ComboResetGeneral();
         _animator.SetBool("Jump",true);
@@ -213,6 +210,7 @@ public class KnightView : PjView
         _swordDistance = combo.SwordDistance;
         _flyAngle = combo.FlyAngle;
         _angle=combo.Angle;
+        _getGround = combo.GetGround; 
     }
 
     //Evento de consulta y sucesion por animacion
@@ -288,7 +286,34 @@ public class KnightView : PjView
     #region ComboManager Section
     public void CauseDamage()
     {
-        Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
+         Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
+         foreach (Collider collider in c)
+         {
+            if (collider.gameObject == gameObject)
+            {
+                continue;
+            }
+                Entity j = collider.GetComponent<Entity>();
+                if (j != null)
+                {
+                    float verticalDiff = Mathf.Abs(j.transform.position.y - transform.position.y);
+                   if (verticalDiff > 2f)
+                   {
+                    continue;
+                   }
+                    Idamageable l = j.GetComponent<Idamageable>();
+
+                    Vector3 dirToEnemy = (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized;
+                    float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
+
+                    if (backFrontAngle > _angle)
+                    {
+                        Vector3 pushDirection = new Vector3((j.transform.position - transform.position).x, 0, (j.transform.position - transform.position).z).normalized;
+                        l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection, _getGround);
+                    }
+                }
+            }
+        /*Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
         foreach (Collider collider in c)
         {
             if (collider.gameObject == gameObject)
@@ -304,7 +329,7 @@ public class KnightView : PjView
                 {
                     //l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, _velocity.normalized);
                     Vector3 pushDirection= new Vector3((j.transform.position - transform.position).x,0, (j.transform.position - transform.position).z).normalized;
-                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection);
+                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection,_getGround);
                     //l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, (j.transform.position-transform.position).normalized);
                 }
             }
@@ -312,34 +337,9 @@ public class KnightView : PjView
             {
                 continue;
             }
-        }
-        /*Collider[] colliders = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
-        foreach (Collider collider in colliders)
-        {
-            if (collider.gameObject == gameObject) continue;
-
-            Entity j = collider.GetComponent<Entity>();
-            if (j == null) continue;
-            Vector3 closestPoint = collider.ClosestPoint(transform.position);
-
-            float verticalDifference = Mathf.Abs(transform.position.y - closestPoint.y);
-
-            if (verticalDifference < 1f)
-            {
-                Idamageable l = j.GetComponent<Idamageable>();
-                if (l == null) continue;
-
-                float backFrontAngle = Vector3.Dot(transform.forward, (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
-                if (backFrontAngle > _angle)
-                {
-                    // Calcula la dirección de empuje ignorando la componente vertical
-                    Vector3 pushDirection = new Vector3((j.transform.position - transform.position).x, 0f, (j.transform.position - transform.position).z).normalized;
-                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2f, pushDirection);
-                }
-            }
         }*/
     }
-    public void CauseDamageInAir()
+    /*public void CauseDamageInAir()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 5, _hitLayer);
         Entity closest = null;
@@ -367,7 +367,7 @@ public class KnightView : PjView
         }
 
         _target = closest.transform;
-    }
+    }*/
     public void AddForceToEnemy()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, _swordArea, _hitLayer);
@@ -417,26 +417,6 @@ public class KnightView : PjView
         }
         _pjModel.GetDown();
     }
-    /*public void DashToTarget(Transform target, float dashForce, float stopDistance = 0.5f, float maxDistance = 5f)
-    {
-        if (target == null) return;
-
-        Vector3 direction = (target.position - transform.position).normalized;
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, maxDistance))
-        {
-            float distance = hit.distance;
-            if (distance > maxDistance) return;
-
-            Vector3 desiredPosition = hit.point - direction * stopDistance;
-            Vector3 impulse = (desiredPosition - transform.position);
-
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(impulse.normalized * dashForce, ForceMode.VelocityChange);
-            }
-        }
-    }*/
     #endregion
     private void OnAnimatorMove()
     {

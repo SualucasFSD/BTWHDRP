@@ -73,7 +73,6 @@ public class MaguePower : MonoBehaviour, IPjPower
         if (_numbOfBullets >= _bulletPos.Length) return;
 
         var bullet = Instantiate(_bulletPrefab, _bulletPos[_numbOfBullets].position, transform.rotation);
-        bullet.Tg = _tg;
         bullet.Kind = Kind;
         bullet.transform.parent = transform;
        
@@ -87,7 +86,7 @@ public class MaguePower : MonoBehaviour, IPjPower
         {
             if (b != null)
             {
-                b.Tg = _tg;
+                b.SetTarget(_tg);
                 b.Fire = true;
             }
         }

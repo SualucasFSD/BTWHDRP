@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface Idamageable 
 {
-    public void TakeDamage(float dmg,float stunt, Vector3 pushDirection);
+    public void TakeDamage(float dmg,float stunt, Vector3 pushDirection, bool downHit=false);
     public void TakeHealt(float amount);
 }
