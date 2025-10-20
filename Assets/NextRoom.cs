@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NextRoom : InteractuableGeneric
@@ -23,6 +22,7 @@ public class NextRoom : InteractuableGeneric
     }
     private void Start()
     {
+        //InteractManager.Instance.AddInteract(this);
         if (GameManager.Instance.RoomsAvailable < 0)
         {
           InteractManager.Instance.RemoveInteract(this);
@@ -31,6 +31,7 @@ public class NextRoom : InteractuableGeneric
     }
     private void OnEnable()
     {
+        //print("Listo");
         InteractManager.Instance.AddInteract(this);
     }
     private void OnDisable()
@@ -39,187 +40,52 @@ public class NextRoom : InteractuableGeneric
     }
     public override void Activate()
     {
-        if (_interactObj != null)
+        foreach(var i in _interactObj)
         {
-            foreach (var obj in _interactObj)
-            {
-                if (obj != null)
-                    obj.SetActive(false);
-            }
+            i.SetActive(false);
         }
-
-        InteractManager.Instance?.RemoveInteract(this);
-
-        var gm = GameManager.Instance;
-
-        if (_rooms == null || _rooms.Length == 0)
+        InteractManager.Instance.RemoveInteract(this);
+        if(GameManager.Instance.RoomsAvailable==0)
         {
-            Debug.LogWarning("No hay salas disponibles en _rooms.");
+           MazeCell Room= Instantiate(_lastRoom);
+            Room.transform.rotation = transform.rotation;
+            Vector3 pivot = Room.Pivot.transform.position;
+           Vector3 offset = Room.transform.position - pivot;
+           Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
+           Room._neighbords.Add(_mazeSpawnPoint);
+           _mazeSpawnPoint._neighbords.Add(Room);
             return;
         }
-
-        MazeCell prefab = gm.RoomsAvailable == 0 ? _lastRoom : _rooms[Random.Range(0, _rooms.Length)];
-        if (prefab == null)
-        {
-            Debug.LogWarning("El prefab seleccionado es nulo.");
-            return;
-        }
-
-        MazeCell room = Instantiate(prefab);
-        room.transform.rotation = transform.rotation;
-
-        if (room.Pivot == null)
-        {
-            Debug.LogWarning($"La sala '{room.name}' no tiene asignado un Pivot.");
-            return;
-        }
-        Vector3 offset = room.transform.position - room.Pivot.transform.position;
-
-        Vector3 spawnPos = (_mazeSpawnPoint != null && _mazeSpawnPoint.RigtLeftSpawnVector != null &&(int)_leftRight >= 0 &&(int)_leftRight < _mazeSpawnPoint.RigtLeftSpawnVector.Length &&_mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight] != null)? _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position: _spawnPoint != null ? _spawnPoint.position : transform.position;
-
-        room.transform.position = spawnPos + offset;
-
         if (_mazeSpawnPoint != null)
         {
-            _mazeSpawnPoint.DesactivateDoor();
-            if (room._neighbords == null) room._neighbords = new List<MazeCell>();
-            if (_mazeSpawnPoint._neighbords == null) _mazeSpawnPoint._neighbords = new List<MazeCell>();
-
-            room._neighbords.Add(_mazeSpawnPoint);
-            _mazeSpawnPoint._neighbords.Add(room);
-
-            if (_mazeSpawnPoint._primalPathNode != null &&
-                (int)_leftRight >= 0 &&
-                (int)_leftRight < _mazeSpawnPoint._primalPathNode.Length)
-            {
-                var primalNode = _mazeSpawnPoint._primalPathNode[(int)_leftRight];
-                if (primalNode != null &&
-                    room._primalPathNode != null &&
-                    room._primalPathNode.Length > 2 &&
-                    room._primalPathNode[2] != null)
-                {
-                    room._primalPathNode[2].Neighbords.Add(primalNode);
-                    primalNode.Neighbords.Add(room._primalPathNode[2]);
-                }
-            }
-        }
-        else
-        {
-            if (room._primalPathNode != null && room._primalPathNode.Length > 2 && room._primalPathNode[2] != null && _node != null)
-            {
-                room._primalPathNode[2].Neighbords.Add(_node);
-                _node.Neighbords.Add(room._primalPathNode[2]);
-            }
-        }
-
-        StartCoroutine(Active(room));
-
-        gm.DificultLevel += 0.5f;
-
-        if (gm.RoomsAvailable > 0)
-        {
-            gm.RoomsAvailable--;
-        }
-        // Código adicional (por ejemplo abrir puertas)
-        // gameObject.SetActive(false);
-    }
-
-    /* public override void Activate()
-     {
-         foreach (var obj in _interactObj)
-         {
-             obj.SetActive(false);
-         }
-         InteractManager.Instance.RemoveInteract(this);
-
-         MazeCell prefab = GameManager.Instance.RoomsAvailable == 0? _lastRoom: _rooms[Random.Range(0, _rooms.Length)];
-
-         MazeCell room = Instantiate(prefab);
-         room.transform.rotation = transform.rotation;
-
-         Vector3 offset = room.transform.position - room.Pivot.transform.position;
-
-         Vector3 spawnPos = (_mazeSpawnPoint != null)? _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position: _spawnPoint.position;
-
-         room.transform.position = spawnPos + offset;
-
-         if (_mazeSpawnPoint != null && _mazeSpawnPoint._primalPathNode[(int)_leftRight]!=null)
-         {
-             room._neighbords.Add(_mazeSpawnPoint);
-             _mazeSpawnPoint._neighbords.Add(room);
-
-             var primalNode = _mazeSpawnPoint._primalPathNode[(int)_leftRight];
-             if (primalNode != null)
-             {
-                 room._primalPathNode[2].Neighbords.Add(primalNode);
-                 primalNode.Neighbords.Add(room._primalPathNode[2]);
-             }
-         }
-         else
-         {
-             room._primalPathNode[2].Neighbords.Add(_node);
-             _node.Neighbords.Add(room._primalPathNode[2]);
-         }
-
-         StartCoroutine(Active(room));
-         GameManager.Instance.DificultLevel += 0.5f;
-
-         if (GameManager.Instance.RoomsAvailable > 0)
-         {
-             GameManager.Instance.RoomsAvailable--;
-         }
-         // Código adicional: abrir puerta, etc.
-         // gameObject.SetActive(false);
-     }*/
-    /* public override void Activate()
-     {
-         foreach(var i in _interactObj)
-         {
-             i.SetActive(false);
-         }
-         InteractManager.Instance.RemoveInteract(this);
-         if(GameManager.Instance.RoomsAvailable==0)
-         {
-            MazeCell Room= Instantiate(_lastRoom);
-             Room.transform.rotation = transform.rotation;
-             Vector3 pivot = Room.Pivot.transform.position;
+            MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
+            Room.transform.rotation = transform.rotation;
+            Vector3 pivot = Room.Pivot.transform.position;
             Vector3 offset = Room.transform.position - pivot;
             Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
             Room._neighbords.Add(_mazeSpawnPoint);
+            Room._primalPathNode[2].Neighbords.Add(_mazeSpawnPoint._primalPathNode[(int)_leftRight]);
+            _mazeSpawnPoint._primalPathNode[(int)_leftRight].Neighbords.Add(Room._primalPathNode[2]);
             _mazeSpawnPoint._neighbords.Add(Room);
-             return;
-         }
-         if (_mazeSpawnPoint != null)
-         {
-             MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
-             Room.transform.rotation = transform.rotation;
-             Vector3 pivot = Room.Pivot.transform.position;
-             Vector3 offset = Room.transform.position - pivot;
-             Room.transform.position = _mazeSpawnPoint.RigtLeftSpawnVector[(int)_leftRight].position + offset;
-             Room._neighbords.Add(_mazeSpawnPoint);
-             Room._primalPathNode[2].Neighbords.Add(_mazeSpawnPoint._primalPathNode[(int)_leftRight]);
-             _mazeSpawnPoint._primalPathNode[(int)_leftRight].Neighbords.Add(Room._primalPathNode[2]);
-             _mazeSpawnPoint._neighbords.Add(Room);
-             StartCoroutine(Active(Room));
-             GameManager.Instance.DificultLevel += 0.5f;
-         }
-         else
-         {
-             MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
-             Room.transform.rotation = transform.rotation;
-             Vector3 pivot = Room.Pivot.transform.position;
-             Vector3 offset = Room.transform.position - pivot;
-             Room.transform.position = _spawnPoint.position + offset;
-             Room._primalPathNode[2].Neighbords.Add(_node);
-             _node.Neighbords.Add(Room._primalPathNode[2]);
-             StartCoroutine(Active(Room));
-             GameManager.Instance.DificultLevel += 0.5f;
-         }
-         GameManager.Instance.RoomsAvailable--;
-         //Codigo Para Abrir Puerta
-
-         //gameObject.SetActive(false);
-     }*/
+            StartCoroutine(Active(Room));
+            GameManager.Instance.DificultLevel += 0.5f;
+        }
+        else
+        {
+            MazeCell Room = Instantiate(_rooms[Random.Range(0, _rooms.Length)]);
+            Room.transform.rotation = transform.rotation;
+            Vector3 pivot = Room.Pivot.transform.position;
+            Vector3 offset = Room.transform.position - pivot;
+            Room.transform.position = _spawnPoint.position + offset;
+            Room._primalPathNode[2].Neighbords.Add(_node);
+            _node.Neighbords.Add(Room._primalPathNode[2]);
+            StartCoroutine(Active(Room));
+            GameManager.Instance.DificultLevel += 0.5f;
+        }
+        GameManager.Instance.RoomsAvailable--;
+        //Codigo Para Abrir Puerta
+        //gameObject.SetActive(false);
+    }
     private IEnumerator Active(MazeCell p)
     {
         yield return null;
