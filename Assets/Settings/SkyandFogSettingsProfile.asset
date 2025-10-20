@@ -74,7 +74,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.048
   aerosolTint:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 0.9, g: 0.9, b: 0.9, a: 1}
   aerosolMaximumAltitude:
     m_OverrideState: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   horizonTint:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   zenithTint:
     m_OverrideState: 0
@@ -330,18 +330,18 @@ MonoBehaviour:
   active: 1
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.5
   indirectDiffuseLightingLayers:
-    m_OverrideState: 0
-    m_Value: 65535
+    m_OverrideState: 1
+    m_Value: 3
   reflectionLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   reflectionLightingLayers:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 65535
   reflectionProbeIntensityMultiplier:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
@@ -470,7 +470,7 @@ MonoBehaviour:
   active: 1
   quality:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3
   enable:
     m_OverrideState: 1
     m_Value: 1
@@ -499,7 +499,7 @@ MonoBehaviour:
     m_Value: 1
   m_HalfResolutionDenoiserSS:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   m_DenoiserRadiusSS:
     m_OverrideState: 1
     m_Value: 0.5
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b24b200358312b4fa1004e2431c2f1f, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.ShadowsMidtonesHighlights
-  active: 1
+  active: 0
   shadows:
     m_OverrideState: 0
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -654,7 +654,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   meteringMode:
     m_OverrideState: 0
     m_Value: 2
@@ -663,10 +663,10 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 4.3
+    m_Value: 0
   compensation:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   limitMin:
     m_OverrideState: 1
     m_Value: 2
@@ -752,13 +752,13 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   adaptationMode:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   adaptationSpeedDarkToLight:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 3
   adaptationSpeedLightToDark:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   weightTextureMask:
     m_OverrideState: 0
