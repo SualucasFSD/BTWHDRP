@@ -14,7 +14,7 @@ public class MazeCell : MonoBehaviour
     [SerializeField] private List<GameObject> _enemies;
     private NextRoom[] _nextRooms;
     private bool _isActive=false;
-
+    [SerializeField]private GameObject _finalBox;
     private void Awake()
     {
         _pathNodesList=new List<PathNode> ();
@@ -137,14 +137,14 @@ public class MazeCell : MonoBehaviour
             _isActive=true;
         }
     }
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         if (_primalPathNode[2]!=null)
         {
             Gizmos.DrawWireCube(_primalPathNode[2].transform.position, new Vector3(1, 1, 1));
         }
-    }
+    }*/
     public void OnEnemyKilledInside(GameObject p)
     {
         _enemies.Remove(p);
@@ -158,6 +158,18 @@ public class MazeCell : MonoBehaviour
             {
                 r.enabled = true;
             }
+            if(_finalBox!=null)
+            {
+                GameObject p = _pathNodesList[Random.Range(0, _pathNodesList.Count)].gameObject;
+                Instantiate(_finalBox, p.transform.position,Quaternion.Euler(0,p.transform.rotation.y,0));
+            }
+      }
+    }
+    public void DesactivateDoor()
+    {
+        foreach (NextRoom r in _nextRooms)
+        {
+            r.enabled =false;
         }
     }
 }
