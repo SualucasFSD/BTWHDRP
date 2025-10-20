@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GenericDestroyable : MonoBehaviour, Idamageable
 {
-    [SerializeField] private MeshRenderer[] _mesh;
+    [SerializeField] private GameObject[] _mesh;
     [SerializeField] private float _maxLife = 100f;
     [SerializeField] private ParticleSystem _damageEffect;
     [SerializeField] private bool _isDestroyable;
@@ -14,7 +14,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
     private void Start()
     {
         _life = _maxLife;
-        //UpdateMeshState();
+        UpdateMeshState();
     }
 
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
@@ -36,7 +36,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
         if (_life <= 0&&_isDestroyable)
         {
             // destruir el objeto
-            Invoke(nameof(InvokeDestroyable),5f);
+            Invoke(nameof(InvokeDestroyable),1.5f);
         }
     }
     private void InvokeDestroyable()
@@ -50,14 +50,8 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
         UpdateMeshState();*/
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        TakeDamage(100, 0, Vector3.zero);
-    }
-
     private void UpdateMeshState()
     {
-
         if (_mesh == null || _mesh.Length == 0)
         {
             return;
@@ -67,8 +61,6 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
 
         targetStateIndex = Mathf.Clamp(targetStateIndex, 0, _mesh.Length - 1);
 
-        print("Este es " + targetStateIndex + " el otro es " + _currentStateIndex);
-
         if (targetStateIndex == _currentStateIndex)
         {
             return;
@@ -77,7 +69,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
 
         for (int i = 0; i < _mesh.Length; i++)
         {
-            _mesh[i].enabled  = (i != _currentStateIndex);
+            _mesh[i].SetActive(i == _currentStateIndex);
         }
     }
 }
