@@ -32,7 +32,6 @@ public class PjModel : Entity, Idamageable
     public bool IsDodging=false;
     public float RotationSpeedMultiply=1;
     //Privates
-    private bool _limitZone=false;
     private float _delayGrav;
     public float _airTime;
     public float _gravityValue;
@@ -105,9 +104,6 @@ public class PjModel : Entity, Idamageable
         {
             _gravityValue += Time.deltaTime * 12f;
         }
-
-        _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
-        //if (_limitZone) { Debug.LogWarning("LimitZone"); }
         EjecutePower();
         EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position);
     }
@@ -215,11 +211,9 @@ public class PjModel : Entity, Idamageable
     {
         if(IsGrounded||_actualJumps <_maxJumps && !IsDodging)
         {
-            if (!_limitZone)
-            {
-                _actualJumps++;
-                OnJump();
-            }
+            //gameObject.layer = 11;
+            _actualJumps++;
+            OnJump();
         }
     }
     public void JumpExecute(params object[] p)
@@ -232,6 +226,7 @@ public class PjModel : Entity, Idamageable
     {
         if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
+            //gameObject.layer = 18;
             IsDodging = true;
             _dodgeReset = false;
             OnDodge();
@@ -256,7 +251,7 @@ public class PjModel : Entity, Idamageable
     #region ComboKeys
     public void AttackFirstCombo()
     {
-        if (OnAttack != null&&!IsDodging&&!_limitZone)
+        if (OnAttack != null&&!IsDodging)
         {
             StopMove();
             if (!IsGrounded)
@@ -273,7 +268,7 @@ public class PjModel : Entity, Idamageable
         {
 
         }*/
-        if (OnAttackSecond != null && !IsDodging && !_limitZone)
+        if (OnAttackSecond != null && !IsDodging)
         {
             StopMove();
             if (!IsGrounded)
@@ -286,7 +281,7 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondComboLong()
     {
-        if (OnAttackSecondLong != null && !IsDodging && !_limitZone)
+        if (OnAttackSecondLong != null && !IsDodging)
         {
             StopMove();
             if (!IsGrounded)
@@ -299,7 +294,7 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackFirstComboLong()
     {
-        if (OnAttackLong != null && !IsDodging && !_limitZone)
+        if (OnAttackLong != null && !IsDodging)
         {
             StopMove();
             if (!IsGrounded)

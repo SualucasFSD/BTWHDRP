@@ -14,10 +14,6 @@ public class ColisionEjecute : MonoBehaviour
         {
             _animator = GetComponent<Animator>();
         }
-        if(GameManager.Instance!=null)
-        {
-            transform.parent=GameManager.Instance.Gameplay;
-        }
     }
     private void OnTriggerEnter(Collider other)
     {
