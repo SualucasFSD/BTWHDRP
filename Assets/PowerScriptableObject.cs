@@ -14,6 +14,6 @@ public class PowerScriptableObject : ScriptableObject
     public EnemyCatalogue KindOfPower;
     public void Execute()
     {
-        EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, KindOfPower);
+        EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled,default, KindOfPower);
     }
 }

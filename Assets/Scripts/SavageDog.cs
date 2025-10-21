@@ -156,6 +156,7 @@ public class SavageDog : Entity, Idamageable
     }
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
     {
+        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
         if (Life <= 0)
             return;
 

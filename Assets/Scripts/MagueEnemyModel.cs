@@ -138,6 +138,7 @@ public class MagueEnemyModel : Entity, Idamageable
 
     public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
     {
+        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
         if (_isDead)
             return;
 
