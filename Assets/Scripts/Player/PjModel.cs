@@ -12,8 +12,8 @@ public class PjModel : Entity, Idamageable
     [Header("Mov Test")]
     [Header("Variables Test")]
     public CameraManager Camera;
-    public bool ManualMovement = true; 
-    public bool OnAttacking=false;
+    public bool ManualMovement = true;
+    public bool OnAttacking = false;
     [SerializeField] private ParticleSystem _bloodVfx;
     [Header("Configuracion Player")]
     [SerializeField] private float _rotationSpeed = 100f;
@@ -21,7 +21,7 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private float _maxLife;
     [SerializeField] private float _velocity;
     [SerializeField] float JumpForce;
-    [SerializeField][Range(1,10)] private int _maxJumps=2;
+    [SerializeField][Range(1, 10)] private int _maxJumps = 2;
     [SerializeField] float DodgeForce;
     [SerializeField][Range(0, 15)] private float _gravityForce;
     [SerializeField][Range(0.2f, 4)] private float _movSpeedMultiplier;
@@ -29,9 +29,10 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
-    public bool IsDodging=false;
-    public float RotationSpeedMultiply=1;
+    public bool IsDodging = false;
+    public float RotationSpeedMultiply = 1;
     //Privates
+    private bool _limitZone = false;
     private float _delayGrav;
     public float _airTime;
     public float _gravityValue;
@@ -40,20 +41,20 @@ public class PjModel : Entity, Idamageable
     private int _actualJumps = 0;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
-    private bool _isStoped=false;
-    private bool _dodgeReset=true;
+    private bool _isStoped = false;
+    private bool _dodgeReset = true;
     #region Eventos
-    public event Action<Vector3,bool> OnMovement = delegate { };
+    public event Action<Vector3, bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
-    public event Action<float> OnLifeUpdate=delegate { };
+    public event Action<float> OnLifeUpdate = delegate { };
     public event Action OnDodge = delegate { };
-    public event Action OnJump=delegate { };
-    public event Action OnDeath=delegate { };
-    public event Action<float,float> OnAim = delegate { };
-    public event Action OnLockCamera=delegate { };
+    public event Action OnJump = delegate { };
+    public event Action OnDeath = delegate { };
+    public event Action<float, float> OnAim = delegate { };
+    public event Action OnLockCamera = delegate { };
     public event Action<int> OnChangeLockTarget = delegate { };
-    public event Action<bool> OnSprint=delegate { };
-    public event Action OnAttack=delegate { };
+    public event Action<bool> OnSprint = delegate { };
+    public event Action OnAttack = delegate { };
     public event Action OnAttackLong = delegate { };
     public event Action OnAttackSecond = delegate { };
     public event Action OnAttackSecondLong = delegate { };
@@ -62,33 +63,33 @@ public class PjModel : Entity, Idamageable
     public event Action OnAttackSecondAir = delegate { };
     public event Action OnAttackSecondLongAir = delegate { };
     public event Action OnCancelAction = delegate { };
-    public event Action EjecutePower=delegate { };
-    public event Action<float> OnFall=delegate { };
+    public event Action EjecutePower = delegate { };
+    public event Action<float> OnFall = delegate { };
     public event Action OnLanding = delegate { };
     #endregion
     private void Awake()
     {
         _damageBorders.SetFloat("_Vignette_radius", 0);
-        Kind =KindOfEntity.Allies;
+        Kind = KindOfEntity.Allies;
         _rb = GetComponent<Rigidbody>();
         _ownCollider = GetComponent<Collider>();
     }
     private void Start()
     {
         _gravityValue = _gravityForce;
-        if (CameraManager.Instance!=null)
+        if (CameraManager.Instance != null)
         {
-            Camera=CameraManager.Instance;
+            Camera = CameraManager.Instance;
         }
-        Life=_maxLife;
+        Life = _maxLife;
         GameManager.Instance.AddEntity(this, Kind);
         EventManager.Suscribe(EventManager.KindOfEvent.OnEnemyKilled, EnemyKilled);
         EventManager.Suscribe(EventManager.KindOfEvent.JumpPj, JumpExecute);
         EventManager.Suscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
     }
     private void Update()
-    {   
-        if(IsDodging)
+    {
+        if (IsDodging)
         {
             gameObject.layer = 18;
         }
@@ -96,14 +97,17 @@ public class PjModel : Entity, Idamageable
         {
             gameObject.layer = 11;
         }
-        if(_delayGrav<=1)
+        if (_delayGrav <= 1)
         {
-          _delayGrav += Time.deltaTime;
+            _delayGrav += Time.deltaTime;
         }
         if (_gravityValue <= _gravityForce && _delayGrav > 1f)
         {
             _gravityValue += Time.deltaTime * 12f;
         }
+
+        _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
+        //if (_limitZone) { Debug.LogWarning("LimitZone"); }
         EjecutePower();
         EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position);
     }
@@ -125,7 +129,7 @@ public class PjModel : Entity, Idamageable
             OnLanding();
             if (_jumpTimerReset > 0.5f)
             {
-                _dodgeReset=true;
+                _dodgeReset = true;
                 _actualJumps = 0;
                 _jumpTimerReset = 0;
             }
@@ -135,19 +139,19 @@ public class PjModel : Entity, Idamageable
         {
             _rb.linearVelocity = Vector3.zero;
         }
-        if (OnAttacking||IsDodging|| _isStoped)
+        if (OnAttacking || IsDodging || _isStoped)
         { return; }
-         if (Camera._focusing && Dir != Vector3.zero)
-         {
+        if (Camera._focusing && Dir != Vector3.zero)
+        {
             Vector3 velocityChange = (Dir * _velocity) - new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
-            _rb.AddForce(velocityChange * 50/1.8f, ForceMode.Acceleration);
+            _rb.AddForce(velocityChange * 50 / 1.8f, ForceMode.Acceleration);
             return;
-         }
-         if (Dir != Vector3.zero)
-         {
-            Vector3 velocityChange = (Dir*_velocity) - new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+        }
+        if (Dir != Vector3.zero)
+        {
+            Vector3 velocityChange = (Dir * _velocity) - new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
             _rb.AddForce(velocityChange * 50, ForceMode.Acceleration);
-         }
+        }
     }
     #region Movimiento y Rotacion
     public void Movement(Vector3 rawDir, bool running)
@@ -196,24 +200,26 @@ public class PjModel : Entity, Idamageable
     }
     public void AutoMove(Vector3 dir)
     {
-       if (dir.magnitude == 0)
-       {
+        if (dir.magnitude == 0)
+        {
 
-        Dir = Vector3.zero;
-         return;
-       }
-        Dir = Vector3.ClampMagnitude(Dir + dir,_velocity);
-        OnMovement(dir,true);
+            Dir = Vector3.zero;
+            return;
+        }
+        Dir = Vector3.ClampMagnitude(Dir + dir, _velocity);
+        OnMovement(dir, true);
     }
     #endregion
     #region Jump
     public void Jump()
     {
-        if(IsGrounded||_actualJumps <_maxJumps && !IsDodging)
+        if (IsGrounded || _actualJumps < _maxJumps && !IsDodging)
         {
-            //gameObject.layer = 11;
-            _actualJumps++;
-            OnJump();
+            if (!_limitZone)
+            {
+                _actualJumps++;
+                OnJump();
+            }
         }
     }
     public void JumpExecute(params object[] p)
@@ -226,7 +232,6 @@ public class PjModel : Entity, Idamageable
     {
         if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
-            //gameObject.layer = 18;
             IsDodging = true;
             _dodgeReset = false;
             OnDodge();
@@ -251,7 +256,7 @@ public class PjModel : Entity, Idamageable
     #region ComboKeys
     public void AttackFirstCombo()
     {
-        if (OnAttack != null&&!IsDodging)
+        if (OnAttack != null && !IsDodging && !_limitZone)
         {
             StopMove();
             if (!IsGrounded)
@@ -268,7 +273,7 @@ public class PjModel : Entity, Idamageable
         {
 
         }*/
-        if (OnAttackSecond != null && !IsDodging)
+        if (OnAttackSecond != null && !IsDodging && !_limitZone)
         {
             StopMove();
             if (!IsGrounded)
@@ -281,7 +286,7 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondComboLong()
     {
-        if (OnAttackSecondLong != null && !IsDodging)
+        if (OnAttackSecondLong != null && !IsDodging && !_limitZone)
         {
             StopMove();
             if (!IsGrounded)
@@ -294,7 +299,7 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackFirstComboLong()
     {
-        if (OnAttackLong != null && !IsDodging)
+        if (OnAttackLong != null && !IsDodging && !_limitZone)
         {
             StopMove();
             if (!IsGrounded)
@@ -307,9 +312,9 @@ public class PjModel : Entity, Idamageable
     }
     private void StopMove()
     {
-        if(!_rb.isKinematic)
+        if (!_rb.isKinematic)
         {
-           _rb.linearVelocity=Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
     #endregion
@@ -317,7 +322,7 @@ public class PjModel : Entity, Idamageable
     public void LoockOnCamera()
     {
         EventManager.Ejecute(EventManager.KindOfEvent.OnLockCamera);
-        if(OnLockCamera!=null)
+        if (OnLockCamera != null)
         {
             OnLockCamera();
         }
@@ -332,7 +337,7 @@ public class PjModel : Entity, Idamageable
     }
     public void RotateCamera(float X, float Y)
     {
-       OnAim(X, Y);
+        OnAim(X, Y);
     }
     public void RotatePlayer(float X, float Y)
     {
@@ -347,26 +352,26 @@ public class PjModel : Entity, Idamageable
         {
             _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
         }
-        Life -=dmg;
+        Life -= dmg;
         EventManager.Ejecute(EventManager.KindOfEvent.MakeCameraShake);
-        if(_bloodVfx!=null)
+        if (_bloodVfx != null)
         {
             _bloodVfx.Play();
         }
-        if(_damageRoutine!=null)
+        if (_damageRoutine != null)
         {
             StopCoroutine(_damageRoutine);
         }
-        _damageBorders.SetFloat("_Vignette_radius",1);
+        _damageBorders.SetFloat("_Vignette_radius", 1);
         StartCoroutine(DamageBorders());
         OnLifeUpdate(Life / _maxLife);
         if (Life < 0)
         {
             Life = 0;
         }
-        EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater,Life / _maxLife);
-       if (Life <= 0)
-       {
+        EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater, Life / _maxLife);
+        if (Life <= 0)
+        {
             GameManager.Instance.RemoveEntity(this, Kind);
             EventManager.Ejecute(EventManager.KindOfEvent.OnDeath);
             Destroy(gameObject);
@@ -375,16 +380,16 @@ public class PjModel : Entity, Idamageable
     public void TakeHealt(float amount)
     {
         Life += amount;
-        if(Life>_maxLife)
+        if (Life > _maxLife)
         {
             EventManager.Ejecute(EventManager.KindOfEvent.MaxLifeReach);
             Life = _maxLife;
         }
         EventManager.Ejecute(EventManager.KindOfEvent.LifeUpdater, Life / _maxLife);
     }
-    public void AddPower(EnemyCatalogue Obj, Tuple<int,IPjPower> Needed)
+    public void AddPower(EnemyCatalogue Obj, Tuple<int, IPjPower> Needed)
     {
-        if(!_powerActivate.ContainsKey(Obj))
+        if (!_powerActivate.ContainsKey(Obj))
         {
             _powerActivate.Add(Obj, Needed);
         }
@@ -392,24 +397,24 @@ public class PjModel : Entity, Idamageable
     private IEnumerator DamageBorders()
     {
         float i = 1;
-        while(i>=0)
+        while (i >= 0)
         {
             i -= 0.1f;
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             _damageBorders.SetFloat("_Vignette_radius", i);
             yield return new WaitForSeconds(0.1f);
         }
-        _damageRoutine=null;
-    }   
+        _damageRoutine = null;
+    }
     public void EnemyKilled(object[] obj)
     {
         if (!_powerActivate.ContainsKey((EnemyCatalogue)obj[1]))
         {
             return;
         }
-        _powerActivate[(EnemyCatalogue)obj[1]] = Tuple.Create(_powerActivate[(EnemyCatalogue)obj[1]].Item1-1, _powerActivate[(EnemyCatalogue)obj[1]].Item2);
+        _powerActivate[(EnemyCatalogue)obj[1]] = Tuple.Create(_powerActivate[(EnemyCatalogue)obj[1]].Item1 - 1, _powerActivate[(EnemyCatalogue)obj[1]].Item2);
 
-        if(_powerActivate[(EnemyCatalogue)obj[1]].Item1<=0)
+        if (_powerActivate[(EnemyCatalogue)obj[1]].Item1 <= 0)
         {
             /*if (!_myAbilityText.isPlaying)
                 _myAbilityText.StartCoroutine(_myAbilityText.OnAbilityAcquired());*/
@@ -418,7 +423,7 @@ public class PjModel : Entity, Idamageable
         }
         else
         {
-          print("Faltan " + _powerActivate[(EnemyCatalogue)obj[1]].Item1 + " " + (EnemyCatalogue)obj[1]);
+            print("Faltan " + _powerActivate[(EnemyCatalogue)obj[1]].Item1 + " " + (EnemyCatalogue)obj[1]);
         }
     }
     public void ComboInitial()
@@ -429,9 +434,9 @@ public class PjModel : Entity, Idamageable
     public void DesactiveGravity()
     {
         //_useGravity = false;
-        _delayGrav=0;
+        _delayGrav = 0;
         _gravityValue = 0;
-        _rb.constraints = /*RigidbodyConstraints.FreezePositionY |*/ RigidbodyConstraints.FreezeRotationX| RigidbodyConstraints.FreezeRotationZ;
+        _rb.constraints = /*RigidbodyConstraints.FreezePositionY |*/ RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
     }
     public void StopPJ()
@@ -449,7 +454,7 @@ public class PjModel : Entity, Idamageable
     }
     public void ActiveGravity()
     {
-        _gravityValue=_gravityForce;
+        _gravityValue = _gravityForce;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
     #endregion
@@ -462,8 +467,8 @@ public class PjModel : Entity, Idamageable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, direction: -Vector3.up*10);
-        if (_groundDetect.point!=null)
+        Gizmos.DrawRay(transform.position, direction: -Vector3.up * 10);
+        if (_groundDetect.point != null)
         {
             if (Vector3.Distance(transform.position, _groundDetect.point) <= GroundDistanceDetector)
             {
