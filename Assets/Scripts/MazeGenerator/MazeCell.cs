@@ -8,17 +8,17 @@ public class MazeCell : MonoBehaviour
     [SerializeField] private GameObject _principalDoor;
     public Transform[] RigtLeftSpawnVector = new Transform[2];
     public PathNode[] _primalPathNode;
-    public List<PathNode> _pathNodesList=new List<PathNode>();
-    public List<MazeCell> _neighbords=new List<MazeCell>();
+    public List<PathNode> _pathNodesList = new List<PathNode>();
+    public List<MazeCell> _neighbords = new List<MazeCell>();
     [SerializeField] private GameObject _lights;
     [SerializeField] private List<GameObject> _enemies;
     private NextRoom[] _nextRooms;
-    private bool _isActive=false;
-
+    private bool _isActive = false;
+    [SerializeField] private GameObject _finalBox;
     private void Awake()
     {
-        _pathNodesList=new List<PathNode> ();
-        _neighbords=new List<MazeCell>();
+        _pathNodesList = new List<PathNode>();
+        _neighbords = new List<MazeCell>();
     }
     private void Start()
     {
@@ -81,15 +81,15 @@ public class MazeCell : MonoBehaviour
         {
             print(_pathNodesList.Count);
         }
-       foreach(PathNode node in _pathNodesList)
+        foreach (PathNode node in _pathNodesList)
         {
-            foreach(PathNode n in _pathNodesList)
+            foreach (PathNode n in _pathNodesList)
             {
-                if(node==n)
+                if (node == n)
                 {
                     continue;
                 }
-                if(GameManager.Instance.SphereLineOfSight(node.transform.position, n.transform.position, 0.6f))
+                if (GameManager.Instance.SphereLineOfSight(node.transform.position, n.transform.position, 0.6f))
                 {
                     node.Neighbords.Add(n);
                 }
@@ -97,14 +97,15 @@ public class MazeCell : MonoBehaviour
         }
     }
     public void TurnOnLight()
-    {    if (_lights != null)
+    {
+        if (_lights != null)
         {
             _lights.SetActive(true);
         }
     }
     public void TurnOfMazeCell()
     {
-        foreach(GameObject p in _enemies)
+        foreach (GameObject p in _enemies)
         {
             p.SetActive(false);
         }
@@ -120,11 +121,11 @@ public class MazeCell : MonoBehaviour
     }
     private void OnDestroy()
     {
-       OptimizerScript.instance.MazeCells.Remove(this);
+        OptimizerScript.instance.MazeCells.Remove(this);
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(_isActive)
+        if (_isActive)
         {
             return;
         }
@@ -134,17 +135,17 @@ public class MazeCell : MonoBehaviour
             OptimizerScript.instance.Refresh(this);
             _principalDoor.SetActive(true);
             StartCoroutine(SpawnEnemies());
-            _isActive=true;
+            _isActive = true;
         }
     }
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         if (_primalPathNode[2]!=null)
         {
             Gizmos.DrawWireCube(_primalPathNode[2].transform.position, new Vector3(1, 1, 1));
         }
-    }
+    }*/
     public void OnEnemyKilledInside(GameObject p)
     {
         _enemies.Remove(p);
@@ -152,12 +153,24 @@ public class MazeCell : MonoBehaviour
     }
     private void Comprobate()
     {
-      if(_enemies.Count<=0)
-      {
+        if (_enemies.Count <= 0)
+        {
             foreach (NextRoom r in _nextRooms)
             {
                 r.enabled = true;
             }
+            if (_finalBox != null)
+            {
+                GameObject p = _pathNodesList[Random.Range(0, _pathNodesList.Count)].gameObject;
+                Instantiate(_finalBox, p.transform.position, Quaternion.Euler(0, p.transform.rotation.y, 0));
+            }
+        }
+    }
+    public void DesactivateDoor()
+    {
+        foreach (NextRoom r in _nextRooms)
+        {
+            r.enabled = false;
         }
     }
 }
