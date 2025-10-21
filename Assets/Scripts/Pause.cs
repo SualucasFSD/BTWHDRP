@@ -11,6 +11,8 @@ public class Pause : MonoBehaviour
     private void Start()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.PauseGame,PauseApp);
+        EventManager.Suscribe(EventManager.KindOfEvent.ResumeTime, ResumeOn);
+        EventManager.Suscribe(EventManager.KindOfEvent.PauseTime, PauseOn);
     }
     public void PauseApp(params object[] obj)
     {
@@ -20,7 +22,7 @@ public class Pause : MonoBehaviour
         }
         else { PauseOn(); }
     }
-    private void PauseOn()
+    private void PauseOn(params object[] p)
     {
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
@@ -60,7 +62,7 @@ public class Pause : MonoBehaviour
             }
         }
     }
-    private void ResumeOn()
+    private void ResumeOn(params object[] p)
     {
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
@@ -101,5 +103,7 @@ public class Pause : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.Unscribe(EventManager.KindOfEvent.PauseGame, PauseApp);
+        EventManager.Unscribe(EventManager.KindOfEvent.ResumeTime, ResumeOn);
+        EventManager.Unscribe(EventManager.KindOfEvent.PauseTime, PauseOn);
     }
 }

@@ -29,7 +29,12 @@ public class EventManager
         OnLoadScene,
         OnChangeScene,
         OnChangeResolution,
-        MakeCameraShake
+        MakeCameraShake,
+        PowerSelect,
+        ResumeTime,
+        PauseTime,
+        ThunderPower,
+        VenomPower
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

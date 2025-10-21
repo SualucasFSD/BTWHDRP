@@ -7,7 +7,9 @@ public enum EnemyCatalogue
 {
     Esqueleton,
     Mague,
-    SavageDog
+    SavageDog,
+    Lizard,
+    VenomLancer
 }
 public enum PjPower
 {
