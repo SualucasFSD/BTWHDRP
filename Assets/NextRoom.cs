@@ -23,11 +23,12 @@ public class NextRoom : InteractuableGeneric
     }
     private void Start()
     {
-        if (GameManager.Instance.RoomsAvailable < 0)
+        //InteractManager.Instance.AddInteract(this);
+        /*if (GameManager.Instance.RoomsAvailable < 0)
         {
           InteractManager.Instance.RemoveInteract(this);
             Destroy(this);
-        }
+        }*/
     }
     private void OnEnable()
     {

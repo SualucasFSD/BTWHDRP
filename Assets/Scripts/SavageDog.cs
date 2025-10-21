@@ -40,7 +40,7 @@ public class SavageDog : Entity, Idamageable
     #endregion
     private void Awake()
     {
-        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
+       // Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         Kind = KindOfEntity.Enemy;
         if (_rb == null)
         {
@@ -69,6 +69,7 @@ public class SavageDog : Entity, Idamageable
     }
     private void Start()
     {
+        Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         _fsm.AddState(FsmSavageDog.DogState.OnPatrol, new OnPatrol(this, _nodeLayer, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat), OnMovePj,OnRotatePj,EnemyCatalogue.SavageDog));
         _fsm.AddState(FsmSavageDog.DogState.OnCombat, new SavageDogOnCombat(_fsm,this));
         _fsm.AddState(FsmSavageDog.DogState.OnMidAir, new OnAir(this, () => _fsm.ChangeState(FsmSavageDog.DogState.OnCombat)));

@@ -10606,6 +10606,67 @@ Transform:
   - {fileID: 362274868}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &432937590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 432937592}
+  - component: {fileID: 432937591}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &432937591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432937590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0253b49263c4945bfba473c95ddcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveSystemManager
+  _saveDatas:
+  - Save: 0
+    Gold: 0
+    Diamond: 0
+  - Save: 0
+    Gold: 0
+    Diamond: 0
+  - Save: 0
+    Gold: 0
+    Diamond: 0
+  - Save: 0
+    Gold: 0
+    Diamond: 0
+  GenericSave:
+    Save: 0
+    Gold: 0
+    Diamond: 0
+--- !u!4 &432937592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432937590}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 94.79874, y: 0, z: 147.54059}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &433171765
 GameObject:
   m_ObjectHideFlags: 0
@@ -57511,3 +57572,4 @@ SceneRoots:
   - {fileID: 1314642328}
   - {fileID: 7342753608267270831}
   - {fileID: 578158023}
+  - {fileID: 432937592}
