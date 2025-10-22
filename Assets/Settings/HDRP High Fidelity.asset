@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HDRP High Fidelity
   m_EditorClassIdentifier: 
   m_RenderPipelineSettings:
-    supportShadowMask: 0
+    supportShadowMask: 1
     supportSSR: 0
     supportSSRTransparent: 0
     supportSSAO: 1
@@ -29,7 +29,7 @@ MonoBehaviour:
       m_SchemaId:
         m_Id: With3Levels
     supportVolumetrics: 1
-    supportVolumetricClouds: 1
+    supportVolumetricClouds: 0
     supportLightLayers: 1
     renderingLayerMaskBuffer: 0
     supportWater: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
       maxLocalVolumetricFogSize: 32
       maxLocalVolumetricFogOnScreen: 64
     hdShadowInitParams:
-      maxShadowRequests: 512
+      maxShadowRequests: 100
       directionalShadowsDepthBits: 16
       punctualShadowFilteringQuality: 2
       directionalShadowFilteringQuality: 2
