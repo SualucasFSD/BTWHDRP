@@ -15,6 +15,7 @@ public class MazeCell : MonoBehaviour
     private NextRoom[] _nextRooms;
     private bool _isActive = false;
     [SerializeField] private GameObject _finalBox;
+    [SerializeField] AcquireAbility _Text;
     private void Awake()
     {
         _pathNodesList = new List<PathNode>();
@@ -161,6 +162,10 @@ public class MazeCell : MonoBehaviour
             }
             if (_finalBox != null)
             {
+                _Text = GameObject.Find("GameManager").gameObject.GetComponent<AcquireAbility>();
+                if (_Text != null)
+                    StartCoroutine(_Text.OnAbilityAcquired()); 
+
                 GameObject p = _pathNodesList[Random.Range(0, _pathNodesList.Count)].gameObject;
                 Instantiate(_finalBox, p.transform.position, Quaternion.Euler(0, p.transform.rotation.y, 0));
             }
