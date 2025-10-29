@@ -36,7 +36,8 @@ public class SavageView : MonoBehaviour
     private void OnHitGround()
     {
         _dogModel.Stuned=true;
-        _animator.SetTrigger("Hit");
+        //_animator.SetTrigger("Hit");
+        SetTriger("Hit");
     }
     public void RecoverFromHit()
     {
@@ -44,28 +45,41 @@ public class SavageView : MonoBehaviour
     }
     private void GetToGround()
     {
-        _animator.SetTrigger("ToTheGround");
+        //_animator.SetTrigger("ToTheGround");
+        SetTriger("ToTheGround");
     }
     private void OnFreeFall()
     {
+        if (!_animator.enabled)
+        {
+            _animator.enabled = true;
+        }
         _animator.SetBool("CancelAir", true);
     }
     private void GetToTheAir()
     {
         _dogModel.Stuned=true;
-        _animator.SetTrigger("ToTheAir");
+
+        //_animator.SetTrigger("ToTheAir");
+        SetTriger("ToTheAir");
     }
     private void OnGrounded(bool I)
     {
+        if (!_animator.enabled)
+        {
+            _animator.enabled = true;
+        }
         _animator.SetBool("IsGrounded", I);
     }
     private void OnAirHit()
     {
-        _animator.SetTrigger("HitMidAir");
+        //_animator.SetTrigger("HitMidAir");
+        SetTriger("HitMidAir");
     }
     private void OnAttacking()
     {
-        _animator.SetTrigger("Attack1");
+        //_animator.SetTrigger("Attack1");
+        SetTriger("Attack1");
     }
     public void WakingUp()
     {
@@ -75,7 +89,14 @@ public class SavageView : MonoBehaviour
     {
         _dogModel.Stuned=false;
     }
-
+    private void SetTriger(string p)
+    {
+        if(!_animator.enabled)
+        {
+            _animator.enabled= true;
+        }
+        _animator.SetTrigger(p);
+    }
     public void Attack()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].AttackDistance, _hitLayer);
