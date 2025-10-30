@@ -292,9 +292,9 @@ public class MagueEnemyModel : Entity, Idamageable
 
     private void MantainOnAir()
     {
+        print("MantainOnAir");
         _gravityValue = 0;
-        if (!_rb.isKinematic)
-            _rb.linearVelocity = Vector3.zero;
+        _rb.AddForce(Vector3.up * 200, ForceMode.Impulse);
     }
 
     private IEnumerator GoUpAndFloat(float targetY)

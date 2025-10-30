@@ -36,7 +36,10 @@ public class EventManager
         ThunderPower,
         VenomPower,
         PauseOneEnemy,
-        ResumeOneEnemy
+        ResumeOneEnemy,
+        SwordDamage,
+        RespecificSword,
+        RefreshEnemyHitList
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

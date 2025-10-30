@@ -317,11 +317,9 @@ public class SavageDog : Entity, Idamageable
     }
     private void MantainOnAir()
     {
+        print("MantainOnAir");
         _gravityValue = 0;
-        if (!_rb.isKinematic)
-        {
-            _rb.linearVelocity = Vector3.zero;
-        }
+        _rb.AddForce(Vector3.up * 200, ForceMode.Impulse);
     }
     public override void GetToTheGround()
     {
