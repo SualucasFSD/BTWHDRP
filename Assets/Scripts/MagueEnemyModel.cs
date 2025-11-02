@@ -428,6 +428,13 @@ public class MagueEnemyModel : Entity, Idamageable
         {
             return;
         }
+        if(UseGravity)
+        {
+            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce)
+            {
+                GravValue += Time.deltaTime * 7f;
+            }
+        }
         OnGround(IsGrounded);
         _fsm.ArtificialUpdate();
     }
@@ -440,10 +447,6 @@ public class MagueEnemyModel : Entity, Idamageable
         IsGroundedDetector();
         if (UseGravity)
         {
-            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce)
-            {
-                GravValue += Time.deltaTime * 15f;
-            }
             _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
         }
         ApplySeparation();

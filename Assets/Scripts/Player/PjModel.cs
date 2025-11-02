@@ -33,15 +33,13 @@ public class PjModel : Entity, Idamageable
     public float RotationSpeedMultiply = 1;
     //Privates
     private bool _limitZone = false;
-    private float _delayGrav;
+    public float _delayGrav;
     public float _airTime;
-    public float _gravityValue;
     private Vector3 _dodgeDir;
     private float _jumpTimerReset = 0;
     private int _actualJumps = 0;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
-    private bool _isStoped = false;
     private bool _dodgeReset = true;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
@@ -76,7 +74,7 @@ public class PjModel : Entity, Idamageable
     }
     private void Start()
     {
-        _gravityValue = _gravityForce;
+        GravValue = _gravityForce;
         if (CameraManager.Instance != null)
         {
             Camera = CameraManager.Instance;
@@ -101,13 +99,15 @@ public class PjModel : Entity, Idamageable
         {
             gameObject.layer = 11;
         }
-        if (_delayGrav <= 1)
+
+        if (_delayGrav <= 0.8f)
         {
             _delayGrav += Time.deltaTime;
         }
-        if (_gravityValue <= _gravityForce && _delayGrav > 1f)
+
+        if (GravValue <= _gravityForce && _delayGrav > 0.75f)
         {
-            _gravityValue += Time.deltaTime * 12f;
+            GravValue += Time.deltaTime * 12f;
         }
 
         _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
@@ -123,8 +123,10 @@ public class PjModel : Entity, Idamageable
         }
         IsGroundedDetector();
 
-        _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
-
+        if (_delayGrav > 0.75)
+        {
+            _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
+        }
         if (!IsGrounded)
         {
             OnFall(_rb.linearVelocity.y);
@@ -132,7 +134,7 @@ public class PjModel : Entity, Idamageable
         }
         else
         {
-            _gravityValue = _gravityForce;
+            GravValue = _gravityForce;
             _jumpTimerReset += Time.deltaTime;
             OnLanding();
             if (_jumpTimerReset > 0.5f)
@@ -147,7 +149,7 @@ public class PjModel : Entity, Idamageable
         {
             _rb.linearVelocity = Vector3.zero;
         }
-        if (OnAttacking || IsDodging || _isStoped)
+        if (OnAttacking || IsDodging)
         { return; }
         if (Camera._focusing && Dir != Vector3.zero)
         {
@@ -277,10 +279,6 @@ public class PjModel : Entity, Idamageable
     }
     public void AttackSecondCombo()
     {
-        /*if(IsDodging)
-        {
-
-        }*/
         if (OnAttackSecond != null && !IsDodging && !_limitZone)
         {
             StopMove();
@@ -441,10 +439,9 @@ public class PjModel : Entity, Idamageable
     }
     public void DesactiveGravity()
     {
-        //_useGravity = false;
         _delayGrav = 0;
-        _gravityValue = 0;
-        _rb.constraints = /*RigidbodyConstraints.FreezePositionY |*/ RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        GravValue = 0;
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
     }
     public void StopPJ()
@@ -453,22 +450,16 @@ public class PjModel : Entity, Idamageable
         {
             _rb.linearVelocity = Vector3.zero;
         }
-        _isStoped = true;
-        Invoke(nameof(StopedInvoke), 0.5f);
-    }
-    private void StopedInvoke()
-    {
-        _isStoped = false;
     }
     public void ActiveGravity()
     {
-        _gravityValue = _gravityForce;
+        GravValue = _gravityForce;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
     #endregion
     public void GetDown()
     {
-        _gravityValue = _gravityForce;
+        GravValue = _gravityForce;
         _delayGrav = 2;
         _rb.AddForce(-Vector3.up * 5000, ForceMode.Impulse);
     }

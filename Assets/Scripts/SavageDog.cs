@@ -85,6 +85,13 @@ public class SavageDog : Entity, Idamageable
         {
             _attackTimer += Time.deltaTime;
         }
+        if(UseGravity)
+        {
+            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
+            {
+                GravValue += Time.deltaTime * 7f;
+            }
+        }
         OnGrounded(IsGrounded);
         _fsm.ArtificialUpdate();
     }
@@ -97,10 +104,6 @@ public class SavageDog : Entity, Idamageable
         IsGroundedDetector();
         if(UseGravity)
         {
-            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce)
-            {
-                GravValue += Time.deltaTime * 15f;
-            }
             _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
         }
         ApplySeparation();

@@ -35,7 +35,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
     [Header("Air Settings")]
     [SerializeField] private float _onAirTime = 3;
     [SerializeField] int _airLayer;
-    [SerializeField] private float _ceilingOffset = 0.2f;
+//[SerializeField] private float _ceilingOffset = 0.2f;
     [SerializeField] private LayerMask _stuckLayer;
     private int _groundLayer;
     private void Awake()

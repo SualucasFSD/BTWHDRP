@@ -40641,7 +40641,7 @@ MonoBehaviour:
   _isActive: 0
   _interactObj: []
   _offset: {x: 1, y: 1, z: 1}
-  EnemyCatalogue: 2
+  EnemyCatalogue: 1
 --- !u!65 &1314642325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77981,6 +77981,11 @@ PrefabInstance:
       propertyPath: Camera
       value: 
       objectReference: {fileID: 8329337838200755577}
+    - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
+        type: 3}
+      propertyPath: _gravityForce
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 7624308206656525960, guid: b28475f4e9a07cd41acc2fb939a9483a,
         type: 3}
       propertyPath: _myAbilityText
