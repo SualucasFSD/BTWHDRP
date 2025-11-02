@@ -21,6 +21,7 @@ public class KnightView : PjView
     private float _angle;
     private float _flyAngle;
     private bool _getGround;
+    private bool _animMove=false;
     public List<GameObject> HitEnemies = new List<GameObject>();
     private float _jumpDelay=0;
     private void Start()
@@ -42,6 +43,7 @@ public class KnightView : PjView
         _pjModel.OnAttackSecondAir += () => RegisterImputs(KindOfCombo.StrongAir);
         _pjModel.OnAttackLongAir += () => RegisterImputs(KindOfCombo.LightLongAir);
         _pjModel.OnAttackSecondLongAir += () => RegisterImputs(KindOfCombo.StrongLongAir);
+        _pjModel.OnRunAttack += () => RunComboLight();
 
         _pjModel.OnMovement += OnMove;
         _pjModel.OnJump += OnJump;
@@ -60,6 +62,7 @@ public class KnightView : PjView
             _jumpDelay += Time.deltaTime;
         }
     }
+
     private void RefreshEnemyList(params object[] p)
     {
         HitEnemies = (List < GameObject >) p[0];
@@ -85,10 +88,12 @@ public class KnightView : PjView
     }
     private void OnJump()
     {
+        //_animMove = false;
         _jumpDelay = 0;
         _pjModel.IsDodging = false;
         ComboResetGeneral();
-        _animator.SetBool("Jump", true);
+        _animator.SetTrigger("Jump");
+        //_animator.SetBool("Jump", true);
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
     }
     #endregion
@@ -98,6 +103,11 @@ public class KnightView : PjView
         if (_dir.sqrMagnitude > 0)
         {
             _animator.SetBool("isMoving", true);
+            if (_animMove)
+            {
+                _animMove = false;
+                _animator.SetTrigger("ForceMove");
+            }
         }
         else
         {
@@ -107,6 +117,14 @@ public class KnightView : PjView
         _animator.SetFloat("xAxis", localDir.x, 0.1f, Time.deltaTime);
         _animator.SetFloat("zAxis", localDir.z, 0.1f, Time.deltaTime);
         _animator.SetBool("isRunning", running);
+    }
+    public void OnReloadAnim()
+    {
+        _animMove = true;
+    }
+    public void AnimReloaded()
+    {
+        _animMove=false;
     }
     private void OnLifeUpdate(float Value)
     {
@@ -302,13 +320,17 @@ public class KnightView : PjView
         {
             return;
         }
-        if(_jumpDelay>=0.5f)
+        if (_jumpDelay>=0.5f)
         {
             _jumpDelay = 0;
             OnJump();
         }
     }
-
+    private void RunComboLight()
+    {
+        EndDodge();
+        RegisterImputs(KindOfCombo.SprintLight);
+    }
     //Cancelacion del combo
     public void DamageActivate()
     {
@@ -331,6 +353,7 @@ public class KnightView : PjView
     #region Dodge System
     private void OnDodge()
     {
+        //_animMove = false;
         ComboResetGeneral();
         if (!_pjModel.IsGrounded)
         {
@@ -341,18 +364,17 @@ public class KnightView : PjView
     }
     public void EndDodge()
     {
-        print("Finalice dodge");
+        //print("Finalice dodge");
         _pjModel.IsDodging = false;
         if (!_pjModel.IsGrounded)
         {
             _pjModel.StopPJ();
-            _animator.SetTrigger("IsFalling");
+            //_animator.SetTrigger("IsFalling");
         }
         gameObject.layer = 11;
     }
     #endregion
     #region ComboManager Section
-
     public void AddForceToEnemy()
     {
 

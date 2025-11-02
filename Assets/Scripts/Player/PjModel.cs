@@ -41,6 +41,7 @@ public class PjModel : Entity, Idamageable
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
     private bool _dodgeReset = true;
+    private float _delayActions = 0;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
@@ -64,6 +65,7 @@ public class PjModel : Entity, Idamageable
     public event Action EjecutePower = delegate { };
     public event Action<float> OnFall = delegate { };
     public event Action OnLanding = delegate { };
+    public event Action OnRunAttack=delegate { };
     #endregion
     private void Awake()
     {
@@ -99,7 +101,10 @@ public class PjModel : Entity, Idamageable
         {
             gameObject.layer = 11;
         }
-
+        if (_delayActions<1)
+        {
+            _delayActions += Time.deltaTime;
+        }
         if (_delayGrav <= 0.8f)
         {
             _delayGrav += Time.deltaTime;
@@ -227,8 +232,12 @@ public class PjModel : Entity, Idamageable
         {
             if (!_limitZone)
             {
-                _actualJumps++;
-                OnJump();
+                if (_delayActions>0.1f)
+                {
+                    _delayActions = 0;
+                    _actualJumps++;
+                    OnJump();
+                }
             }
         }
     }
@@ -242,9 +251,13 @@ public class PjModel : Entity, Idamageable
     {
         if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
-            IsDodging = true;
-            _dodgeReset = false;
-            OnDodge();
+            if (_delayActions > 0.1f)
+            {
+                _delayActions = 0;
+                IsDodging = true;
+                _dodgeReset = false;
+                OnDodge();
+            }
         }
     }
     public void DodgeExecute(params object[] p)
@@ -276,6 +289,13 @@ public class PjModel : Entity, Idamageable
             }
             OnAttack();
         }
+        /*if(OnAttack != null&&IsDodging && !_limitZone)
+        {
+            if (IsGrounded)
+            {
+                OnRunAttack();
+            }
+        }*/
     }
     public void AttackSecondCombo()
     {
