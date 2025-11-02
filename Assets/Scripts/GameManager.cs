@@ -36,8 +36,12 @@ public class GameManager : MonoBehaviour
     public Action GenericFixedUpdate = delegate { };
     public float LaunchAngle = 45f;
     public int RoomsAvailable;
-    public float DificultLevel=0;
-
+    public float DificultLevel = 0;
+    public List<Transform> EnemySeparation = new List<Transform>();
+    [Header("IA Config")]
+    [Range(0.1f, 1f)] public float SeparationPriority=1;
+    [Range(0.1f, 1f)] public float ArrivePriotity=0.8f;
+    [Range(0.1f, 1f)] public float AvoidPriority=1;
     //Por ahora
     public event Action DecalUpdate= delegate { };
     private void FixedUpdate()
@@ -206,9 +210,11 @@ public class GameManager : MonoBehaviour
     }
     public List<Transform> GetSeparationEntityes()
     {
-        List < Transform > p= new List <Transform>();
-        p=_allies.Concat(_enemy).Select(j => j.transform).ToList();
-        return p;
+        //List < Transform > p= new List <Transform>();
+        //p=_allies.Concat(_enemy).Select(j => j.transform).ToList();
+        //p = _enemy.Select(x => x.transform).ToList();
+        //return _enemy.Select(x => x.transform).ToList();
+        return EnemySeparation;
     }
     public void AddEntity(Entity p, Entity.KindOfEntity k)
     {
@@ -225,6 +231,7 @@ public class GameManager : MonoBehaviour
             if (!_enemy.Contains(p))
             {
                 _enemy.Add(p);
+                EnemySeparation.Add(p.transform);
                 //print(_enemy.Count + " enemigo aniadido");
             }
         }
@@ -244,7 +251,8 @@ public class GameManager : MonoBehaviour
             if (_enemy.Contains(p))
             {
                 _enemy.Remove(p);
-               //print(_enemy.Count + " enemigo removido");
+                EnemySeparation.Remove(p.transform);
+                //print(_enemy.Count + " enemigo removido");
             }
         }
     }

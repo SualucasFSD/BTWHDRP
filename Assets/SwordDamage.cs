@@ -15,7 +15,6 @@ public class SwordDamage : MonoBehaviour
     private float _dmg;
     private float _swordArea;
     private float _stuntDmg;
-    //private float _angle;
     private float _flyAngle;
     private bool _getGround;
 
@@ -32,7 +31,6 @@ public class SwordDamage : MonoBehaviour
         }
 
         rb.isKinematic = true;
-       // rb.interpolation = RigidbodyInterpolation.Interpolate;
        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
     }
     private void Start()
@@ -58,7 +56,6 @@ public class SwordDamage : MonoBehaviour
         if ((bool)p[0])
         {
             hitEnemies.Clear();
-            print("RealDamage");
             EventManager.Ejecute(EventManager.KindOfEvent.RefreshEnemyHitList,hitEnemies);
         }
     }
@@ -76,14 +73,6 @@ public class SwordDamage : MonoBehaviour
                 Vector3 pushDirection = new Vector3((other.transform.position - transform.position).x, 0, (other.transform.position - transform.position).z).normalized;
                 Idamageable l = other.GetComponent<Idamageable>();
                 l.TakeDamage(_dmg * 1, _stuntDmg * 1 / 2, pushDirection, _getGround);
-                /*Vector3 dirToEnemy = (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized;
-                float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
-
-                if (backFrontAngle > _angle)
-                {
-                    Vector3 pushDirection = new Vector3((j.transform.position - transform.position).x, 0, (j.transform.position - transform.position).z).normalized;
-                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection, _getGround);
-                }*/
             }
         }
     }

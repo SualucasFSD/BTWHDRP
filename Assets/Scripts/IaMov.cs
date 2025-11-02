@@ -9,13 +9,13 @@ public class IaMov : MonoBehaviour
     {
         Instance = this;
     }
-    public Vector3 Pursuit(Entity Obj,Entity target,float Velocity, float RotForce)
+    public Vector3 Pursuit(Entity Obj, Entity target, float Velocity, float RotForce)
     {
         Vector3 Desired = target.transform.position + target.Dir;
 
-        return Seek(Obj,Desired,Velocity,RotForce);
+        return Seek(Obj, Desired, Velocity, RotForce);
     }
-    public Vector3 ObstacleAvoid(Entity Obj,float Speed,float RotForce,float Area)
+    public Vector3 ObstacleAvoid(Entity Obj, float Speed, float RotForce, float Area)
     {
         Vector3 position = Obj.transform.position;
         Vector3 direcction = Obj.transform.forward;
@@ -44,12 +44,12 @@ public class IaMov : MonoBehaviour
         Steering = Vector3.ClampMagnitude(Steering, RotForce);
         return Steering;
     }
-    public Vector3 Arrive(Entity Obj,Transform Target,float Speed,float RotForce)
+    public Vector3 Arrive(Entity Obj, Transform Target, float Speed, float RotForce)
     {
         Vector3 DesirePosition;
         if (Vector3.Distance(Target.position, Obj.transform.position) > 4f)
         {
-            return Seek(Obj,Target.position,Speed,RotForce);
+            return Seek(Obj, Target.position, Speed, RotForce);
         }
         else
         {
@@ -62,49 +62,31 @@ public class IaMov : MonoBehaviour
             return Steering;
         }
     }
-    public Vector3 Separation(List<Transform> Entity, float Radius,Entity Obj,float Speed,float RotForce)
+    public Vector3 Separation(List<Transform> Entity, float Radius, Entity Obj, float Speed, float RotForce)
     {
-        Vector3 dir;
         Vector3 desired = Vector3.zero;
-        Vector3 steering;
+
         foreach (Transform T in Entity)
         {
             if (T.gameObject == Obj.gameObject)
-            {
                 continue;
-            }
-            dir = T.position - Obj.transform.position;
-            if (dir.magnitude > Radius)
-            {
+
+            Vector3 dir = Obj.transform.position - T.position;
+            float dist = dir.magnitude;
+            if (dist > Radius || dist < 0.001f)
                 continue;
-            }
-            desired -= dir;
+
+            desired += dir.normalized / dist;
         }
+
         if (desired == Vector3.zero)
         {
-            return desired;
+            return Vector3.zero;
         }
         desired.Normalize();
         desired *= Speed;
-        steering = desired - Obj.Dir;
-        steering = Vector3.ClampMagnitude(steering, RotForce);
-        return steering;
+        Debug.DrawRay(Obj.transform.position, desired, Color.cyan);
+        Vector3 steering = desired - Obj.Dir;
+        return Vector3.ClampMagnitude(steering, RotForce);
     }
-    public Vector3 GetRotationLerp(Transform Transform ,Vector3 Target,float RotForce)
-    {
-        Vector3 DesirePosition;
-        DesirePosition = Target - Transform.position;
-        DesirePosition.Normalize();
-        DesirePosition *=  RotForce;
-        Vector3 Steering;
-        Steering = DesirePosition -transform.forward;
-        Steering = Vector3.ClampMagnitude(Steering, RotForce);
-        return Steering;
-    }
-    /*private void AddForce(Vector3 target)
-    {
-        if (target.magnitude == 0)
-        { _dir = Vector3.zero; return; }
-        _dir = Vector3.ClampMagnitude(_dir + target, _speed);
-    }*/
 }

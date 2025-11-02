@@ -234,7 +234,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
             }
         }
     }
-    public override void  FlyFunct(float height = 4f)
+    public override void  FlyFunct()
     {
         _stuned = true;
         _actualAirTime = 0;
@@ -244,13 +244,13 @@ public class SkeletonEnemyModel : Entity, Idamageable
         if (!_rb.isKinematic)
             _rb.linearVelocity = Vector3.zero;
 
-        float targetY = transform.position.y + height;
+        float targetY = transform.position.y /*+ height*/;
 
-        if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Radius, Vector3.up, out RaycastHit hit, height, _stuckLayer))
+        /*if (Physics.SphereCast(transform.position, GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Radius, Vector3.up, out RaycastHit hit, height, _stuckLayer))
         {
             targetY = hit.point.y - _ceilingOffset;
         }
-
+        */
        gameObject.layer = _airLayer;
         StartCoroutine(GoUpAndFloat(targetY));
     }

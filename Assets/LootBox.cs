@@ -36,6 +36,7 @@ public class LootBox : InteractuableGeneric
     }
     public void InstanceItem()
     {
+        print("pause");
         EventManager.Ejecute(EventManager.KindOfEvent.PowerSelect);
         EventManager.Ejecute(EventManager.KindOfEvent.PauseTime);
     }

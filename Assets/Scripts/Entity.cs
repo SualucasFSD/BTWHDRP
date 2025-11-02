@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,11 +11,16 @@ public class Entity : MonoBehaviour
     public float _visionTimer = 0f;
     public float _visionThreshold = 1f;
     public bool IsGrounded;
+    public bool UseGravity=true;
+    public float GravValue = 0;
     public LayerMask GroundLayer;
     protected RaycastHit _groundDetect;
     public float GroundDistanceDetector;
     public Transform Tg;
     public MazeCell Cell;
+    public bool Ready=true;
+    public bool Stuned=false;
+    //private float _pauseTime=0;
     public enum KindOfEntity
     {
         Allies,
@@ -151,12 +157,32 @@ public class Entity : MonoBehaviour
     {
 
     }
-    public virtual void FlyFunct(float height = 4f)
+    public virtual void FlyFunct()
     {
 
     }
     public virtual void GetToTheGround()
     {
 
+    }
+    public virtual void PauseForMoment(float time)
+    {
+        if(!IsGrounded||Life<=0)
+        {
+            return;
+        }
+        Ready= false;
+        StartCoroutine(Stop(time));
+    }
+    IEnumerator Stop(float time)
+    {
+        float i = 0;
+        while(i<time)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            i += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        Ready = true;
     }
 }

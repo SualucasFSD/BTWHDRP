@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
+        if (GameManager.Instance.IsPaused)
+        {
+            return;
+        }
         _jumpTime += Time.fixedDeltaTime;
         _dodgeTime += Time.fixedDeltaTime;
         if (_model.ManualMovement)

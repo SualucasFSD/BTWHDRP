@@ -89,6 +89,10 @@ public class PjModel : Entity, Idamageable
     }
     private void Update()
     {
+        if (GameManager.Instance.IsPaused)
+        {
+            return;
+        }
         if (IsDodging)
         {
             gameObject.layer = 18;
@@ -113,6 +117,10 @@ public class PjModel : Entity, Idamageable
     }
     private void FixedUpdate()
     {
+        if (GameManager.Instance.IsPaused)
+        {
+            return;
+        }
         IsGroundedDetector();
 
         _rb.AddForce(-transform.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);

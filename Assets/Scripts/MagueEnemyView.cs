@@ -6,7 +6,6 @@ public class MagueEnemyView : MonoBehaviour
     [SerializeField] private Animator _anim;
     [SerializeField] private MagueEnemyModel _model;
 
-    private bool _isFalling = false;
     private bool _isInAirHit = false;
 
     private void Awake()
@@ -39,26 +38,17 @@ public class MagueEnemyView : MonoBehaviour
 
     private void OnAirHit()
     {
-        if (_isFalling) return;
-        if (_isInAirHit) return;
-
-        _isInAirHit = true;
         _anim.SetTrigger("HitMidAir");
-        Invoke(nameof(ResetAirHit), 0.6f);
     }
-
-    private void ResetAirHit() => _isInAirHit = false;
 
     private void GetToGround()
     {
         if (_isInAirHit) return;
-        _isFalling = false;
         _anim.SetTrigger("ToTheGround");
     }
 
     private void GetToTheAir()
     {
-        _isFalling = true;
         _anim.SetTrigger("ToTheAir");
     }
 
@@ -69,15 +59,8 @@ public class MagueEnemyView : MonoBehaviour
 
     public void RecoverFromHitDelay()
     {
-        StartCoroutine(RecoverDelay());
-    }
-
-    private System.Collections.IEnumerator RecoverDelay()
-    {
-        yield return new WaitForSeconds(0.5f);
         _model.Stuned = false;
     }
-
     private void OnMove(Vector3 Dir)
     {
         if (Dir.sqrMagnitude < 0.01f)

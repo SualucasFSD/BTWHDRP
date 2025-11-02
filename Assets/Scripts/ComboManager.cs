@@ -69,7 +69,7 @@ public class ComboManager : MonoBehaviour
             Entity l =collider.GetComponent<Entity>();
             if (l!=null)
             {
-                l.FlyFunct(4);
+                l.FlyFunct();
             }
             else
             {

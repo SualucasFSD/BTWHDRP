@@ -9,7 +9,9 @@ public class FsmMague
         OnCombat,
         OnMidAir,
         OnStunt,
-        OnDeath
+        OnDeath,
+        OnGetAir,
+        OnGetGround
     }
     Dictionary<MagueStates, IState> _states = new Dictionary<MagueStates, IState>();
     public void AddState(MagueStates newState, IState State)

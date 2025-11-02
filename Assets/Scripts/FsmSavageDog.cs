@@ -8,7 +8,9 @@ public class FsmSavageDog
         OnMidAir,
         OnCombat,
         OnStunt,
-        OnDeath
+        OnDeath,
+        OnGoinAir,
+        OnGoinGround
     }
     Dictionary<DogState, IState> _states = new Dictionary<DogState, IState>();
     public void AddState(DogState newState, IState State)

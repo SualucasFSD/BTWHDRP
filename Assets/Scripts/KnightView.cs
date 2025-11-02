@@ -628,7 +628,7 @@ public class KnightView : PjView
     public void CauseDamage()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
-        print("CapsuleDamage");
+       //print("CapsuleDamage");
         foreach (Collider collider in c)
         {
             if (collider.gameObject == gameObject)
@@ -719,7 +719,7 @@ public class KnightView : PjView
                 float backFrontAngle = Vector3.Dot(transform.forward, (l.transform.position - (transform.position - transform.forward * 0.5f)).normalized);
                 if (backFrontAngle > _flyAngle && Mathf.Abs(l.transform.position.y - transform.position.y) < 3)
                 {
-                    l.FlyFunct(4);
+                    l.FlyFunct();
                 }
             }
             else

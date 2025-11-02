@@ -110,11 +110,12 @@ public class Pause : MonoBehaviour
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Pause : MonoBehaviour
 {
     public static Pause instance;
-    private List<MonoBehaviour> behavioursToReactivate = new List<MonoBehaviour>();
+    //private List<MonoBehaviour> behavioursToReactivate = new List<MonoBehaviour>();
     private Dictionary<Rigidbody, Vector3> savedVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, Vector3> savedAngularVelocities = new Dictionary<Rigidbody, Vector3>();
     private Dictionary<Rigidbody, bool> wasKinematic = new();
@@ -140,16 +141,19 @@ public class Pause : MonoBehaviour
     {
         if (!GameManager.Instance.IsPaused)
         {
+            //GameManager.Instance.IsPaused=false;
             ResumeOn();
         }
         else
         {
+            //GameManager.Instance.IsPaused = true;
             PauseOn();
         }
     }
 
     private void PauseOn(params object[] p)
     {
+        GameManager.Instance.IsPaused = true;
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
             if (anim.speed != 0)
@@ -174,19 +178,11 @@ public class Pause : MonoBehaviour
                 rb.isKinematic = true;
             }
         }
-
-        foreach (MonoBehaviour script in GetComponentsInChildren<MonoBehaviour>(includeInactive: true))
-        {
-            if (script != null && script.enabled && script != this && script.gameObject.activeInHierarchy)
-            {
-                script.enabled = false;
-                behavioursToReactivate.Add(script);
-            }
-        }
     }
 
     private void ResumeOn(params object[] p)
     {
+        GameManager.Instance.IsPaused = false;
         foreach (Animator anim in GetComponentsInChildren<Animator>())
         {
             if (_animExclude.Contains(anim))
@@ -213,14 +209,6 @@ public class Pause : MonoBehaviour
         savedVelocities.Clear();
         savedAngularVelocities.Clear();
         wasKinematic.Clear();
-
-        foreach (MonoBehaviour script in behavioursToReactivate)
-        {
-            if (script != null)
-                script.enabled = true;
-        }
-
-        behavioursToReactivate.Clear();
     }
 
     private void OnDestroy()
@@ -234,16 +222,6 @@ public class Pause : MonoBehaviour
 
     private IEnumerator PauseIndividualCoroutine(GameObject target)
     {
-        var scripts = new List<MonoBehaviour>();
-        foreach (var script in target.GetComponentsInChildren<MonoBehaviour>(true))
-        {
-            if (script != null && script.enabled && script != this)
-            {
-                script.enabled = false;
-                scripts.Add(script);
-            }
-        }
-
         var animators = new List<Animator>();
         foreach (var anim in target.GetComponentsInChildren<Animator>(true))
         {
@@ -284,15 +262,9 @@ public class Pause : MonoBehaviour
         remainingTimes.Remove(target);
     }
 
-    private void RestoreObjectState(GameObject target)
+   private void RestoreObjectState(GameObject target)
     {
         if (target == null) return;
-
-        foreach (var script in target.GetComponentsInChildren<MonoBehaviour>(true))
-        {
-            if (script != null && script != this)
-                script.enabled = true;
-        }
 
         foreach (var anim in target.GetComponentsInChildren<Animator>(true))
         {
@@ -305,18 +277,25 @@ public class Pause : MonoBehaviour
         }
     }
 
-    public void PauseObjectForTime(params object[]p)//(GameObject target, float duration)
+    public void PauseObjectForTime(params object[]p)
     {
-        if ((GameObject) p[0] == null ||(float)p[1] <= 0f) return;
+        GameObject r = (GameObject)p[0];
+        if (r == null ||(float)p[1] <= 0f) return;
 
-        if (pausedObjects.ContainsKey((GameObject)p[0]))
+        if (pausedObjects.ContainsKey(r))
         {
-            remainingTimes[(GameObject)p[0]] = (float)p[1];
+            remainingTimes[r] = (float)p[1];
             return;
         }
-
-        remainingTimes[(GameObject)p[0]] = (float)p[1];
-        pausedObjects[(GameObject)p[0]] = StartCoroutine(PauseIndividualCoroutine((GameObject)p[0]));
+        
+        remainingTimes[r] = (float)p[1];
+        Entity j = r.GetComponent<Entity>();
+        //r.GetComponent<Entity>().PauseForMoment((float)p[1]);
+        if(j!=null)
+        {
+            j.PauseForMoment((float)p[1]);
+        }
+        pausedObjects[r] = StartCoroutine(PauseIndividualCoroutine((GameObject)p[0]));
     }
 
     public void ResetIndividualPause(params object[] target)
