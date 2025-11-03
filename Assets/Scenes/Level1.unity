@@ -3345,6 +3345,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HabitacionLarga
       objectReference: {fileID: 0}
+    - target: {fileID: 1310619369439903746, guid: 3fb682100057533488e3dd7fe5e5100b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2452270631820095212, guid: 3fb682100057533488e3dd7fe5e5100b,
         type: 3}
       propertyPath: _Text
@@ -7403,7 +7408,7 @@ MonoBehaviour:
   - {fileID: 1626576807}
   _offset: {x: 0, y: 0, z: -0.5}
   _rooms:
-  - {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577, type: 3}
+  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
   _spawnPoint: {fileID: 473212464}
   _node: {fileID: 1545463995}
   _mazeSpawnPoint: {fileID: 0}
@@ -19238,6 +19243,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pub
       objectReference: {fileID: 0}
+    - target: {fileID: 5730000845696541670, guid: ea0008d1a37609f4d831846b4c764ce4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4,
         type: 3}
       propertyPath: _Text
@@ -27187,6 +27197,10 @@ MonoBehaviour:
   LaunchAngle: 45
   RoomsAvailable: 5
   DificultLevel: 0
+  EnemySeparation: []
+  SeparationPriority: 1
+  ArrivePriotity: 0.8
+  AvoidPriority: 1
 --- !u!114 &1716337315
 MonoBehaviour:
   m_ObjectHideFlags: 0
