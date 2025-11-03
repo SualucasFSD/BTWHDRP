@@ -209,58 +209,85 @@ public class PjModel : Entity, Idamageable
     #region AutoRotate Target
     public void GetCloseEnemyPj()
     {
-        /* if (OnAttacking)
+            if (!OnAttacking || Camera == null || Camera._focusing)
+            {
+                _haveCloseEnemy = false;
+                _closeEnemy = null;
+                return;
+            }
+
+            List<Entity> targets = GameManager.Instance.RefreshEnemy(Kind);
+            if (targets == null || targets.Count == 0)
+            {
+                _haveCloseEnemy = false;
+                _closeEnemy = null;
+                return;
+            }
+
+            GameObject bestTarget = null;
+            float bestDist = float.MaxValue;
+
+            foreach (var targetEntity in targets)
+            {
+                if (targetEntity == null || targetEntity.gameObject == gameObject) continue;
+
+                GameObject enemy = targetEntity.gameObject;
+
+                if (!GameManager.Instance.LineOfSight(transform.position, enemy.transform.position))
+                    continue;
+
+                Vector3 dir = (enemy.transform.position - transform.position).normalized;
+                float dist = Vector3.Distance(transform.position, enemy.transform.position);
+
+                if (Physics.Raycast(transform.position + Vector3.up * 1f, dir, out RaycastHit hit, dist + 1f, _enemyLayer))
+                {
+                    float realDist = hit.distance;
+
+                    if (realDist <= 5f && realDist < bestDist)
+                    {
+                        bestDist = realDist;
+                        bestTarget = enemy;
+                    }
+                }
+            }
+
+            if (bestTarget != null)
+            {
+                _closeEnemy = bestTarget;
+                _haveCloseEnemy = true;
+            }
+            else
+            {
+                _closeEnemy = null;
+                _haveCloseEnemy = false;
+            }
+    }
+        /* if (!OnAttacking || Camera == null || Camera._focusing)
          {
-             if (_closeEnemy = null)
-             {
-                 List<Entity> p = GameManager.Instance.RefreshEnemy(Kind);
-                 if (p.Count > 0 && p != null)
-                 {
-                     _closeEnemy = GameManager.Instance.GetCloseEnemy(p, transform);
-                     if (Vector3.Distance(transform.position, _closeEnemy.transform.position) < 5)
-                     {
-                         _haveCloseEnemy = true;
-                     }
-                     else
-                     {
-                         _haveCloseEnemy = false;
-                     }
-                 }
-             }
-             FallowEnemy();
+             _haveCloseEnemy = false;
+             _closeEnemy = null;
+             return;
+         }
+
+         List<Entity> targets = GameManager.Instance.RefreshEnemy(Kind);
+         if (targets == null || targets.Count == 0)
+         {
+             _haveCloseEnemy = false;
+             _closeEnemy = null;
+             return;
+         }
+
+         GameObject close = GameManager.Instance.GetCloseEnemy(targets, transform);
+         if (close != null && Vector3.Distance(transform.position, close.transform.position) <= 5f)
+         {
+             _closeEnemy = close;
+             _haveCloseEnemy = true;
          }
          else
          {
+             _closeEnemy = null;
              _haveCloseEnemy = false;
-             _closeEnemy=null;
          }*/
-        if (!OnAttacking || Camera == null || Camera._focusing)
-        {
-            _haveCloseEnemy = false;
-            _closeEnemy = null;
-            return;
-        }
-
-        List<Entity> targets = GameManager.Instance.RefreshEnemy(Kind);
-        if (targets == null || targets.Count == 0)
-        {
-            _haveCloseEnemy = false;
-            _closeEnemy = null;
-            return;
-        }
-
-        GameObject close = GameManager.Instance.GetCloseEnemy(targets, transform);
-        if (close != null && Vector3.Distance(transform.position, close.transform.position) <= 5f)
-        {
-            _closeEnemy = close;
-            _haveCloseEnemy = true;
-        }
-        else
-        {
-            _closeEnemy = null;
-            _haveCloseEnemy = false;
-        }
-    }
     private void FallowEnemy()
     {
         if (_closeEnemy == null) return;

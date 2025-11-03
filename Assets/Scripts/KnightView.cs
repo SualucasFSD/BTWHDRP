@@ -284,7 +284,7 @@ public class KnightView : PjView
         _pjModel.ActiveGravity();
     }
 
-    public void CauseDamage()
+    /*public void CauseDamage()
     {
         Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
         foreach (Collider collider in c)
@@ -317,7 +317,63 @@ public class KnightView : PjView
                 }
             }
         }
+    }*/
+    public void CauseDamage()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject == gameObject)
+                continue;
+
+            if (HitEnemies.Contains(collider.gameObject))
+                continue;
+
+            Entity entity = collider.GetComponent<Entity>();
+            if (entity == null)
+                continue;
+
+            float verticalDiff = Mathf.Abs(entity.transform.position.y - transform.position.y);
+            if (verticalDiff > 2f)
+                continue;
+
+            if (!GameManager.Instance.LineOfSight(transform.position, entity.transform.position))
+                continue;
+
+            Vector3 origin = transform.position + Vector3.up * 1f - transform.forward * 0.5f;
+            Vector3 dirToEnemy = (entity.transform.position - origin).normalized;
+
+            if (Physics.Raycast(origin, dirToEnemy, out RaycastHit hit, _swordDistance, _hitLayer))
+            {
+                if (hit.collider.transform.root != entity.transform.root)
+                    continue;
+
+                float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
+                if (backFrontAngle > _angle)
+                {
+                    Idamageable damageable = entity.GetComponent<Idamageable>();
+                    if (damageable != null)
+                    {
+                        Vector3 pushDir = new Vector3(
+                            (entity.transform.position - transform.position).x,
+                            0f,
+                            (entity.transform.position - transform.position).z
+                        ).normalized;
+
+                        damageable.TakeDamage(
+                            _dmg * _dmgMultiply,
+                            _stuntDmg * _dmgMultiply / 2f,
+                            pushDir,
+                            _getGround
+                        );
+                        HitEnemies.Add(entity.gameObject);
+                    }
+                }
+            }
+        }
     }
+
 
     public void JumpHit()
     {
