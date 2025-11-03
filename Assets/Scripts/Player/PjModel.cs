@@ -29,6 +29,7 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
+    [SerializeField] private LayerMask _enemyLayer;
     public bool IsDodging = false;
     public float RotationSpeedMultiply = 1;
     //Privates
@@ -42,6 +43,7 @@ public class PjModel : Entity, Idamageable
     private Collider _ownCollider;
     private bool _dodgeReset = true;
     private float _delayActions = 0;
+    [SerializeField] private float _autoRotateRadius = 6f;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
@@ -65,7 +67,7 @@ public class PjModel : Entity, Idamageable
     public event Action EjecutePower = delegate { };
     public event Action<float> OnFall = delegate { };
     public event Action OnLanding = delegate { };
-    public event Action OnRunAttack=delegate { };
+    public event Action OnRunAttack = delegate { };
     #endregion
     private void Awake()
     {
@@ -101,7 +103,7 @@ public class PjModel : Entity, Idamageable
         {
             gameObject.layer = 11;
         }
-        if (_delayActions<1)
+        if (_delayActions < 1)
         {
             _delayActions += Time.deltaTime;
         }
@@ -118,7 +120,7 @@ public class PjModel : Entity, Idamageable
         _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
         //if (_limitZone) { Debug.LogWarning("LimitZone"); }
         EjecutePower();
-        EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position);
+        EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position, Dir);
     }
     private void FixedUpdate()
     {
@@ -232,7 +234,7 @@ public class PjModel : Entity, Idamageable
         {
             if (!_limitZone)
             {
-                if (_delayActions>0.1f)
+                if (_delayActions > 0.1f)
                 {
                     _delayActions = 0;
                     _actualJumps++;
@@ -282,6 +284,7 @@ public class PjModel : Entity, Idamageable
         if (OnAttack != null && !IsDodging && !_limitZone)
         {
             StopMove();
+          
             if (!IsGrounded)
             {
                 OnAttackAir();
@@ -302,6 +305,7 @@ public class PjModel : Entity, Idamageable
         if (OnAttackSecond != null && !IsDodging && !_limitZone)
         {
             StopMove();
+          
             if (!IsGrounded)
             {
                 OnAttackSecondAir();
@@ -315,6 +319,7 @@ public class PjModel : Entity, Idamageable
         if (OnAttackSecondLong != null && !IsDodging && !_limitZone)
         {
             StopMove();
+          
             if (!IsGrounded)
             {
                 OnAttackSecondLongAir();
@@ -328,6 +333,7 @@ public class PjModel : Entity, Idamageable
         if (OnAttackLong != null && !IsDodging && !_limitZone)
         {
             StopMove();
+         
             if (!IsGrounded)
             {
                 OnAttackLongAir();
@@ -336,6 +342,43 @@ public class PjModel : Entity, Idamageable
             OnAttackLong();
         }
     }
+    /*private Transform GetClosestEnemy(float radius, LayerMask hitLayer)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius, hitLayer);
+        Transform closestEnemy = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider c in colliders)
+        {
+            if (c.gameObject == gameObject) continue;
+
+            Entity entity = c.GetComponent<Entity>();
+            if (entity == null || entity.Kind == KindOfEntity.Allies) continue;
+
+            float verticalDiff = Mathf.Abs(c.transform.position.y - transform.position.y);
+            if (verticalDiff > 2f) continue;
+
+            float dist = Vector3.Distance(transform.position, c.transform.position);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestEnemy = c.transform;
+            }
+        }
+
+        return closestEnemy;
+    }
+    private void RotateTowardsEnemy(Transform enemy)
+    {
+        if (enemy == null) return;
+
+        Vector3 direction = (enemy.position - transform.position);
+        direction.y = 0;
+        if (direction.sqrMagnitude < 0.01f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+    }*/
     private void StopMove()
     {
         if (!_rb.isKinematic)
