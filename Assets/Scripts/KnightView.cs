@@ -92,7 +92,10 @@ public class KnightView : PjView
         _jumpDelay = 0;
         _pjModel.IsDodging = false;
         ComboResetGeneral();
-        _animator.SetTrigger("Jump");
+        _animator.CrossFadeInFixedTime("JumpForce", 0.25f, 0, 0f);
+
+        _animator.CrossFadeInFixedTime("JumpForce", 0.25f, 1, 0f);
+        //_animator.SetTrigger("Jump");
         //_animator.SetBool("Jump", true);
         EventManager.Ejecute(EventManager.KindOfEvent.JumpPj);
     }
@@ -381,7 +384,7 @@ public class KnightView : PjView
         {
             _pjModel.StopPJ();
         }
-        gameObject.layer = 11;
+        gameObject.layer = 11; 
     }
     #endregion
     #region ComboManager Section
