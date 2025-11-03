@@ -2079,7 +2079,7 @@ MonoBehaviour:
   m_UseRayTracedShadows: 0
   m_NumRayTracingSamples: 4
   m_FilterTracedShadow: 1
-  m_FilterSizeTraced: 1
+  m_FilterSizeTraced: 16
   m_SunLightConeAngle: 0.5
   m_LightShadowRadius: 0.5
   m_SemiTransparentShadow: 0
@@ -2785,7 +2785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.9829347, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -3976,7 +3976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -4282,7 +4282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -4518,7 +4518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.16137218, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -5300,7 +5300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.6213611, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -5448,7 +5448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.7928543, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -5810,7 +5810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.6213611, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -5969,7 +5969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.2569139, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -6038,7 +6038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -6203,7 +6203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.7928543, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -7276,7 +7276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.16137218, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -7408,7 +7408,7 @@ MonoBehaviour:
   - {fileID: 1626576807}
   _offset: {x: 0, y: 0, z: -0.5}
   _rooms:
-  - {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577, type: 3}
+  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
   _spawnPoint: {fileID: 473212464}
   _node: {fileID: 1545463995}
   _mazeSpawnPoint: {fileID: 0}
@@ -8614,7 +8614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -10185,6 +10185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 659322737}
   - component: {fileID: 659322736}
+  - component: {fileID: 659322738}
   m_Layer: 0
   m_Name: Sky and Fog Volume
   m_TagString: Untagged
@@ -10225,6 +10226,18 @@ Transform:
   - {fileID: 2437365246731416178}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &659322738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659322735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1292137436, guid: b04c77e0938d27643b3f69f2dd39ce77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: VisualDesignCafe.Rendering.Nature.dll::VisualDesignCafe.Rendering.Nature.NatureRendererGlobalSettings
 --- !u!1001 &662157358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10452,7 +10465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.6213611, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -11257,7 +11270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -12245,7 +12258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -14196,7 +14209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.99149626, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -15263,7 +15276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.16137218, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -16616,7 +16629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -17103,7 +17116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -17440,7 +17453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -17603,7 +17616,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0, g: 1, b: 0.92688847, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -17672,7 +17685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.6213611, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -18418,7 +18431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.7928543, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -20556,7 +20569,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.98475426, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -21587,7 +21600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1856344, g: 0.4433962, b: 0.02300641, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -22583,7 +22596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -25939,7 +25952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.7928543, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -26178,7 +26191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0, g: 1, b: 0.07572937, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -27948,7 +27961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.7928543, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -29100,7 +29113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.16137218, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -29431,7 +29444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.73987746, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -30837,7 +30850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.1490072, g: 1, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -31898,7 +31911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.91884804, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -32146,7 +32159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0, b: 0.16137218, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 2.97
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -32294,7 +32307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 1, g: 0.6213611, b: 0, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -32363,7 +32376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEngine.Rendering.HighDefinition.LocalVolumetricFog
   parameters:
     albedo: {r: 0.71512365, g: 0, b: 1, a: 1}
-    meanFreePath: 3.59
+    meanFreePath: 10.7
     blendingMode: 1
     priority: 0
     anisotropy: 0
