@@ -29,7 +29,6 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
-    [SerializeField] private LayerMask _enemyLayer;
     public bool IsDodging = false;
     public float RotationSpeedMultiply = 1;
     //Privates
@@ -45,6 +44,10 @@ public class PjModel : Entity, Idamageable
     private Collider _ownCollider;
     private bool _dodgeReset = true;
     private float _delayActions = 0;
+    //AutoRotate Area
+    [SerializeField] private LayerMask _enemyLayer;
+    private bool _haveCloseEnemy=false;
+    private GameObject _closeEnemy;
     //[SerializeField] private float _autoRotateRadius = 6f;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
@@ -176,7 +179,6 @@ public class PjModel : Entity, Idamageable
     public void Movement(Vector3 rawDir, bool running)
     {
         if (Camera == null) return;
-
         if (rawDir.sqrMagnitude > 0f)
         {
             _dodgeDir = rawDir;
@@ -204,19 +206,95 @@ public class PjModel : Entity, Idamageable
             OnMovement(Dir, running);
         }
     }
+    #region AutoRotate Target
+    public void GetCloseEnemyPj()
+    {
+        /* if (OnAttacking)
+         {
+             if (_closeEnemy = null)
+             {
+                 List<Entity> p = GameManager.Instance.RefreshEnemy(Kind);
+                 if (p.Count > 0 && p != null)
+                 {
+                     _closeEnemy = GameManager.Instance.GetCloseEnemy(p, transform);
+                     if (Vector3.Distance(transform.position, _closeEnemy.transform.position) < 5)
+                     {
+                         _haveCloseEnemy = true;
+                     }
+                     else
+                     {
+                         _haveCloseEnemy = false;
+                     }
+                 }
+             }
+             FallowEnemy();
+         }
+         else
+         {
+             _haveCloseEnemy = false;
+             _closeEnemy=null;
+         }*/
+        if (!OnAttacking || Camera == null || Camera._focusing)
+        {
+            _haveCloseEnemy = false;
+            _closeEnemy = null;
+            return;
+        }
+
+        List<Entity> targets = GameManager.Instance.RefreshEnemy(Kind);
+        if (targets == null || targets.Count == 0)
+        {
+            _haveCloseEnemy = false;
+            _closeEnemy = null;
+            return;
+        }
+
+        GameObject close = GameManager.Instance.GetCloseEnemy(targets, transform);
+        if (close != null && Vector3.Distance(transform.position, close.transform.position) <= 5f)
+        {
+            _closeEnemy = close;
+            _haveCloseEnemy = true;
+        }
+        else
+        {
+            _closeEnemy = null;
+            _haveCloseEnemy = false;
+        }
+    }
+    private void FallowEnemy()
+    {
+        if (_closeEnemy == null) return;
+
+        Vector3 dir = _closeEnemy.transform.position - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude <= 0.001f) return;
+
+        Quaternion target = Quaternion.LookRotation(dir.normalized);
+        _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, target, _rotationSpeed * Time.fixedDeltaTime));
+    }
+    #endregion
     /// <summary>
     /// Calculo de rotacion y rotacion justamente XD
     /// </summary>
     private void RotateTowardsDir()
     {
+        if (Camera == null) return;
+
+        GetCloseEnemyPj();
+
         if (Camera._focusing) return;
+
+        if (_haveCloseEnemy && !Camera._focusing && OnAttacking)
+        {
+            FallowEnemy();
+            return;
+        }
 
         if (Dir == Vector3.zero)
             return;
 
         Quaternion target = Quaternion.LookRotation(Dir);
         float rotSpeed = _rotationSpeed * RotationSpeedMultiply;
-
         _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, target, rotSpeed * Time.fixedDeltaTime));
     }
     public void AutoMove(Vector3 dir)
