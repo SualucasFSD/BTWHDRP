@@ -100,6 +100,7 @@ public class KnightView : PjView
     #region Move System
     private void OnMove(Vector3 _dir, bool running)
     {
+        //_animator.SetBool("DodgeHasDirecction", DodgeHasDir);
         if (_dir.sqrMagnitude > 0)
         {
             _animator.SetBool("isMoving", true);
@@ -329,8 +330,16 @@ public class KnightView : PjView
     }
     private void RunComboLight()
     {
-        EndDodge();
-        RegisterImputs(KindOfCombo.SprintLight);
+       /* if (_pjModel.IsDodging)
+        {
+            EndDodge();
+        }
+        ComboResetGeneral();
+        RegisterImputs(KindOfCombo.SprintLight);*/
+    }
+    public void DashAttackFinish()
+    {
+       /* _pjModel.IsDashAttacking = false;*/
     }
     //Cancelacion del combo
     public void DamageActivate()
@@ -354,23 +363,23 @@ public class KnightView : PjView
     #region Dodge System
     private void OnDodge()
     {
-        //_animMove = false;
         ComboResetGeneral();
         if (!_pjModel.IsGrounded)
         {
             _pjModel._delayGrav = 0;
         }
-        _animator.SetTrigger("Dodge");
+        _animator.CrossFadeInFixedTime("DashTree", 0.25f, 0, 0f);
+
+        _animator.CrossFadeInFixedTime("DashTree", 0.25f, 1, 0f);
+ 
         EventManager.Ejecute(EventManager.KindOfEvent.KnightExecuteDodge);
     }
     public void EndDodge()
     {
-        //print("Finalice dodge");
         _pjModel.IsDodging = false;
         if (!_pjModel.IsGrounded)
         {
             _pjModel.StopPJ();
-            //_animator.SetTrigger("IsFalling");
         }
         gameObject.layer = 11;
     }

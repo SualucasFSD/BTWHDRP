@@ -33,17 +33,19 @@ public class PjModel : Entity, Idamageable
     public bool IsDodging = false;
     public float RotationSpeedMultiply = 1;
     //Privates
+    //public bool IsDashAttacking = false;
     private bool _limitZone = false;
     public float _delayGrav;
     public float _airTime;
     private Vector3 _dodgeDir;
     private float _jumpTimerReset = 0;
     private int _actualJumps = 0;
+    //private bool _dodgeHasDirecction=false;
     private Dictionary<EnemyCatalogue, Tuple<int, IPjPower>> _powerActivate = new Dictionary<EnemyCatalogue, Tuple<int, IPjPower>>();
     private Collider _ownCollider;
     private bool _dodgeReset = true;
     private float _delayActions = 0;
-    [SerializeField] private float _autoRotateRadius = 6f;
+    //[SerializeField] private float _autoRotateRadius = 6f;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
     public event Action<Vector3, bool> OnDirectionalMovement = delegate { };
@@ -178,6 +180,7 @@ public class PjModel : Entity, Idamageable
         if (rawDir.sqrMagnitude > 0f)
         {
             _dodgeDir = rawDir;
+            //_dodgeHasDirecction=true;
             Vector3 camForward = Camera.gameObject.transform.forward;
             Vector3 camRight = Camera.gameObject.transform.right;
 
@@ -189,14 +192,15 @@ public class PjModel : Entity, Idamageable
             rawDir.Normalize();
             Dir = camForward * rawDir.z + camRight * rawDir.x;
 
-            if (OnAttacking) return;
+            //if (OnAttacking) return;
             OnMovement(Dir, running);
         }
         else
         {
             _dodgeDir = Vector3.zero;
+            //_dodgeHasDirecction = false;
             Dir = Vector3.zero;
-            if (OnAttacking) return;
+            //if (OnAttacking) return;
             OnMovement(Dir, running);
         }
     }
@@ -230,6 +234,7 @@ public class PjModel : Entity, Idamageable
     #region Jump
     public void Jump()
     {
+        //if (IsDashAttacking) { return; }
         if (IsGrounded || _actualJumps < _maxJumps && !IsDodging)
         {
             if (!_limitZone)
@@ -251,6 +256,7 @@ public class PjModel : Entity, Idamageable
     #region Dodge
     public void Dodge()
     {
+        //if (IsDashAttacking) { return; }
         if (_dodgeDir.sqrMagnitude > 0.01f && !IsDodging && _dodgeReset)
         {
             if (_delayActions > 0.1f)
@@ -292,14 +298,36 @@ public class PjModel : Entity, Idamageable
             }
             OnAttack();
         }
-        /*if(OnAttack != null&&IsDodging && !_limitZone)
-        {
-            if (IsGrounded)
-            {
-                OnRunAttack();
-            }
-        }*/
     }
+    /*public void AttackFirstCombo()
+    {
+        if (IsDashAttacking || _limitZone) { return; }
+
+        if (!IsDodging)
+        {
+            if (OnAttack != null)
+            {
+                StopMove();
+                if (!IsGrounded)
+                {
+                    OnAttackAir();
+                    return;
+                }
+                OnAttack();
+            }
+        }
+        else
+        {
+            if (_delayActions > 0.15f && IsGrounded)
+            {
+                IsDashAttacking = true;
+                if (OnRunAttack != null)
+                {
+                    OnRunAttack();
+                }
+            }
+        }
+    }*/
     public void AttackSecondCombo()
     {
         if (OnAttackSecond != null && !IsDodging && !_limitZone)
@@ -342,43 +370,6 @@ public class PjModel : Entity, Idamageable
             OnAttackLong();
         }
     }
-    /*private Transform GetClosestEnemy(float radius, LayerMask hitLayer)
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius, hitLayer);
-        Transform closestEnemy = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (Collider c in colliders)
-        {
-            if (c.gameObject == gameObject) continue;
-
-            Entity entity = c.GetComponent<Entity>();
-            if (entity == null || entity.Kind == KindOfEntity.Allies) continue;
-
-            float verticalDiff = Mathf.Abs(c.transform.position.y - transform.position.y);
-            if (verticalDiff > 2f) continue;
-
-            float dist = Vector3.Distance(transform.position, c.transform.position);
-            if (dist < minDistance)
-            {
-                minDistance = dist;
-                closestEnemy = c.transform;
-            }
-        }
-
-        return closestEnemy;
-    }
-    private void RotateTowardsEnemy(Transform enemy)
-    {
-        if (enemy == null) return;
-
-        Vector3 direction = (enemy.position - transform.position);
-        direction.y = 0;
-        if (direction.sqrMagnitude < 0.01f) return;
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-    }*/
     private void StopMove()
     {
         if (!_rb.isKinematic)
