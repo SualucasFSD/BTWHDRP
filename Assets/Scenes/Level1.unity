@@ -7408,7 +7408,7 @@ MonoBehaviour:
   - {fileID: 1626576807}
   _offset: {x: 0, y: 0, z: -0.5}
   _rooms:
-  - {fileID: 6918537270056108136, guid: ea0008d1a37609f4d831846b4c764ce4, type: 3}
+  - {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577, type: 3}
   _spawnPoint: {fileID: 473212464}
   _node: {fileID: 1545463995}
   _mazeSpawnPoint: {fileID: 0}
@@ -23589,6 +23589,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Patio
       objectReference: {fileID: 0}
+    - target: {fileID: 7077171652149376914, guid: b1f99b7f20041c64481045612291f577,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7765312220004777451, guid: b1f99b7f20041c64481045612291f577,
         type: 3}
       propertyPath: _Text
@@ -27194,7 +27199,6 @@ MonoBehaviour:
   IsPaused: 0
   Timer: 0
   Gameplay: {fileID: 530272009}
-  LaunchAngle: 45
   RoomsAvailable: 5
   DificultLevel: 0
   EnemySeparation: []
@@ -28514,7 +28518,6 @@ GameObject:
   - component: {fileID: 1823688466}
   - component: {fileID: 1823688465}
   - component: {fileID: 1823688468}
-  - component: {fileID: 1823688469}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -28735,36 +28738,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!114 &1823688469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1823688464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -648461970, guid: b04c77e0938d27643b3f69f2dd39ce77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: VisualDesignCafe.Rendering.Nature.dll::VisualDesignCafe.Rendering.Nature.NatureRendererCameraSettings
-  _supported: 1
-  _overrideSupported: 1
-  _render: 1
-  _overrideRendering: 1
-  _renderDistance: 0
-  _overrideRenderDistance: 1
-  _renderShadows: 0
-  _overrideRenderShadows: 1
-  _shadowDistance: 0
-  _overrideShadowDistance: 1
-  _densityInDistance: 0.125
-  _overrideDensityInDistance: 1
-  _densityInDistanceFalloff: {x: 0.07999998, y: 0.007499993}
-  _overrideDensityInDistanceFalloff: 1
-  _lodBias: 1
-  _overrideLodBias: 1
-  _perObjectMotionVectors: 1
-  _overridePerObjectMotionVectors: 1
 --- !u!1001 &1826068644
 PrefabInstance:
   m_ObjectHideFlags: 0
