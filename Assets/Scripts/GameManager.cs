@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 public enum EnemyCatalogue
 {
     Esqueleton,
@@ -34,7 +36,6 @@ public class GameManager : MonoBehaviour
     public Transform Gameplay;
     public Action GenericUpdate = delegate { };
     public Action GenericFixedUpdate = delegate { };
-    public float LaunchAngle = 45f;
     public int RoomsAvailable;
     public float DificultLevel = 0;
     public List<Transform> EnemySeparation = new List<Transform>();
@@ -256,7 +257,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void LaunchProjectile(GameObject p,Vector3 Target)
+    public void LaunchProjectile(GameObject p,Vector3 Target,float AngleShoot=45)
     {
         Rigidbody _rb=p.GetComponent<Rigidbody>();
         if (Target == null|| _rb ==null )
@@ -269,7 +270,7 @@ public class GameManager : MonoBehaviour
         float distanceXZ = toTargetXZ.magnitude;
         float heightDifference = toTarget.y;
 
-        float angleRad = LaunchAngle * Mathf.Deg2Rad;
+        float angleRad = AngleShoot * Mathf.Deg2Rad;
         float gravity = Mathf.Abs(Physics.gravity.y);
 
         float cosAngle = Mathf.Cos(angleRad);

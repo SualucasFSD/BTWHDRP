@@ -314,6 +314,7 @@ public class KnightView : PjView
             }
         }
     }
+
     public void JumpHit()
     {
         if(!_getGround)
