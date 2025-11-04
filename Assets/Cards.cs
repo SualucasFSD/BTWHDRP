@@ -20,7 +20,7 @@ public class Cards : MonoBehaviour
     [SerializeField] private KindOfReward _rewardType;
     [SerializeField] private bool _CantChoose;
     [SerializeField] private PowerScriptableObject[] _powers;
-
+    [SerializeField] private Sprite _sprite;
     private float _amount;
     private PowerScriptableObject _selectedPower;
 
@@ -38,7 +38,7 @@ public class Cards : MonoBehaviour
                 };
                 _nameText.text = "Oro";
                 _descriptionText.text = $"Otorga un valor de {_amount} oros";
-                _image.sprite = null;
+                _image.sprite = _sprite;
             }
             else if (_rewardType == KindOfReward.Diamonds)
             {
@@ -50,7 +50,7 @@ public class Cards : MonoBehaviour
                 };
                 _nameText.text = "Diamantes";
                 _descriptionText.text = $"Otorga un valor de {_amount} gemas";
-                _image.sprite = null;
+                _image.sprite = _sprite;
             }
 
             _selectedPower = null;
