@@ -20,6 +20,8 @@ public class Entity : MonoBehaviour
     public MazeCell Cell;
     public bool Ready=true;
     public bool Stuned=false;
+    private GameObject _venomEffect;
+    private GameObject _thunderEffect;
     //private float _pauseTime=0;
     public enum KindOfEntity
     {
@@ -171,7 +173,13 @@ public class Entity : MonoBehaviour
         {
             return;
         }
-        Ready= false;
+        _thunderEffect = GameObjectFactory.Instance.GetObj(GenericObjectType.ThunderEffect, transform.position, transform.rotation);
+        _thunderEffect.transform.parent = transform;
+        if (_thunderEffect.TryGetComponent<ParticleSystem>(out var Component))
+        {
+            Component.Play();
+        }
+        Ready = false;
         StartCoroutine(Stop(time));
     }
     IEnumerator Stop(float time)
@@ -183,6 +191,15 @@ public class Entity : MonoBehaviour
             i += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
+        if (_thunderEffect != null)
+        {
+            if (_thunderEffect.TryGetComponent<ParticleSystem>(out var Component))
+            {
+                Component.Stop();
+            }
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.ThunderEffect, _thunderEffect);
+            _thunderEffect = null;
+        }
         Ready = true;
     }
     public virtual void GetVenemous(float poisonDuration, float tickRate, float damagePerTick)
@@ -191,10 +208,28 @@ public class Entity : MonoBehaviour
         {
             return;
         }
+        if (GameObjectFactory.Instance!=null)
+        {
+            _venomEffect= GameObjectFactory.Instance.GetObj(GenericObjectType.PoisonEffect,transform.position,transform.rotation);
+            _venomEffect.transform.parent = transform;
+            if(_venomEffect.TryGetComponent<ParticleSystem>(out var Component))
+            {
+                Component.Play();
+            }
+        }
         EventManager.Ejecute(EventManager.KindOfEvent.GetVenemous, this,poisonDuration,tickRate,damagePerTick);
     }
     public virtual void PopVenemous()
     {
+        if (_venomEffect != null)
+        {
+            if (_venomEffect.TryGetComponent<ParticleSystem>(out var Component))
+            {
+                Component.Stop();
+            }
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.PoisonEffect, _venomEffect);
+            _venomEffect = null;
+        }
         EventManager.Ejecute(EventManager.KindOfEvent.PopVenemous, this);
     }
 }

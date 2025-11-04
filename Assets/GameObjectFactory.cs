@@ -4,6 +4,8 @@ public enum GenericObjectType
 {
     BloodDecal,
     MagueBullet,
+    ThunderEffect,
+    PoisonEffect,
     Item,
     Obstacle
 }

@@ -38,7 +38,10 @@ public class Cards : MonoBehaviour
                 };
                 _nameText.text = "Oro";
                 _descriptionText.text = $"Otorga un valor de {_amount} oros";
-                _image.sprite = _sprite;
+                if (_sprite != null)
+                {
+                    _image.sprite = _sprite;
+                }
             }
             else if (_rewardType == KindOfReward.Diamonds)
             {
@@ -50,7 +53,10 @@ public class Cards : MonoBehaviour
                 };
                 _nameText.text = "Diamantes";
                 _descriptionText.text = $"Otorga un valor de {_amount} gemas";
-                _image.sprite = _sprite;
+                if (_sprite != null)
+                {
+                    _image.sprite = _sprite;
+                }
             }
 
             _selectedPower = null;
