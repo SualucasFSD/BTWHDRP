@@ -453,7 +453,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false)
     {
         if(_isDead)
         {
@@ -467,7 +467,7 @@ public class MagueEnemyModel : Entity, Idamageable
         }
         BulletsStop();
         Life -= dmg;
-        if (!downHit)
+        if (!downHit && isStunDamage)
         {
             if (IsGrounded)
             {
@@ -492,6 +492,7 @@ public class MagueEnemyModel : Entity, Idamageable
             {
                 SpawnOrbsFunct();
             }
+           PopVenemous();
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Mague);

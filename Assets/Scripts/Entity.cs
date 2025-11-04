@@ -185,4 +185,16 @@ public class Entity : MonoBehaviour
         }
         Ready = true;
     }
+    public virtual void GetVenemous(float poisonDuration, float tickRate, float damagePerTick)
+    {
+        if (Life <= 0)
+        {
+            return;
+        }
+        EventManager.Ejecute(EventManager.KindOfEvent.GetVenemous, this,poisonDuration,tickRate,damagePerTick);
+    }
+    public virtual void PopVenemous()
+    {
+        EventManager.Ejecute(EventManager.KindOfEvent.PopVenemous, this);
+    }
 }

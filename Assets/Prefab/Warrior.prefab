@@ -26312,13 +26312,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1173209578365576545}
+  - component: {fileID: 4449851332300257492}
   m_Layer: 15
   m_Name: VenomPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1173209578365576545
 Transform:
   m_ObjectHideFlags: 0
@@ -26335,6 +26336,28 @@ Transform:
   - {fileID: 509905190777444991}
   m_Father: {fileID: 8898975352992438296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 62.543}
+--- !u!114 &4449851332300257492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2424853764619482264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fe2ce0c51e7b14b85123e2dccb6617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoisonPower
+  _model: {fileID: 0}
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _radius: 8
+  _cooldown: 5
+  _poisonDuration: 5
+  _tickRate: 1
+  _damagePerTick: 15
+  _howMany: 1
 --- !u!1 &2425899815364944561
 GameObject:
   m_ObjectHideFlags: 0

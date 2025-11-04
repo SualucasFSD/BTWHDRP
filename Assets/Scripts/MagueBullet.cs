@@ -10,7 +10,7 @@ public class MagueBullet : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float _speed = 15f;
     [SerializeField, Range(0.001f, 0.125f)] private float _rotForce = 0.05f;
-    [SerializeField] private float _lifeTime = 10f;
+    //[SerializeField] private float _lifeTime = 10f;
 
     [Header("State")]
     public bool Fire = false;

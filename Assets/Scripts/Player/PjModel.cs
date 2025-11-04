@@ -511,7 +511,7 @@ public class PjModel : Entity, Idamageable
     }
     #endregion
     #region Genericos
-    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false)
+    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false,bool isStunDamage=false)
     {
         if (pushDirection != Vector3.zero)
         {

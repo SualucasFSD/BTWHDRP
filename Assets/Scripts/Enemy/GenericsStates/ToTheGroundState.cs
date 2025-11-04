@@ -18,6 +18,7 @@ public class ToTheGroundState : IState
     }
     public void OnEnter()
     {
+        _ent.Stuned = true;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _ent.GravValue = GameManager.Instance.EnemyConfiguration[_kind].GravityForce;
         _ent.UseGravity = true;

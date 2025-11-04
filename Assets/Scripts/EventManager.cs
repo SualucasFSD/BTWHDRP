@@ -39,7 +39,9 @@ public class EventManager
         ResumeOneEnemy,
         SwordDamage,
         RespecificSword,
-        RefreshEnemyHitList
+        RefreshEnemyHitList,
+        GetVenemous,
+        PopVenemous
     }
     public delegate void MethodToSuscribe(params object[] Parameters);
     static Dictionary<KindOfEvent, MethodToSuscribe> _events;

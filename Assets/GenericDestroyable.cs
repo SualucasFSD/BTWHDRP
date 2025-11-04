@@ -17,7 +17,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
         //UpdateMeshState();
     }
 
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false)
     {
         if (_life <= 0)
         { 

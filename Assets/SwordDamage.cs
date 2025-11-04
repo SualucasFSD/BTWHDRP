@@ -75,7 +75,7 @@ public class SwordDamage : MonoBehaviour
                 EventManager.Ejecute(EventManager.KindOfEvent.RefreshEnemyHitList, hitEnemies);
                 Vector3 pushDirection = new Vector3((other.transform.position - transform.position).x, 0, (other.transform.position - transform.position).z).normalized;
                 Idamageable l = other.GetComponent<Idamageable>();
-                l.TakeDamage(_dmg * 1, _stuntDmg * 1 / 2, pushDirection, _getGround);
+                l.TakeDamage(_dmg * 1, _stuntDmg * 1 / 2, pushDirection, _getGround,true);
             }
         }
     }

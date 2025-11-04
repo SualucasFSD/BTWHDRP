@@ -365,7 +365,8 @@ public class KnightView : PjView
                             _dmg * _dmgMultiply,
                             _stuntDmg * _dmgMultiply / 2f,
                             pushDir,
-                            _getGround
+                            _getGround,
+                            true
                         );
                         HitEnemies.Add(entity.gameObject);
                     }

@@ -110,7 +110,7 @@ public class SavageDog : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false)
     {
       if(_isDead)
       {
@@ -123,7 +123,7 @@ public class SavageDog : Entity, Idamageable
             _bloodVfx.Play();
         }
         Life -=dmg;
-      if(!downHit)
+      if(!downHit&&isStunDamage)
       {
         if(IsGrounded)
         {
@@ -147,6 +147,7 @@ public class SavageDog : Entity, Idamageable
             {
                 SpawnOrbsFunct();
             }
+            PopVenemous();
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
             EventManager.Ejecute(EventManager.KindOfEvent.OnEnemyKilled, gameObject, EnemyCatalogue.Esqueleton);
