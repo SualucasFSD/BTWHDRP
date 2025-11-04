@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 
 public class DecalBehaviour : MonoBehaviour
@@ -38,6 +36,8 @@ public class DecalBehaviour : MonoBehaviour
 
         if(_elapsed >= _lerpDuration)
         {
+            _myDecal.fadeFactor = 1;
+            //GameObjectFactory.Instance.ReturnObj(GenericObjectType.DecalSangre, gameObject);
             Destroy(gameObject);
         }
     }

@@ -9956,6 +9956,7 @@ GameObject:
   m_Component:
   - component: {fileID: 648115724}
   - component: {fileID: 648115725}
+  - component: {fileID: 648115726}
   m_Layer: 0
   m_Name: Factorys
   m_TagString: Untagged
@@ -9999,6 +10000,28 @@ MonoBehaviour:
       Value: {fileID: 3367560071767597638, guid: e72d11765f16257489d932e2327d3c4a,
         type: 3}
   _initialAmount: 3
+  _parent: {fileID: 530272009}
+--- !u!114 &648115726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648115722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b27ebc792bad774bb2214547f27de7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameObjectFactory
+  _prefabs:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 8750462138954011868, guid: a8b5becb2f272d84dba72d8e6bb92484,
+        type: 3}
+    - Key: 1
+      Value: {fileID: 4494814570158796409, guid: 28cbe843b15c3854495939536a5c9dc3,
+        type: 3}
+  _initialAmount: 5
   _parent: {fileID: 530272009}
 --- !u!4 &648870927 stripped
 Transform:

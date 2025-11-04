@@ -645,13 +645,18 @@ public class MagueEnemyModel : Entity, Idamageable
     public void BulletsStop()
     {
         foreach (MagueBullet b in Bullets)
-            Destroy(b.gameObject);
+        {
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.MagueBullet, b.gameObject);
+        }
+            //Destroy(b.gameObject);
         NumbOfBullets = 0;
         Bullets.Clear();
     }
     public void MagicInstance(Transform _tg)
     {
-        Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[NumbOfBullets].position, transform.rotation));
+        //Bullets.Add(Instantiate(_bulletPrefab, _bulletPos[NumbOfBullets].position, transform.rotation));
+        GameObject P = GameObjectFactory.Instance.GetObj(GenericObjectType.MagueBullet, _bulletPos[NumbOfBullets].position, transform.rotation);
+        Bullets.Add(P.GetComponent<MagueBullet>());
         Bullets[NumbOfBullets].SetTarget(_tg);
         Bullets[NumbOfBullets].Kind = Kind;
         NumbOfBullets++;

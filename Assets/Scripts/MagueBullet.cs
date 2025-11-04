@@ -28,14 +28,11 @@ public class MagueBullet : MonoBehaviour
         _rb.isKinematic = true;
     }
 
-    private void OnEnable()
-    {
-        _follow = true;
-        Invoke(nameof(DestroySelf), _lifeTime);
-    }
-
     private void OnDisable()
     {
+        _tg = null;
+        Fire = false;
+        _follow = true;
         CancelInvoke();
     }
 
@@ -52,7 +49,8 @@ public class MagueBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Fire) return;
+        if (GameManager.Instance.IsPaused) { return; }
+        if (!Fire) { return; }
 
         transform.parent = GameManager.Instance.Gameplay;
         _rb.isKinematic = false;
@@ -107,6 +105,7 @@ public class MagueBullet : MonoBehaviour
     private void DestroySelf()
     {
         CancelInvoke();
-        Destroy(gameObject);
+        GameObjectFactory.Instance.ReturnObj(GenericObjectType.MagueBullet, gameObject);
+        //Destroy(gameObject);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [RequireComponent(typeof(Collider))]
 public class SwordDamage : MonoBehaviour
@@ -66,6 +67,8 @@ public class SwordDamage : MonoBehaviour
 
         if (IsEnemy(other.gameObject))
         {
+            if (!GameManager.Instance.LineOfSight(transform.position, other.transform.position)){return;}
+
             if (!hitEnemies.Contains(other.gameObject))
             {
                 hitEnemies.Add(other.gameObject);
@@ -97,6 +100,11 @@ public class SwordDamage : MonoBehaviour
         {
             return false;
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.1f);
     }
     private void OnDestroy()
     {

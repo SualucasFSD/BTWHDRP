@@ -72,7 +72,9 @@ public class MaguePower : MonoBehaviour, IPjPower
     {
         if (_numbOfBullets >= _bulletPos.Length) return;
 
-        var bullet = Instantiate(_bulletPrefab, _bulletPos[_numbOfBullets].position, transform.rotation);
+        //var bullet = Instantiate(_bulletPrefab, _bulletPos[_numbOfBullets].position, transform.rotation);
+        GameObject p = GameObjectFactory.Instance.GetObj(GenericObjectType.MagueBullet, _bulletPos[_numbOfBullets].position, transform.rotation);
+        MagueBullet bullet= p.GetComponent<MagueBullet>();
         bullet.Kind = Kind;
         bullet.transform.parent = transform;
        
@@ -105,7 +107,11 @@ public class MaguePower : MonoBehaviour, IPjPower
             if (_bullets.Count > 0)
             {
                 var bullet = _bullets[_bullets.Count - 1];
-                if (bullet != null) Destroy(bullet.gameObject);
+                if (bullet != null)
+                {
+                    GameObjectFactory.Instance.ReturnObj(GenericObjectType.MagueBullet, bullet.gameObject);
+                    //Destroy(bullet.gameObject);
+                }
 
                 _bullets.RemoveAt(_bullets.Count - 1);
                 _numbOfBullets--;
