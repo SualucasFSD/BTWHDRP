@@ -74,6 +74,7 @@ public class MaguePower : MonoBehaviour, IPjPower
 
         //var bullet = Instantiate(_bulletPrefab, _bulletPos[_numbOfBullets].position, transform.rotation);
         GameObject p = GameObjectFactory.Instance.GetObj(GenericObjectType.MagueBullet, _bulletPos[_numbOfBullets].position, transform.rotation);
+        p.transform.parent = _shooter.transform;
         MagueBullet bullet= p.GetComponent<MagueBullet>();
         bullet.Kind = Kind;
         bullet.transform.parent = transform;
