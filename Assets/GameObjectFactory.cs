@@ -2,7 +2,7 @@ using AYellowpaper.SerializedCollections;
 using UnityEngine;
 public enum GenericObjectType
 {
-    DecalSangre,
+    BloodDecal,
     MagueBullet,
     Item,
     Obstacle

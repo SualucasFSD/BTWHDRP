@@ -20,8 +20,8 @@ public class BloodDecals : MonoBehaviour
 
             Quaternion rotation = Quaternion.LookRotation(-hitNomral);
 
-            //GameObject x = GameObjectFactory.Instance.GetObj(GenericObjectType.DecalSangre, spawnPos, rotation);
-            GameObject x = Instantiate(_myDecalPref, spawnPos, rotation, other.transform);
+            GameObject x = DecalsFactory.Instance.GetObj(GenericObjectType.BloodDecal, spawnPos, rotation);
+            //GameObject x = Instantiate(_myDecalPref, spawnPos, rotation, other.transform);
             Instantiate(_bloodSpill, pos.intersection, rotation, x.transform);
         }    
     }
