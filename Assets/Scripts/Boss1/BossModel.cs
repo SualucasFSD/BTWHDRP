@@ -1,37 +1,171 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class BossModel : MonoBehaviour
+using System;
+public class BossModel : Entity, Idamageable
 {
     [Header("Spawn Settings")]
     [SerializeField] private GameObject _venemousBulletPrefab;
-    [SerializeField] private MagueBullet _bulletPrefab;
+    [SerializeField] private BigBullets _bulletPrefab;
     [SerializeField] private int _bulletCount = 12;
     [SerializeField] private float _radius = 5f;
     [SerializeField] private float _yOffset = -1;
     [SerializeField] private Transform _spitPoint;
     [SerializeField] private LayerMask _obstacleMask;
-
+    [SerializeField] private Rigidbody _rb;
+    [SerializeField] private float _rotationForce;
+    [SerializeField] private float _gravityValue=9.8f;
+    [SerializeField] private ParticleSystem _bloodVfx;
     //Privada y Opcional
     private float _spitTimer;
+    private bool _prob=false;
     //Private
+    private bool _rotationActivate=false;
     private float _predictionTime = 0.5f;
     private Vector3 _lastPos;
     private Vector3 _tgPos;
-    private List<MagueBullet> _bullets=new List<MagueBullet>();
-
+    private List<BigBullets> _bullets = new List<BigBullets>();
+    private float _notCloseTimer=0;
+    private bool _isSpiting;
+    private bool _inAction;
+    #region Eventos
+    public event Action<bool> Grounded = delegate { };
+    public event Action Fallen=delegate { };
+    public event Action JumpPrepare=delegate { };
+    public event Action JumpExecute=delegate { };
+    public event Action<bool> Spiting=delegate { };
+    public event Action FalseUpdate=delegate { };
+    public event Action MaxHeigh=delegate { };
+    #endregion
+    private void Awake()
+    {
+       if(_rb==null)
+       {
+          _rb = GetComponent<Rigidbody>();
+       }
+    }
     private void Start()
     {
         EventManager.Suscribe(EventManager.KindOfEvent.OnPjChangePosition, TakePjPosition);
+        FalseUpdate += ChangeOperation;
+        //_rotationActivate=true;
     }
     private void Update()
     {
-        /*_spitTimer += Time.deltaTime;
-        if(_spitTimer>0.2f)
+        if(GameManager.Instance.IsPaused)
         {
-            _spitTimer = 0;
-            SpitVenemousParabolicBullets();
-        }*/
+            return;
+        }
+        FalseUpdate();
+        Grounded(IsGrounded);
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            _prob = true;
+        }
+        if(_prob)
+        {
+            _prob = false;
+            JumpPrepare();
+            _rotationActivate =true;
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (GameManager.Instance.IsPaused)
+        {
+            return;
+        }
+
+        IsGroundedDetector();
+        if (UseGravity)
+        {
+            _rb.AddForce(-Vector3.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
+        }
+        if(_rotationActivate)
+        {
+            RotateToTarget(_tgPos);
+        }
+    }
+    private void ChangeOperation()
+    {
+        if (Vector3.Distance(_tgPos, transform.position) > 5f)
+        {
+
+        }
+        else if (Vector3.Distance(_tgPos, transform.position) > 5f && !_inAction)
+        {
+            _notCloseTimer += Time.deltaTime;
+        }
+        if (_notCloseTimer > 8f && !_inAction)
+        { 
+            _inAction = true;
+            _notCloseTimer = 0;
+        }
+    }
+  
+    public void JumpExecuteModel()
+    {
+        _rotationActivate=false;
+        Vector3 AirPos = _tgPos + Vector3.up * 15;
+        UseGravity = false;
+        StartCoroutine(GoAir(AirPos)); 
+    }
+    IEnumerator GoAir(Vector3 targetPos)
+    {
+        Vector3 startPos = transform.position;
+
+        float midY = targetPos.y * 0.8f;
+        float maxY = targetPos.y;
+
+        float horizontalSpeed = 25f;
+        float verticalSpeed = 35f;
+        float fallSpeed = 25f;
+        JumpExecute();
+        while (transform.position.y < midY)
+        {
+            Vector3 dir = (targetPos - transform.position);
+            dir.y *= 2f;
+            dir.Normalize();
+            //RotateToTarget(_tgPos);
+            transform.position += dir * verticalSpeed * Time.deltaTime;
+            yield return null;
+        }
+        while (transform.position.y < maxY)
+        {
+            Vector3 dir = (targetPos - transform.position);
+            dir.y *= 0.7f;
+            dir.Normalize();
+            //RotateToTarget(_tgPos);
+            transform.position += dir * horizontalSpeed * Time.deltaTime;
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.25f);
+        MaxHeigh();
+        Vector3 fallTarget = new Vector3(transform.position.x, startPos.y, transform.position.z);
+
+        while (transform.position.y > fallTarget.y)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                fallTarget,
+                fallSpeed * Time.deltaTime
+            );
+            yield return null;
+        }
+        UseGravity=true;
+        IsGrounded = true;
+        SpawnCircularBullets();
+
+        print("Impacto y disparo circular realizado.");
+    }
+
+    private void PunchTheGround()
+    {
+
+    }
+    private void CoolDown()
+    {
+
     }
     private void TakePjPosition(params object[] p)
     {
@@ -76,13 +210,14 @@ public class BossModel : MonoBehaviour
             Vector3 dir = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
             Vector3 spawnPos = transform.position + dir * _radius;
             Quaternion rot = Quaternion.LookRotation(dir);
-
-            MagueBullet bullet = Instantiate(_bulletPrefab, spawnPos+Vector3.up*_yOffset, rot);
+            BigBullets bullet = GameObjectFactory.Instance.GetObj(GenericObjectType.BigBullet, spawnPos + Vector3.up * _yOffset,rot).GetComponent<BigBullets>();
+            //BigBullets bullet = Instantiate(_bulletPrefab, spawnPos+Vector3.up*_yOffset, rot);
+            //bullet.transform.rotation = rot;
             _bullets.Add(bullet);
         }
-        foreach(MagueBullet b in _bullets)
+        foreach(BigBullets b in _bullets)
         {
-            b.Kind=Entity.KindOfEntity.Enemy;
+            b.Kind=KindOfEntity.Enemy;
             b.Fire=true;
         }
 
@@ -91,5 +226,48 @@ public class BossModel : MonoBehaviour
     private void OnDestroy()
     {
        EventManager.Unscribe(EventManager.KindOfEvent.OnPjChangePosition, TakePjPosition);
+    }
+    #region Damageable
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStuntDamage = false)
+    {
+       if(Life<=0)
+       {
+         return;
+       }
+       Life-=dmg;
+       if(_bloodVfx!=null)
+       {
+          _bloodVfx.Play();
+       }
+       if(Life<=0)
+       {
+         print("Big Boss Dead");
+       }
+    }
+    private void RotateToTarget(Vector3 Direction)
+    {
+        if (_rb == null && _tgPos != Vector3.zero) { return; }
+        if (Direction.sqrMagnitude <= 0.001f) { return; }
+
+            Direction.y = 0f;
+        if (Direction.sqrMagnitude < 0.0001f) { return; }
+
+        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, Quaternion.LookRotation(Direction.normalized, Vector3.up), _rotationForce * Time.fixedDeltaTime));
+    }
+    public void TakeHealt(float amount)
+    {
+     
+    }
+    #endregion
+    private void OnDrawGizmos()
+    {
+        if (_groundDetect.point != null)
+        {
+            if (Vector3.Distance(transform.position, _groundDetect.point) <= GroundDistanceDetector)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(_groundDetect.point, 0.3f);
+            }
+        }
     }
 }

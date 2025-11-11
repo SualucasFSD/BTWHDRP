@@ -24341,8 +24341,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1188680525918456513}
   - component: {fileID: 8474445140499207026}
-  - component: {fileID: 4845801442680400216}
   - component: {fileID: 4938546823001818059}
+  - component: {fileID: -4592415506225104126}
   m_Layer: 16
   m_Name: BigBlackHole
   m_TagString: Untagged
@@ -24395,24 +24395,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &4845801442680400216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8592319610561676230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4b35dd0d0c54f14e8ebd5949a647917, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rb: {fileID: 8474445140499207026}
-  _speed: 5
-  _rotForce: 0.07
-  _lifeTime: 10
-  Fire: 0
-  Kind: 1
 --- !u!135 &4938546823001818059
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24434,3 +24416,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4592415506225104126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592319610561676230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50643b5d0b4f344caa37226a904a99b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BigBullets
+  _rb: {fileID: 8474445140499207026}
+  _speed: 5
+  _rotForce: 0.07
+  Fire: 0
+  Kind: 1

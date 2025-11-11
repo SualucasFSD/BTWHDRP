@@ -6,6 +6,7 @@ public enum GenericObjectType
     MagueBullet,
     ThunderEffect,
     PoisonEffect,
+    BigBullet,
     Item,
     Obstacle
 }

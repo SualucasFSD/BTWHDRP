@@ -1,7 +1,6 @@
 using UnityEngine;
-
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
-public class MagueBullet : MonoBehaviour
+public class BigBullets : MonoBehaviour
 {
     [Header("References")]
     private Transform _tg;
@@ -117,6 +116,6 @@ public class MagueBullet : MonoBehaviour
         _follow = true;
         _tg = null;
         CancelInvoke();
-        GameObjectFactory.Instance.ReturnObj(GenericObjectType.MagueBullet, gameObject);
+        GameObjectFactory.Instance.ReturnObj(GenericObjectType.BigBullet, gameObject);
     }
 }
