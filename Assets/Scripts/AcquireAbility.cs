@@ -13,7 +13,8 @@ public class AcquireAbility : MonoBehaviour
     [SerializeField] float _textSpeed;
 
     public bool isPlaying = false;
-  
+
+
     public IEnumerator OnAbilityAcquired()
     {
         //var tempText = _desiredText;
