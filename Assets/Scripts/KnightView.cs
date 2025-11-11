@@ -284,40 +284,6 @@ public class KnightView : PjView
         _pjModel.ActiveGravity();
     }
 
-    /*public void CauseDamage()
-    {
-        Collider[] c = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);
-        foreach (Collider collider in c)
-        {
-            if (collider.gameObject == gameObject)
-            {
-                continue;
-            }
-            if(HitEnemies.Contains(collider.gameObject))
-            {
-                continue;
-            }
-            Entity j = collider.GetComponent<Entity>();
-            if (j != null)
-            {
-                float verticalDiff = Mathf.Abs(j.transform.position.y - transform.position.y);
-                if (verticalDiff > 2f)
-                {
-                    continue;
-                }
-                Idamageable l = j.GetComponent<Idamageable>();
-
-                Vector3 dirToEnemy = (j.transform.position - (transform.position - transform.forward * 0.5f)).normalized;
-                float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
-
-                if (backFrontAngle > _angle)
-                {
-                    Vector3 pushDirection = new Vector3((j.transform.position - transform.position).x, 0, (j.transform.position - transform.position).z).normalized;
-                    l.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2, pushDirection, _getGround);
-                }
-            }
-        }
-    }*/
     public void CauseDamage()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, _swordDistance, _hitLayer);

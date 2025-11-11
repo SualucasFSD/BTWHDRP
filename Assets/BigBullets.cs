@@ -5,6 +5,7 @@ public class BigBullets : MonoBehaviour
     [Header("References")]
     private Transform _tg;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private PoisonArea _poisonPrefab;
 
     [Header("Stats")]
     [SerializeField] private float _speed = 15f;

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using static UnityEngine.EventSystems.EventTrigger;
 public class BossModel : Entity, Idamageable
 {
     [Header("Spawn Settings")]
@@ -12,13 +13,17 @@ public class BossModel : Entity, Idamageable
     [SerializeField] private float _yOffset = -1;
     [SerializeField] private Transform _spitPoint;
     [SerializeField] private LayerMask _obstacleMask;
+    [SerializeField] private float _fallDamage;
+   //[SerializeField] private LayerMask _areaDamageMask;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _rotationForce;
-    [SerializeField] private float _gravityValue=9.8f;
+    //[SerializeField] private float _gravityValue=9.8f;
     [SerializeField] private ParticleSystem _bloodVfx;
     //Privada y Opcional
     private float _spitTimer;
+    private float _spitFinishTimer;
     private bool _prob=false;
+    private bool _prob2 = false;
     //Private
     private bool _rotationActivate=false;
     private float _predictionTime = 0.5f;
@@ -57,8 +62,31 @@ public class BossModel : Entity, Idamageable
             return;
         }
         FalseUpdate();
+        if(_prob2)
+        {
+            _spitFinishTimer += Time.deltaTime;
+            _spitTimer += Time.deltaTime;
+            if(_spitTimer>0.3f)
+            {
+                _spitTimer = 0;
+                SpitVenemousParabolicBullets();
+            }
+            if(_spitFinishTimer>3)
+            {
+                _rotationActivate = false;
+                _spitTimer = 0;
+                _spitFinishTimer = 0;
+                Spiting(false);
+                _prob2 = false;
+            }
+        }
         Grounded(IsGrounded);
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Spiting(true);
+            _rotationActivate = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _prob = true;
         }
@@ -79,7 +107,7 @@ public class BossModel : Entity, Idamageable
         IsGroundedDetector();
         if (UseGravity)
         {
-            _rb.AddForce(-Vector3.up * Mathf.Pow(_gravityValue, 2), ForceMode.Acceleration);
+            _rb.AddForce(-Vector3.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
         }
         if(_rotationActivate)
         {
@@ -117,12 +145,14 @@ public class BossModel : Entity, Idamageable
         float midY = targetPos.y * 0.8f;
         float maxY = targetPos.y;
 
-        float horizontalSpeed = 25f;
-        float verticalSpeed = 35f;
-        float fallSpeed = 25f;
+        float horizontalSpeed = 40f;
+        float verticalSpeed = 50f;
+        float fallSpeed = 70f;
         JumpExecute();
+        gameObject.layer = 18;
         while (transform.position.y < midY)
         {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             Vector3 dir = (targetPos - transform.position);
             dir.y *= 2f;
             dir.Normalize();
@@ -132,6 +162,7 @@ public class BossModel : Entity, Idamageable
         }
         while (transform.position.y < maxY)
         {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             Vector3 dir = (targetPos - transform.position);
             dir.y *= 0.7f;
             dir.Normalize();
@@ -145,6 +176,7 @@ public class BossModel : Entity, Idamageable
 
         while (transform.position.y > fallTarget.y)
         {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 fallTarget,
@@ -154,11 +186,27 @@ public class BossModel : Entity, Idamageable
         }
         UseGravity=true;
         IsGrounded = true;
+        gameObject.layer = 10;
         SpawnCircularBullets();
-
+        AreaDamage();
         print("Impacto y disparo circular realizado.");
     }
-
+    private void AreaDamage()
+    {
+        var p= GameManager.Instance.RefreshEnemy(Kind);
+        foreach(var r in p)
+        {
+            if(Vector3.Distance(transform.position-Vector3.up*2,r.transform.position)<7)
+            {
+                Idamageable damageable = r.GetComponent<Idamageable>();
+                if(damageable!=null)
+                {
+                    Vector3 pushDir = new Vector3((r.transform.position - transform.position).x,0f,(r.transform.position - transform.position).z).normalized;
+                    damageable.TakeDamage(_fallDamage,0,pushDir);
+                }
+            }
+        }
+    }
     private void PunchTheGround()
     {
 
@@ -241,6 +289,8 @@ public class BossModel : Entity, Idamageable
        }
        if(Life<=0)
        {
+            UseGravity=true;
+            StopAllCoroutines();
          print("Big Boss Dead");
        }
     }
@@ -253,6 +303,10 @@ public class BossModel : Entity, Idamageable
         if (Direction.sqrMagnitude < 0.0001f) { return; }
 
         _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, Quaternion.LookRotation(Direction.normalized, Vector3.up), _rotationForce * Time.fixedDeltaTime));
+    }
+    public void BeganSpitVenemous()
+    {
+        _prob2 = true;
     }
     public void TakeHealt(float amount)
     {

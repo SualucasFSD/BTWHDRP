@@ -47,14 +47,23 @@ public class BoosView : MonoBehaviour
     {
         _animator.SetBool("IsGrounded", p);
     }
+    public void BeganSpit()
+    {
+        _model.BeganSpitVenemous();
+    }
     public void JumpEvent()
     {
         StartCoroutine(JumpDelay());
-        //_model.JumpExecuteModel();
     }
     IEnumerator JumpDelay()
     {
-        yield return new WaitForSeconds(3);
+        float i = 0;
+       while(i<3)
+       {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            i += 0.5f;
+            yield return new WaitForSeconds(0.5f);
+       }
         _model.JumpExecuteModel();
     }
     public void ResetGravity()

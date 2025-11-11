@@ -15,6 +15,7 @@ public class PjModel : Entity, Idamageable
     public bool ManualMovement = true;
     public bool OnAttacking = false;
     [SerializeField] private ParticleSystem _bloodVfx;
+    [SerializeField] private ParticleSystem _healtVfx;
     [Header("Configuracion Player")]
     [SerializeField] private float _rotationSpeed = 100f;
     [SerializeField] private Rigidbody _rb;
@@ -515,7 +516,7 @@ public class PjModel : Entity, Idamageable
     {
         if (pushDirection != Vector3.zero)
         {
-            _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
+            _rb.AddForce(pushDirection * 12000, ForceMode.Impulse);
         }
         Life -= dmg;
         EventManager.Ejecute(EventManager.KindOfEvent.MakeCameraShake);
@@ -545,6 +546,10 @@ public class PjModel : Entity, Idamageable
     public void TakeHealt(float amount)
     {
         Life += amount;
+        if (_healtVfx != null)
+        {
+            _healtVfx.Play();
+        }
         if (Life > _maxLife)
         {
             EventManager.Ejecute(EventManager.KindOfEvent.MaxLifeReach);
