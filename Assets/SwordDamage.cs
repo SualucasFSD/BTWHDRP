@@ -64,6 +64,12 @@ public class SwordDamage : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!canDealDamage) return;
+        GenericDestroyable destro = other.GetComponent<GenericDestroyable>();
+        if (destro != null)
+        {
+            destro.GetComponent<Idamageable>().TakeDamage(500, 0, Vector3.zero);
+            return;
+        }
 
         if (IsEnemy(other.gameObject))
         {

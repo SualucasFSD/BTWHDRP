@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 public enum EnemyCatalogue
 {
     Esqueleton,
@@ -27,6 +24,7 @@ public class GameManager : MonoBehaviour
     public List<PathNode> PathNodes = new List<PathNode>();
     public List<PathNode> PreLoadPathNodes = new List<PathNode>();
     public static GameManager Instance;
+    public string NextBossLevelName = "Boss1Level";
     [SerializeField] private LayerMask _blockLayer;
     [SerializeField] private LayerMask _nodeLayerMask;
     private List<Entity> _enemy = new List<Entity>();

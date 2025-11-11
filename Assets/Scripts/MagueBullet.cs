@@ -30,9 +30,12 @@ public class MagueBullet : MonoBehaviour
 
     private void OnDisable()
     {
+        if (!_rb.isKinematic)
+        {
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+        }
         _rb.isKinematic = true;
-        _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
         _tg = null;
         Fire = false;
         _follow = true;

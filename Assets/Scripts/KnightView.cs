@@ -298,8 +298,14 @@ public class KnightView : PjView
 
             Entity entity = collider.GetComponent<Entity>();
             if (entity == null)
+            {
+                GenericDestroyable destro= collider.GetComponent<GenericDestroyable>();
+                if(destro!=null)
+                {
+                    destro.GetComponent<Idamageable>().TakeDamage(500, 0, Vector3.zero);
+                }
                 continue;
-
+            }
             float verticalDiff = Mathf.Abs(entity.transform.position.y - transform.position.y);
             if (verticalDiff > 2f)
                 continue;

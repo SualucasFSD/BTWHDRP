@@ -31339,6 +31339,73 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 400, y: 20, z: 400}
   m_Center: {x: -200, y: 10, z: 200}
+--- !u!1 &4413880599856484141
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3618357354146062376}
+  - component: {fileID: 842832619875805169}
+  - component: {fileID: 7321374680219700928}
+  m_Layer: 0
+  m_Name: TempLevelChange
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3618357354146062376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413880599856484141}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.46, y: -3.8, z: 19.95}
+  m_LocalScale: {x: 4.7840166, y: 4.7840166, z: 4.7840166}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2967845595431457984}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &842832619875805169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413880599856484141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73b9f9a6d5f983e45ac161ef51d042c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneName: Boss1Level
+--- !u!65 &7321374680219700928
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4413880599856484141}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 2048
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 260095
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4416238894792346614
 GameObject:
   m_ObjectHideFlags: 0
@@ -58573,6 +58640,7 @@ Transform:
   - {fileID: 2863951763651414074}
   - {fileID: 8120350746576663348}
   - {fileID: 2887377331765361324}
+  - {fileID: 3618357354146062376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2164726875215848018
@@ -58597,6 +58665,8 @@ MonoBehaviour:
   _neighbords: []
   _lights: {fileID: 0}
   _enemies: []
+  _finalBox: {fileID: 0}
+  _Text: {fileID: 0}
 --- !u!1 &8734040038157196458
 GameObject:
   m_ObjectHideFlags: 0

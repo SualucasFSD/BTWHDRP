@@ -22,6 +22,7 @@ public class Entity : MonoBehaviour
     public bool Stuned=false;
     private GameObject _venomEffect;
     private GameObject _thunderEffect;
+    private GameObject _thunderImpact;
     //private float _pauseTime=0;
     public enum KindOfEntity
     {
@@ -173,6 +174,12 @@ public class Entity : MonoBehaviour
         {
             return;
         }
+        _thunderImpact= GameObjectFactory.Instance.GetObj(GenericObjectType.LighningImpact, transform.position+Vector3.up*2, transform.rotation);
+        _thunderImpact.transform.parent = transform;
+        if (_thunderImpact.TryGetComponent<ParticleSystem>(out var Component1))
+        {
+            Component1.Play();
+        }
         _thunderEffect = GameObjectFactory.Instance.GetObj(GenericObjectType.ThunderEffect, transform.position, transform.rotation);
         _thunderEffect.transform.parent = transform;
         if (_thunderEffect.TryGetComponent<ParticleSystem>(out var Component))
@@ -199,6 +206,15 @@ public class Entity : MonoBehaviour
             }
             GameObjectFactory.Instance.ReturnObj(GenericObjectType.ThunderEffect, _thunderEffect);
             _thunderEffect = null;
+        }
+        if (_thunderImpact != null)
+        {
+            if (_thunderImpact.TryGetComponent<ParticleSystem>(out var Component1))
+            {
+                Component1.Stop();
+            }
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.LighningImpact, _thunderImpact);
+            _thunderImpact = null;
         }
         Ready = true;
     }

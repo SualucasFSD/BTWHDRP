@@ -161,7 +161,7 @@ public class MagueEnemyModel : Entity, Idamageable
         else
         {
             if (pushDirection != Vector3.zero && IsGrounded)
-                _rb.AddForce(pushDirection * 500, ForceMode.Impulse);
+                _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
         }
     }
 
