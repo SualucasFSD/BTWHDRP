@@ -22,6 +22,7 @@ public class SavageDog : Entity, Idamageable
     [SerializeField] private float _attackDelay = 2.5f;
     private float _attackTimer;
     public bool CanAttack = true;
+    //public bool IsStanding = true;
     private bool _isDead = false;
     #region Events
     public event Action<Vector3> OnMove = delegate { };
@@ -81,6 +82,7 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
+       
         if (_attackTimer < _attackDelay)
         {
             _attackTimer += Time.deltaTime;
@@ -102,7 +104,7 @@ public class SavageDog : Entity, Idamageable
             return;
         }
         IsGroundedDetector();
-        if(UseGravity)
+        if (UseGravity)
         {
             _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
         }
@@ -110,7 +112,7 @@ public class SavageDog : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false,float pushForce=1000)
     {
       if(_isDead)
       {
@@ -157,7 +159,7 @@ public class SavageDog : Entity, Idamageable
         {
             if (pushDirection != Vector3.zero && IsGrounded)
             {
-                _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
+                _rb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
             }
         }
     }
@@ -259,6 +261,7 @@ public class SavageDog : Entity, Idamageable
         _fsm.ChangeState(FsmSavageDog.DogState.OnGoinGround);
         GetToGround();
     }
+
     #endregion
     #region Variety of Functs
     public void Attack()

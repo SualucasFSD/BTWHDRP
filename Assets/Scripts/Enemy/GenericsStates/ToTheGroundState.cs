@@ -14,7 +14,7 @@ public class ToTheGroundState : IState
         _rb = Rb;
         _force = Force;
         _kind = Kind;
-        _combatMode = CombatMode;   
+        _combatMode = CombatMode;
     }
     public void OnEnter()
     {
@@ -42,7 +42,7 @@ public class ToTheGroundState : IState
         {
             if (!_ent.Stuned)
             {
-                _combatMode();
+               _combatMode();
             }
         }
     }

@@ -18,6 +18,7 @@ public class SwordDamage : MonoBehaviour
     private float _stuntDmg;
     private float _flyAngle;
     private bool _getGround;
+    private float _pushForce;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class SwordDamage : MonoBehaviour
         _flyAngle = (float)p[2];
         _getGround = (bool)p[3];
         _stuntDmg = (float)p[4];
+        _pushForce = (float)p[5];   
     }
     public void SetCanDealDamage(params object[] p)
     {
@@ -81,7 +83,7 @@ public class SwordDamage : MonoBehaviour
                 EventManager.Ejecute(EventManager.KindOfEvent.RefreshEnemyHitList, hitEnemies);
                 Vector3 pushDirection = new Vector3((other.transform.position - transform.position).x, 0, (other.transform.position - transform.position).z).normalized;
                 Idamageable l = other.GetComponent<Idamageable>();
-                l.TakeDamage(_dmg * 1, _stuntDmg * 1 / 2, pushDirection, _getGround,true);
+                l.TakeDamage(_dmg * 1, _stuntDmg * 1 / 2, pushDirection, _getGround,true,_pushForce);
             }
         }
     }

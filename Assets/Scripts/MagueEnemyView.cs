@@ -40,11 +40,16 @@ public class MagueEnemyView : MonoBehaviour
     {
         _anim.SetTrigger("HitMidAir");
     }
-
+    public void Standing()
+    {
+        //_model.IsStanding = true;
+    }
     private void GetToGround()
     {
         if (_isInAirHit) return;
-        _anim.SetTrigger("ToTheGround");
+        //etDown
+        _anim.CrossFadeInFixedTime("ToTheGround", 0.25f, 0, 0f);
+        //_anim.SetTrigger("ToTheGround");
     }
 
     private void GetToTheAir()
