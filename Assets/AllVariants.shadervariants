@@ -39,12 +39,13 @@ ShaderVariantCollection:
       - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
           _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
         passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
       - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _NORMALMAP_TANGENT_SPACE
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
           _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
@@ -56,6 +57,9 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
           _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _NORMALMAP_TANGENT_SPACE
+          _REFRACTION_PLANE _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
@@ -724,8 +728,7 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT _TRANSPARENT_WRITES_MOTION_VEC
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: f6a4be988b36fe842a204f426137bc0f,
       type: 3}
@@ -741,8 +744,7 @@ ShaderVariantCollection:
         passType: 12
       - keywords: 
         passType: 13
-      - keywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+      - keywords: _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 510752963239be24d83caa0cc5f0b9e4,
       type: 3}
@@ -928,7 +930,6 @@ ShaderVariantCollection:
       - keywords: 
         passType: 13
       - keywords: _ALPHATEST_ON _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 7084c6c99a429a54693760fde59f9b94,
       type: 3}
@@ -946,4 +947,15 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _MATERIAL_FEATURE_COLORED_TRANSMISSION
           _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+  - first: {fileID: 4800010, guid: a524cf3d06eabe14480b1a62aa0736fe, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 891aac8a5bcf1e84c9dc55e6c930480b,
+      type: 3}
+    second:
+      variants:
+      - keywords: _DISABLE_SSR_TRANSPARENT
         passType: 13
