@@ -24,6 +24,7 @@ public class KnightView : PjView
     private bool _animMove=false;
     public List<GameObject> HitEnemies = new List<GameObject>();
     private float _jumpDelay=0;
+    private float _pushForce;
     private void Start()
     {
         _pjModel = GetComponentInParent<PjModel>();
@@ -241,7 +242,7 @@ public class KnightView : PjView
 
     private void ChangeFloats(ComboObject combo)
     {
-        EventManager.Ejecute(EventManager.KindOfEvent.RespecificSword, combo.Dmg, combo.SwordFlyArea, combo.FlyAngle, combo.GetGround, combo.StuntDmg);
+        EventManager.Ejecute(EventManager.KindOfEvent.RespecificSword, combo.Dmg, combo.SwordFlyArea, combo.FlyAngle, combo.GetGround, combo.StuntDmg,combo.PushForce);
         _dmg = combo.Dmg;
         _stuntDmg = combo.StuntDmg;
         _swordArea = combo.SwordFlyArea;
@@ -249,6 +250,7 @@ public class KnightView : PjView
         _flyAngle = combo.FlyAngle;
         _angle = combo.Angle;
         _getGround = combo.GetGround;
+        _pushForce = combo.PushForce;   
     }
 
     //Evento de consulta y sucesion por animacion
@@ -338,7 +340,8 @@ public class KnightView : PjView
                             _stuntDmg * _dmgMultiply / 2f,
                             pushDir,
                             _getGround,
-                            true
+                            true,
+                            _pushForce
                         );
                         HitEnemies.Add(entity.gameObject);
                     }

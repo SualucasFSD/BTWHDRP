@@ -27,6 +27,7 @@ public class MagueEnemyModel : Entity, Idamageable
     public bool IsCharging = false;
 
     public int NumbOfBullets = 0;
+    //public bool IsStanding = true;
     private bool _isReady = false;
     private bool _isDead = false;
     private List<MagueBullet> Bullets = new List<MagueBullet>();
@@ -88,6 +89,7 @@ public class MagueEnemyModel : Entity, Idamageable
         {
             return;
         }
+       
         if(UseGravity)
         {
             if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Mague].GravityForce)
@@ -113,7 +115,7 @@ public class MagueEnemyModel : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false, float pushForce = 1000)
     {
         if(_isDead)
         {
@@ -161,7 +163,7 @@ public class MagueEnemyModel : Entity, Idamageable
         else
         {
             if (pushDirection != Vector3.zero && IsGrounded)
-                _rb.AddForce(pushDirection * 1000, ForceMode.Impulse);
+                _rb.AddForce(pushDirection * pushForce, ForceMode.Impulse);
         }
     }
 

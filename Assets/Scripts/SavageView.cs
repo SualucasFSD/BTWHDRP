@@ -33,6 +33,10 @@ public class SavageView : MonoBehaviour
         _dogModel.GetToGround += GetToGround;
         _dogModel.OnAttack += OnAttacking;
     }
+    public void Standing()
+    {
+        //_dogModel.IsStanding = true;
+    }
     private void OnHitGround()
     {
         _dogModel.Stuned=true;
@@ -45,7 +49,8 @@ public class SavageView : MonoBehaviour
 
     private void GetToGround()
     {
-        SetTriger("ToTheGround");
+        _animator.CrossFadeInFixedTime("GetDown", 0.25f, 0, 0f);
+        //SetTriger("ToTheGround");
     }
     private void OnFreeFall()
     {

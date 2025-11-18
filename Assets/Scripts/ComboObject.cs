@@ -25,6 +25,7 @@ public class ComboObject : ScriptableObject
     public float SwordFlyArea;
     public float StuntDmg;
     public bool GetGround=false;
+    public float PushForce;
     [Range(0.1f, 1f)] public float Angle;
     [Range(0.1f, 1f)] public float FlyAngle;
 }
