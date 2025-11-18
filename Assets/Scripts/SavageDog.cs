@@ -43,12 +43,17 @@ public class SavageDog : Entity, Idamageable
             _rb = GetComponent<Rigidbody>();
         }
         _rb.useGravity = false;
-        /*if (_collider == null)
-        {
-            _collider = GetComponent<Collider>();
-        }*/
     }
-    public override void EnableAgain()
+    private void OnEnable()
+    {
+        if (_isReady)
+        {
+            _attackTimer = _attackDelay;
+            _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+            GameManager.Instance.AddEntity(this, Kind);
+        }
+    }
+    /*public override void EnableAgain()
     {
         _attackTimer = _attackDelay;
         StartCoroutine(DelayedInit());
@@ -59,10 +64,9 @@ public class SavageDog : Entity, Idamageable
         if (_isReady)
         {
             _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
-            //Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
         }
         GameManager.Instance.AddEntity(this, Kind);
-    }
+    }*/
     private void Start()
     {
         GravValue= GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
@@ -82,7 +86,6 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
-       
         if (_attackTimer < _attackDelay)
         {
             _attackTimer += Time.deltaTime;
@@ -112,15 +115,15 @@ public class SavageDog : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false,float pushForce=1000)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage = false,float pushForce=1000)
     {
       if(_isDead)
       {
         return;
       }
-        Ready = true;
-        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
-        if (_bloodVfx != null)
+        //Ready = true;
+        //EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
+        if (_bloodVfx != null&&isStunDamage)
         {
             _bloodVfx.Play();
         }
@@ -130,6 +133,7 @@ public class SavageDog : Entity, Idamageable
         if(IsGrounded)
         {
           OnHitStunt();
+          //Ready = true;
         }
         else
         {
@@ -149,6 +153,7 @@ public class SavageDog : Entity, Idamageable
             {
                 SpawnOrbsFunct();
             }
+            FinishElectricPause();
             PopVenemous();
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);
@@ -235,7 +240,7 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
-        Ready = true;
+        //Ready = true;
         EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
         _fsm.ChangeState(FsmSavageDog.DogState.OnGoinAir);
         GetToAir();
@@ -257,7 +262,7 @@ public class SavageDog : Entity, Idamageable
         {
             return;
         }
-        Ready = true;
+        //Ready = true;
         _fsm.ChangeState(FsmSavageDog.DogState.OnGoinGround);
         GetToGround();
     }
@@ -289,6 +294,24 @@ public class SavageDog : Entity, Idamageable
         yield return new WaitForSeconds(15);
 
         GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
+        //_isDead = false;
+        //Stuned = false;
+        //UseGravity = true;
+        //_rb.useGravity = false;
+        //GravValue = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].GravityForce;
+        //Dir = Vector3.zero;
+        //_rb.linearVelocity = Vector3.zero;
+        //_rb.angularVelocity = Vector3.zero;
+        ////_fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
+        //Ready = true;
+        //Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
+
+        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog, this);
+    }
+    #endregion
+    private void OnDisable()
+    {
+        //GetComponentInChildren<RagdollOnOff>().RagdollModeOff();
         _isDead = false;
         Stuned = false;
         UseGravity = true;
@@ -297,11 +320,7 @@ public class SavageDog : Entity, Idamageable
         Dir = Vector3.zero;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-        _fsm.ChangeState(FsmSavageDog.DogState.OnPatrol);
-
+        Ready = true;
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Life;
-
-        GenericFactory.Instance.ReturnObj(EnemyCatalogue.SavageDog, this);
     }
-    #endregion
 }

@@ -140,7 +140,7 @@ public class SavageDogOnCombat : IState
 
     public void OnFixedUpdate()
     {
-        if (_entity.Tg == null) return;
+        if (_entity.Tg == null) { return; }
 
         _entity.OnRotatePj(_rotateDir);
         _entity.OnMovePj();

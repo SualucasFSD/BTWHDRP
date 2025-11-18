@@ -128,8 +128,9 @@ public class PowerEffectsManager : MonoBehaviour
     private void Update()
     {
         if (GameManager.Instance.IsPaused)
+        {
             return;
-
+        }
         for (int i = _activePoisons.Count - 1; i >= 0; i--)
         {
             PoisonData p = _activePoisons[i];
@@ -148,7 +149,7 @@ public class PowerEffectsManager : MonoBehaviour
                 p.tickTimer = 0;
                 if (p.target.TryGetComponent<Idamageable>(out var dmg))
                 {
-                    dmg.TakeDamage(p.damagePerTick, 0, Vector3.zero, false, false);
+                    dmg.TakeDamage(p.damagePerTick, 0, Vector3.zero, false, false,false,0);
                 }
             }
 

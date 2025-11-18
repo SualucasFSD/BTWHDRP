@@ -141,12 +141,10 @@ public class Pause : MonoBehaviour
     {
         if (!GameManager.Instance.IsPaused)
         {
-            //GameManager.Instance.IsPaused=false;
             ResumeOn();
         }
         else
         {
-            //GameManager.Instance.IsPaused = true;
             PauseOn();
         }
     }
@@ -290,7 +288,6 @@ public class Pause : MonoBehaviour
         
         remainingTimes[r] = (float)p[1];
         Entity j = r.GetComponent<Entity>();
-        //r.GetComponent<Entity>().PauseForMoment((float)p[1]);
         if(j!=null)
         {
             j.PauseForMoment((float)p[1]);

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Unity.VisualScripting;
+using Unity.Burst.Intrinsics;
 
 public class KnightView : PjView
 {
@@ -12,6 +14,8 @@ public class KnightView : PjView
     [SerializeField] private GameObject _swordModel;
     [SerializeField] private LayerMask _hitLayer;
     [SerializeField] private float _dmgMultiply = 1;
+    [SerializeField] protected GameObject _swordThrowable;
+    //[SerializeField] protected GameObject _swordPoint;
     private Vector3 _lastPosition;
     private Vector3 _velocity;
     private float _swordDistance;
@@ -21,12 +25,19 @@ public class KnightView : PjView
     private float _angle;
     private float _flyAngle;
     private bool _getGround;
+    private bool _airHit;
     private bool _animMove=false;
     public List<GameObject> HitEnemies = new List<GameObject>();
     private float _jumpDelay=0;
+    private float _rotForceOrig = 0;
     private float _pushForce;
+    private bool _onDashHitDelay = false;
+    private bool _isSwordDepend;
+    private Renderer[] _swordRender;
+    private SwordThrowableDamage _swordThrowed=null;
     private void Start()
     {
+        _swordRender = _swordModel.GetComponentsInChildren<Renderer>();
         _pjModel = GetComponentInParent<PjModel>();
         _animator = GetComponentInChildren<Animator>();
         if (_pjModel == null)
@@ -226,7 +237,10 @@ public class KnightView : PjView
             if (combo.ComboImput.Count > 0 && _currentImputs[0] == combo.ComboImput[0])
             {
                 _combosFinish.Add(combo.name);
-                _animator.SetTrigger(combo.TriggerAnimName);
+                //_animator.SetTrigger(combo.TriggerAnimName);
+                _animator.CrossFadeInFixedTime(combo.TriggerAnimName, 0.25f, 0, 0f);
+
+                _animator.CrossFadeInFixedTime(combo.TriggerAnimName, 0.25f, 1, 0f);
                 ChangeFloats(combo);
                 _pjModel.OnAttacking = true;
                 return true;
@@ -242,7 +256,7 @@ public class KnightView : PjView
 
     private void ChangeFloats(ComboObject combo)
     {
-        EventManager.Ejecute(EventManager.KindOfEvent.RespecificSword, combo.Dmg, combo.SwordFlyArea, combo.FlyAngle, combo.GetGround, combo.StuntDmg,combo.PushForce);
+        EventManager.Ejecute(EventManager.KindOfEvent.RespecificSword, combo.Dmg, combo.SwordFlyArea, combo.FlyAngle, combo.GetGround, combo.StuntDmg,combo.PushForce,combo.GetAir);
         _dmg = combo.Dmg;
         _stuntDmg = combo.StuntDmg;
         _swordArea = combo.SwordFlyArea;
@@ -250,7 +264,14 @@ public class KnightView : PjView
         _flyAngle = combo.FlyAngle;
         _angle = combo.Angle;
         _getGround = combo.GetGround;
-        _pushForce = combo.PushForce;   
+        _pushForce = combo.PushForce;
+        _airHit = combo.GetAir;
+        _isSwordDepend = combo.IsSwordDepend;
+       if(combo.IsSwordDepend)
+       {
+            _animator.SetBool("CancelSwordDrop", combo.IsSwordDepend);
+            StartCoroutine(MantainHit());
+       }
     }
 
     //Evento de consulta y sucesion por animacion
@@ -277,7 +298,10 @@ public class KnightView : PjView
             if (equal)
             {
                 _combosFinish.Add(combo.name);
-                _animator.SetTrigger(combo.TriggerAnimName);
+                _animator.CrossFadeInFixedTime(combo.TriggerAnimName, 0.25f, 0, 0f);
+
+                _animator.CrossFadeInFixedTime(combo.TriggerAnimName, 0.25f, 1, 0f);
+                //_animator.SetTrigger(combo.TriggerAnimName);
                 ChangeFloats(combo);
                 return;
             }
@@ -293,12 +317,15 @@ public class KnightView : PjView
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject == gameObject)
+            {
                 continue;
-
+            }
             if (HitEnemies.Contains(collider.gameObject))
+            {
                 continue;
-
+            }
             Entity entity = collider.GetComponent<Entity>();
+
             if (entity == null)
             {
                 GenericDestroyable destro= collider.GetComponent<GenericDestroyable>();
@@ -310,39 +337,33 @@ public class KnightView : PjView
             }
             float verticalDiff = Mathf.Abs(entity.transform.position.y - transform.position.y);
             if (verticalDiff > 2f)
+            {
                 continue;
-
+            }
             if (!GameManager.Instance.LineOfSight(transform.position, entity.transform.position))
+            {
                 continue;
-
+            }
             Vector3 origin = transform.position + Vector3.up * 1f - transform.forward * 0.5f;
             Vector3 dirToEnemy = (entity.transform.position - origin).normalized;
 
             if (Physics.Raycast(origin, dirToEnemy, out RaycastHit hit, _swordDistance, _hitLayer))
             {
                 if (hit.collider.transform.root != entity.transform.root)
+                {
                     continue;
+                }
 
                 float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
+
                 if (backFrontAngle > _angle)
                 {
                     Idamageable damageable = entity.GetComponent<Idamageable>();
                     if (damageable != null)
                     {
-                        Vector3 pushDir = new Vector3(
-                            (entity.transform.position - transform.position).x,
-                            0f,
-                            (entity.transform.position - transform.position).z
-                        ).normalized;
+                        Vector3 pushDir = new Vector3((entity.transform.position - transform.position).x,0f,(entity.transform.position - transform.position).z).normalized;
 
-                        damageable.TakeDamage(
-                            _dmg * _dmgMultiply,
-                            _stuntDmg * _dmgMultiply / 2f,
-                            pushDir,
-                            _getGround,
-                            true,
-                            _pushForce
-                        );
+                        damageable.TakeDamage(_dmg * _dmgMultiply, _stuntDmg * _dmgMultiply / 2f,pushDir,_getGround,_airHit, true,_pushForce);
                         HitEnemies.Add(entity.gameObject);
                     }
                 }
@@ -350,7 +371,53 @@ public class KnightView : PjView
         }
     }
 
-
+    IEnumerator MantainHit()
+    {
+        _rotForceOrig = _pjModel.RotationSpeedMultiply;
+        //_pjModel.RotationSpeedMultiply = 0;
+        float i = 0;
+        while (Input.GetButton("StrongAttack")&&i<4)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            i += 0.1f;
+            yield return new WaitForSeconds(0.1f); 
+        }
+        _animator.SetBool("CancelSwordDrop", false);
+        _animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+        if(_swordThrowed!=null)
+        {
+            _swordThrowed.Cancel();
+            _swordThrowed = null;
+        }
+        _pjModel.RotationSpeedMultiplyNoLock = _rotForceOrig;
+        _pjModel.RotationSpeedMultiply = _rotForceOrig;
+        EjecuteAttack();
+    }
+    public void ActiveSword()
+    {
+        foreach (Renderer p in _swordRender)
+        {
+            p.enabled = true;
+        }
+    }
+    public void SpawnSword()
+    {
+        if (_swordThrowable != null)
+        {
+           _swordThrowed= Instantiate(_swordThrowable, _swordModel.transform.position, transform.rotation).GetComponent<SwordThrowableDamage>();
+           _swordThrowed.Init(_swordModel,this);
+            _pjModel.RotationSpeedMultiplyNoLock = 0;
+            _pjModel.RotationSpeedMultiply = 0;
+        }
+        else
+        { 
+            return;
+        }
+        foreach (Renderer p in _swordRender)
+        {
+            p.enabled = false;
+        }
+    }
     public void JumpHit()
     {
         if(!_getGround)
@@ -365,16 +432,27 @@ public class KnightView : PjView
     }
     private void RunComboLight()
     {
-       /* if (_pjModel.IsDodging)
+        if(_onDashHitDelay)
+        { return; }
+        _onDashHitDelay=true;
+        StartCoroutine(DashHitDelay());
+        if (_pjModel.IsDodging)
         {
             EndDodge();
         }
         ComboResetGeneral();
-        RegisterImputs(KindOfCombo.SprintLight);*/
+        RegisterImputs(KindOfCombo.SprintLight);
     }
-    public void DashAttackFinish()
+    IEnumerator DashHitDelay()
     {
-       /* _pjModel.IsDashAttacking = false;*/
+        float i = 0;
+        while(i<1.5f)
+        {
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            i += 0.25f;
+            yield return new WaitForSeconds(0.25f);
+        }
+        _onDashHitDelay = false;
     }
     //Cancelacion del combo
     public void DamageActivate()
@@ -478,6 +556,7 @@ public class KnightView : PjView
     }
     private void OnDestroy()
     {
+        StopAllCoroutines();
         EventManager.Unscribe(EventManager.KindOfEvent.RefreshEnemyHitList, RefreshEnemyList);
     }
 }

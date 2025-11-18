@@ -23,6 +23,7 @@ public class Entity : MonoBehaviour
     private GameObject _venomEffect;
     private GameObject _thunderEffect;
     private GameObject _thunderImpact;
+    protected Coroutine _stopRoutine;
     //private float _pauseTime=0;
     public enum KindOfEntity
     {
@@ -187,7 +188,7 @@ public class Entity : MonoBehaviour
             Component.Play();
         }
         Ready = false;
-        StartCoroutine(Stop(time));
+        _stopRoutine=StartCoroutine(Stop(time));
     }
     IEnumerator Stop(float time)
     {
@@ -198,6 +199,35 @@ public class Entity : MonoBehaviour
             i += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
+        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
+        if (_thunderEffect != null)
+        {
+            if (_thunderEffect.TryGetComponent<ParticleSystem>(out var Component))
+            {
+                Component.Stop();
+            }
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.ThunderEffect, _thunderEffect);
+            _thunderEffect = null;
+        }
+        if (_thunderImpact != null)
+        {
+            if (_thunderImpact.TryGetComponent<ParticleSystem>(out var Component1))
+            {
+                Component1.Stop();
+            }
+            GameObjectFactory.Instance.ReturnObj(GenericObjectType.LighningImpact, _thunderImpact);
+            _thunderImpact = null;
+        }
+        _stopRoutine = null;
+        Ready = true;
+    }
+    public void FinishElectricPause()
+    {
+        if(_stopRoutine!=null)
+        {
+            StopCoroutine(_stopRoutine);
+        }
+        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
         if (_thunderEffect != null)
         {
             if (_thunderEffect.TryGetComponent<ParticleSystem>(out var Component))
@@ -237,6 +267,7 @@ public class Entity : MonoBehaviour
     }
     public virtual void PopVenemous()
     {
+        EventManager.Ejecute(EventManager.KindOfEvent.PopVenemous, this);
         if (_venomEffect != null)
         {
             if (_venomEffect.TryGetComponent<ParticleSystem>(out var Component))
@@ -246,6 +277,5 @@ public class Entity : MonoBehaviour
             GameObjectFactory.Instance.ReturnObj(GenericObjectType.PoisonEffect, _venomEffect);
             _venomEffect = null;
         }
-        EventManager.Ejecute(EventManager.KindOfEvent.PopVenemous, this);
     }
 }

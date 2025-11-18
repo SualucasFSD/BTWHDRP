@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 605cac4e2633ad54882fb5b82c32b6fa, type: 3}
-  m_Name: WarriorLongAir1
+  m_Name: WarriorSpecial
   m_EditorClassIdentifier: 
-  Name: WarriorLong1Air
-  ComboImput: 06000000
-  TriggerAnimName: AirStrong3
-  Dmg: 100
+  Name: WarriorSpecial
+  ComboImput: 03000000
+  TriggerAnimName: SwordThrow
+  Dmg: 50
   SwordDistance: 3.5
-  SwordFlyArea: 4.5
-  StuntDmg: 20
-  GetGround: 1
+  SwordFlyArea: 0
+  StuntDmg: 25
+  PushForce: 1400
   GetAir: 0
-  PushForce: 1800
+  GetGround: 0
+  IsSwordDepend: 1
   Angle: 0.5
-  FlyAngle: 0.15
+  FlyAngle: 0.1

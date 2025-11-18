@@ -47,7 +47,6 @@ public class OnGoingAirState : IState
     {
         if (_ent.transform.position.y < _targetY&&_maxTimer<=1.5f)
         {
-            //Debug.Log("Subiendo");
             _rb.MovePosition(_rb.position + Vector3.up * 20f*Time.fixedDeltaTime);
             return;
         }

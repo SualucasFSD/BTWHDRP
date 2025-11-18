@@ -115,14 +115,14 @@ public class MagueEnemyModel : Entity, Idamageable
         _fsm.ArtificialFixedUpdate();
     }
     #region Idamageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false, float pushForce = 1000)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage = false, float pushForce = 1000)
     {
         if(_isDead)
         {
             return;
         }
-        Ready = true;
-        EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
+        //Ready = true;
+        //EventManager.Ejecute(EventManager.KindOfEvent.ResumeOneEnemy, gameObject);
         if (_damageParticles != null)
         {
             _damageParticles.Play();
@@ -154,6 +154,7 @@ public class MagueEnemyModel : Entity, Idamageable
             {
                 SpawnOrbsFunct();
             }
+           FinishElectricPause();
            PopVenemous();
             GameManager.Instance.RemoveEntity(this, Kind);
             GetComponentInChildren<RagdollOnOff>().RagdollModeOn(pushDirection, 15);

@@ -270,7 +270,7 @@ public class FirstBoss : Entity, Idamageable
     {
         _rig.AddForce(transform.forward * _impulseForce, ForceMode.Impulse);
     }
-    public void TakeDamage(float Dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false, float pushForce = 1000   )
+    public void TakeDamage(float Dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage = false, float pushForce = 1000   )
     {
         _life -= Dmg;
         SoundManager.Instance.PlayOneShot(entityType.basic, soundType.attack, _mySource);

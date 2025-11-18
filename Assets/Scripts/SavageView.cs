@@ -33,10 +33,7 @@ public class SavageView : MonoBehaviour
         _dogModel.GetToGround += GetToGround;
         _dogModel.OnAttack += OnAttacking;
     }
-    public void Standing()
-    {
-        //_dogModel.IsStanding = true;
-    }
+
     private void OnHitGround()
     {
         _dogModel.Stuned=true;
@@ -45,6 +42,7 @@ public class SavageView : MonoBehaviour
     public void RecoverFromHit()
     {
         _dogModel.Stuned = false;
+        //_dogModel.Ready = true;
     }
 
     private void GetToGround()

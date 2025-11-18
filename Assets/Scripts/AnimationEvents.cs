@@ -19,7 +19,10 @@ public class AnimationEvents : MonoBehaviour
 
     public void PlayerOneShot(soundType _type)
     {
-        SoundManager.Instance.PlayOneShot(entityType.player, _type, _mySource);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayOneShot(entityType.player, _type, _mySource);
+        }
     }
     public void PlayerOneShotSpecificSound(AudioClip myClip)
     {

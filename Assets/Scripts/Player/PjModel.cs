@@ -49,6 +49,7 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private LayerMask _enemyLayer;
     private bool _haveCloseEnemy=false;
     private GameObject _closeEnemy;
+    public float RotationSpeedMultiplyNoLock = 1;
     //[SerializeField] private float _autoRotateRadius = 6f;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
@@ -263,32 +264,6 @@ public class PjModel : Entity, Idamageable
                 _haveCloseEnemy = false;
             }
     }
-        /* if (!OnAttacking || Camera == null || Camera._focusing)
-         {
-             _haveCloseEnemy = false;
-             _closeEnemy = null;
-             return;
-         }
-
-         List<Entity> targets = GameManager.Instance.RefreshEnemy(Kind);
-         if (targets == null || targets.Count == 0)
-         {
-             _haveCloseEnemy = false;
-             _closeEnemy = null;
-             return;
-         }
-
-         GameObject close = GameManager.Instance.GetCloseEnemy(targets, transform);
-         if (close != null && Vector3.Distance(transform.position, close.transform.position) <= 5f)
-         {
-             _closeEnemy = close;
-             _haveCloseEnemy = true;
-         }
-         else
-         {
-             _closeEnemy = null;
-             _haveCloseEnemy = false;
-         }*/
     private void FallowEnemy()
     {
         if (_closeEnemy == null) return;
@@ -298,7 +273,7 @@ public class PjModel : Entity, Idamageable
         if (dir.sqrMagnitude <= 0.001f) return;
 
         Quaternion target = Quaternion.LookRotation(dir.normalized);
-        _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, target, _rotationSpeed * Time.fixedDeltaTime));
+        _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, target, _rotationSpeed*RotationSpeedMultiplyNoLock * Time.fixedDeltaTime));
     }
     #endregion
     /// <summary>
@@ -319,8 +294,9 @@ public class PjModel : Entity, Idamageable
         }
 
         if (Dir == Vector3.zero)
+        {
             return;
-
+        }
         Quaternion target = Quaternion.LookRotation(Dir);
         float rotSpeed = _rotationSpeed * RotationSpeedMultiply;
         _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, target, rotSpeed * Time.fixedDeltaTime));
@@ -393,27 +369,12 @@ public class PjModel : Entity, Idamageable
     #region ComboKeys
     public void AttackFirstCombo()
     {
-        if (OnAttack != null && !IsDodging && !_limitZone)
+        if (OnAttack != null && !_limitZone)
         {
-            StopMove();
-          
-            if (!IsGrounded)
-            {
-                OnAttackAir();
-                return;
-            }
-            OnAttack();
-        }
-    }
-    /*public void AttackFirstCombo()
-    {
-        if (IsDashAttacking || _limitZone) { return; }
-
-        if (!IsDodging)
-        {
-            if (OnAttack != null)
+            if (!IsDodging)
             {
                 StopMove();
+
                 if (!IsGrounded)
                 {
                     OnAttackAir();
@@ -421,19 +382,13 @@ public class PjModel : Entity, Idamageable
                 }
                 OnAttack();
             }
-        }
-        else
-        {
-            if (_delayActions > 0.15f && IsGrounded)
+            else if (IsDodging && IsGrounded)
             {
-                IsDashAttacking = true;
-                if (OnRunAttack != null)
-                {
-                    OnRunAttack();
-                }
+                OnRunAttack();
             }
         }
-    }*/
+    }
+  
     public void AttackSecondCombo()
     {
         if (OnAttackSecond != null && !IsDodging && !_limitZone)
@@ -512,7 +467,7 @@ public class PjModel : Entity, Idamageable
     }
     #endregion
     #region Genericos
-    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false,bool isStunDamage=false, float pushForce = 1000)
+    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage=false, float pushForce = 1000)
     {
         if (pushDirection != Vector3.zero)
         {

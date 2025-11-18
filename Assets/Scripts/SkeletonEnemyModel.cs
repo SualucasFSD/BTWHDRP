@@ -103,7 +103,7 @@ public class SkeletonEnemyModel : Entity, Idamageable
             _rb.MovePosition(transform.position + (transform.forward * _dir.z * GameManager.Instance.EnemyConfiguration[EnemyCatalogue.Esqueleton].Velocity * Time.fixedDeltaTime));
         }*/
     }
-    public void TakeDamage(float dmg,float stunt, Vector3 pushDirection, bool downHit = false, bool isStunDamage = false, float pushForce = 1000)
+    public void TakeDamage(float dmg,float stunt, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage = false, float pushForce = 1000)
     {
         if(Life<=0)
         {

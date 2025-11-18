@@ -276,7 +276,7 @@ public class BossModel : Entity, Idamageable
        EventManager.Unscribe(EventManager.KindOfEvent.OnPjChangePosition, TakePjPosition);
     }
     #region Damageable
-    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool isStuntDamage = false, float pushForce = 1000)
+    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false,bool airHit=false, bool isStuntDamage = false, float pushForce = 1000)
     {
        if(Life<=0)
        {
