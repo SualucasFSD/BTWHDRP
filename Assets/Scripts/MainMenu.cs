@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviour
     private Dictionary<Button, float> _buttonCooldowns = new Dictionary<Button, float>();
 
     [SerializeField] private float _buttonCooldownTime = 0.5f;
+    private float _buttonSelectedCooldown;
     private float _cancelPress=0;
 
     public enum ActionEjecute
@@ -37,6 +38,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        _buttonSelectedCooldown = 0;
         _dict.Add(ActionEjecute.Play, PlayButton);
         _dict.Add(ActionEjecute.Credits, CreditsButton);
         _dict.Add(ActionEjecute.Options, OptionsButton);
@@ -48,7 +50,7 @@ public class MainMenu : MonoBehaviour
             _buttonCooldowns[b] = 0f;
         }
 
-        SelectButton(_defaultButton);
+        //SelectButton(_defaultButton);
     }
 
     /* private void Update()
@@ -85,7 +87,19 @@ public class MainMenu : MonoBehaviour
     private void Update()
     {
         bool moved =Mathf.Abs(Input.GetAxis("Vertical")) > 0.2f ||Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2f ||Input.GetAxis("Mouse ScrollWheel") != 0;
-
+        if (!moved)
+        {
+            _buttonSelectedCooldown += Time.deltaTime;
+            if(_buttonSelectedCooldown>3f)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                _buttonSelectedCooldown = 0;
+            }
+        }
+        else
+        {
+            _buttonSelectedCooldown = 0;
+        }
         if (EventSystem.current.currentSelectedGameObject == null && moved)
         {
             if (_panels.Count > 0)
