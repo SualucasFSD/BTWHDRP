@@ -3,19 +3,18 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_BloodDecal
-  m_Shader: {fileID: -6465566751694194690, guid: 6db042df6a1d7aa448250fc1b044ef7c,
+  m_Name: M_DirtDecal
+  m_Shader: {fileID: -6465566751694194690, guid: a464ef8c454cb3643a701598dd57b45d,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _MATERIAL_AFFECTS_ALBEDO
   - _MATERIAL_AFFECTS_MASKMAP
-  - _MATERIAL_AFFECTS_NORMAL
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -27,8 +26,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Mask:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+    - _Alpha:
+        m_Texture: {fileID: 2800000, guid: 80db73e1e8c75b148842975e50aeef84, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -47,27 +46,26 @@ Material:
     m_Floats:
     - _AffectAlbedo: 1
     - _AffectMetal: 1
-    - _AffectNormal: 1
+    - _AffectNormal: 0
     - _AffectSmoothness: 1
-    - _Clipping: 0
+    - _AlphaIntensity: 0.5
     - _DecalColorMask0: 15
-    - _DecalColorMask1: 15
-    - _DecalColorMask2: 3
-    - _DecalColorMask3: 0
+    - _DecalColorMask1: 0
+    - _DecalColorMask2: 11
+    - _DecalColorMask3: 8
     - _DecalMeshBiasType: 0
     - _DecalMeshDepthBias: 0
     - _DecalMeshViewBias: 0
     - _DecalStencilRef: 16
     - _DecalStencilWriteMask: 16
     - _DrawOrder: 0
-    - _Speed: 0.01
+    - _Metallic: 0
+    - _Smoothness: 0.25
     m_Colors:
-    - _BloodColor: {r: 0.5019608, g: 0.08627451, b: 0.08627451, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _EspecularColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0.18867922, g: 0.082041435, b: 0.00088999845, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4948932524342800633
+--- !u!114 &3737144752973198311
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
