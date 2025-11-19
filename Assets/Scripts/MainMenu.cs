@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviour
     private Dictionary<Button, float> _buttonCooldowns = new Dictionary<Button, float>();
 
     [SerializeField] private float _buttonCooldownTime = 0.5f;
+    private float _buttonSelectedCooldown;
     private float _cancelPress=0;
 
     public enum ActionEjecute
@@ -37,6 +38,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        _buttonSelectedCooldown = 0;
         _dict.Add(ActionEjecute.Play, PlayButton);
         _dict.Add(ActionEjecute.Credits, CreditsButton);
         _dict.Add(ActionEjecute.Options, OptionsButton);
@@ -48,12 +50,57 @@ public class MainMenu : MonoBehaviour
             _buttonCooldowns[b] = 0f;
         }
 
-        SelectButton(_defaultButton);
+        //SelectButton(_defaultButton);
     }
 
+    /* private void Update()
+     {
+         if (EventSystem.current.currentSelectedGameObject == null)
+         {
+             if (_panels.Count > 0)
+             {
+                 GameObject activePanel = _panels.Peek();
+                 Button first = activePanel.GetComponentInChildren<Button>();
+                 if (first != null)
+                     SelectButton(first);
+             }
+             else if (_defaultButton != null)
+             {
+                 SelectButton(_defaultButton);
+             }
+         }
+
+         if (Input.GetButton("Cancel"))
+         {
+             _cancelPress += Time.deltaTime;
+             if (_cancelPress > 0.5f)
+             {
+                 CloseButton();
+                 _cancelPress = 0f;
+             }
+         }
+         else
+         {
+             _cancelPress = 0;
+         }
+     }*/
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject == null)
+        bool moved =Mathf.Abs(Input.GetAxis("Vertical")) > 0.2f ||Mathf.Abs(Input.GetAxis("Horizontal")) > 0.2f ||Input.GetAxis("Mouse ScrollWheel") != 0;
+        if (!moved)
+        {
+            _buttonSelectedCooldown += Time.deltaTime;
+            if(_buttonSelectedCooldown>3f)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+                _buttonSelectedCooldown = 0;
+            }
+        }
+        else
+        {
+            _buttonSelectedCooldown = 0;
+        }
+        if (EventSystem.current.currentSelectedGameObject == null && moved)
         {
             if (_panels.Count > 0)
             {
@@ -67,7 +114,6 @@ public class MainMenu : MonoBehaviour
                 SelectButton(_defaultButton);
             }
         }
-
         if (Input.GetButton("Cancel"))
         {
             _cancelPress += Time.deltaTime;
@@ -82,7 +128,6 @@ public class MainMenu : MonoBehaviour
             _cancelPress = 0;
         }
     }
-
     public void Ejecute(int Index)
     {
         Button sender = EventSystem.current.currentSelectedGameObject?.GetComponent<Button>();
