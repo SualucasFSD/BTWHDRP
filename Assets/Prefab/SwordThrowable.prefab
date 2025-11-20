@@ -51,12 +51,13 @@ MonoBehaviour:
   _speed: 20
   _returnSpeed: 20
   _swordDistance: 5
-  _pushForce: 1000
+  _pushForce: 500
   _rigidbody: {fileID: 1020956831413186960}
-  _dmg: 70
+  _dmg: 30
   _hitLayer:
     serializedVersion: 2
     m_Bits: 148992
+  _tickRate: 0.2
 --- !u!54 &1020956831413186960
 Rigidbody:
   m_ObjectHideFlags: 0

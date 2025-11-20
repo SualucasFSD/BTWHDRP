@@ -35,6 +35,7 @@ public class KnightView : PjView
     private bool _isSwordDepend;
     private Renderer[] _swordRender;
     private SwordThrowableDamage _swordThrowed=null;
+    private Coroutine _swordCoroutine;
     private void Start()
     {
         _swordRender = _swordModel.GetComponentsInChildren<Renderer>();
@@ -105,14 +106,14 @@ public class KnightView : PjView
         _pjModel.IsDodging = false;
         ComboResetGeneral();
         _animator.SetBool("CancelSwordDrop", false);
-        //_animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+        _swordCoroutine = null;
         if (_swordThrowed != null)
         {
             _swordThrowed.Cancel();
             _swordThrowed = null;
         }
-        _pjModel.RotationSpeedMultiplyNoLock = _rotForceOrig;
-        _pjModel.RotationSpeedMultiply = _rotForceOrig;
+        _pjModel.RotationSpeedMultiplyNoLock = 1;
+        _pjModel.RotationSpeedMultiply = 1;
         _animator.CrossFadeInFixedTime("JumpForce", 0.25f, 0, 0f);
 
         _animator.CrossFadeInFixedTime("JumpForce", 0.25f, 1, 0f);
@@ -279,7 +280,7 @@ public class KnightView : PjView
        if(combo.IsSwordDepend)
        {
             _animator.SetBool("CancelSwordDrop", combo.IsSwordDepend);
-            StartCoroutine(MantainHit());
+          _swordCoroutine = StartCoroutine(MantainHit());
        }
     }
 
@@ -385,21 +386,26 @@ public class KnightView : PjView
         _rotForceOrig = _pjModel.RotationSpeedMultiply;
         //_pjModel.RotationSpeedMultiply = 0;
         float i = 0;
-        while (Input.GetButton("StrongAttack")&&i<4/*&&!_pjModel.IsDodging*/)
+        while (Input.GetButton("StrongAttack")&&i<4 &&!_pjModel.IsDodging&&_pjModel.IsGrounded)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             i += 0.1f;
             yield return new WaitForSeconds(0.1f); 
         }
-        _animator.SetBool("CancelSwordDrop", false);
-        _animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
-        if(_swordThrowed!=null)
+        if (!_pjModel.IsDodging||_pjModel.IsGrounded)
         {
-            _swordThrowed.Cancel();
-            _swordThrowed = null;
+            _animator.SetBool("CancelSwordDrop", false);
+
+            _animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+            if (_swordThrowed != null)
+            {
+                _swordThrowed.Cancel();
+                _swordThrowed = null;
+            }
+            _pjModel.RotationSpeedMultiplyNoLock = _rotForceOrig;
+            _pjModel.RotationSpeedMultiply = _rotForceOrig;
         }
-        _pjModel.RotationSpeedMultiplyNoLock = _rotForceOrig;
-        _pjModel.RotationSpeedMultiply = _rotForceOrig;
+        _swordCoroutine = null;
         EjecuteAttack();
     }
     public void ActiveSword()
@@ -411,6 +417,12 @@ public class KnightView : PjView
     }
     public void SpawnSword()
     {
+        if( _swordCoroutine == null )
+        { 
+            ActiveSword();
+            return;
+        }
+
         if (_swordThrowable != null)
         {
            _swordThrowed= Instantiate(_swordThrowable, _swordModel.transform.position, transform.rotation).GetComponent<SwordThrowableDamage>();
@@ -491,14 +503,14 @@ public class KnightView : PjView
             _pjModel._delayGrav = 0;
         }
         _animator.SetBool("CancelSwordDrop", false);
-        //_animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+        _swordCoroutine = null;
         if (_swordThrowed != null)
         {
             _swordThrowed.Cancel();
             _swordThrowed = null;
         }
-        _pjModel.RotationSpeedMultiplyNoLock = _rotForceOrig;
-        _pjModel.RotationSpeedMultiply = _rotForceOrig;
+        _pjModel.RotationSpeedMultiplyNoLock = 1;
+        _pjModel.RotationSpeedMultiply = 1;
         _animator.CrossFadeInFixedTime("DashTree", 0.25f, 0, 0f);
 
         _animator.CrossFadeInFixedTime("DashTree", 0.25f, 1, 0f);

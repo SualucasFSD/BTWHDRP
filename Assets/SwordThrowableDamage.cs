@@ -118,7 +118,7 @@ public class SwordThrowableDamage : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _dmg = 70;
     [SerializeField] private LayerMask _hitLayer;
-
+    [SerializeField] private float _tickRate;
     private GameObject _tg;
     private KnightView _view;
 
@@ -152,14 +152,16 @@ public class SwordThrowableDamage : MonoBehaviour
 
         if (_moveIti > 0.2f) _canMove = false;
 
-        if (_iti > 0.5f)
+        if (_iti > _tickRate)
         {
             _iti = 0;
             CauseDamage();
         }
 
         if (_duration <= 0)
+        {
             _returning = true;
+        }
 
         if (_returning && _tg != null)
         {
