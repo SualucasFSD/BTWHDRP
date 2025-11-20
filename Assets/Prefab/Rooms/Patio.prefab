@@ -175,7 +175,7 @@ Transform:
   m_GameObject: {fileID: 93925681627417404}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2427.8066, y: 804.35876, z: 2439.6218}
+  m_LocalPosition: {x: -2427.8076, y: 804.35876, z: 2439.6484}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -776,7 +776,7 @@ Transform:
   m_GameObject: {fileID: 1191337358666225005}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -623.1326, y: 721.4169, z: 351.9539}
+  m_LocalPosition: {x: -623.1323, y: 721.4169, z: 351.95312}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1676,7 +1676,7 @@ Transform:
   m_GameObject: {fileID: 2023480538159925237}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 438.88022, y: 788.86053, z: 4303.095}
+  m_LocalPosition: {x: 438.8794, y: 788.86053, z: 4303.125}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2585,7 +2585,7 @@ Transform:
   m_GameObject: {fileID: 3770824116687659454}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2025.7646, y: 898.34186, z: 2420.803}
+  m_LocalPosition: {x: 2025.763, y: 898.34186, z: 2420.8008}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3510,6 +3510,65 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
+  m_Father: {fileID: 1407977303939456349}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4386837349266793397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 244223505999404519}
+  m_Layer: 12
+  m_Name: Lights
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &244223505999404519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4386837349266793397}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2605284125041420201}
+  - {fileID: 5339035483256791000}
+  - {fileID: 1789478660138785409}
+  - {fileID: 6677401509999266150}
+  - {fileID: 8779776054484980509}
+  - {fileID: 1031829852915008712}
+  - {fileID: 2039760100495890525}
+  - {fileID: 7055102450859793549}
+  - {fileID: 7752727659673022513}
+  - {fileID: 2861397294789129529}
+  - {fileID: 5426938091002161301}
+  - {fileID: 994080082745188361}
+  - {fileID: 8268751687274577573}
+  - {fileID: 1994105043583837648}
+  - {fileID: 263262650976815850}
+  - {fileID: 1209487782436697076}
+  - {fileID: 8523117139341160347}
+  - {fileID: 8597255562236727450}
+  - {fileID: 4534298185251413553}
+  - {fileID: 1559797504785990717}
+  - {fileID: 3567451614542807012}
+  - {fileID: 9212254481410752538}
+  - {fileID: 6287519741363378298}
+  - {fileID: 8507885054220416123}
+  - {fileID: 5208595871838048356}
+  - {fileID: 5614494555577871523}
+  - {fileID: 8000511883026733973}
+  - {fileID: 3556823758717403820}
   m_Father: {fileID: 1407977303939456349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5304080657744634677
@@ -4699,6 +4758,7 @@ GameObject:
   - component: {fileID: 1407977303939456349}
   - component: {fileID: 7765312220004777451}
   - component: {fileID: 3961977223218250724}
+  - component: {fileID: 1308919163174444666}
   m_Layer: 12
   m_Name: Patio
   m_TagString: Untagged
@@ -4815,40 +4875,13 @@ Transform:
   - {fileID: 3422396240709518546}
   - {fileID: 4128045220680064623}
   - {fileID: 7453362034587279022}
-  - {fileID: 2605284125041420201}
-  - {fileID: 5339035483256791000}
-  - {fileID: 1789478660138785409}
-  - {fileID: 6677401509999266150}
-  - {fileID: 8779776054484980509}
-  - {fileID: 1031829852915008712}
-  - {fileID: 2039760100495890525}
-  - {fileID: 7055102450859793549}
-  - {fileID: 7752727659673022513}
-  - {fileID: 2861397294789129529}
-  - {fileID: 5426938091002161301}
-  - {fileID: 994080082745188361}
-  - {fileID: 8268751687274577573}
-  - {fileID: 1994105043583837648}
-  - {fileID: 263262650976815850}
-  - {fileID: 1209487782436697076}
-  - {fileID: 8523117139341160347}
-  - {fileID: 8597255562236727450}
-  - {fileID: 4534298185251413553}
-  - {fileID: 1559797504785990717}
-  - {fileID: 3567451614542807012}
-  - {fileID: 9212254481410752538}
-  - {fileID: 6287519741363378298}
-  - {fileID: 8507885054220416123}
-  - {fileID: 5208595871838048356}
-  - {fileID: 5614494555577871523}
-  - {fileID: 8000511883026733973}
-  - {fileID: 3556823758717403820}
   - {fileID: 2147352339656617302}
   - {fileID: 2716655290926395840}
   - {fileID: 4499581584886631395}
   - {fileID: 7626243264922059922}
   - {fileID: 3493321790889596576}
   - {fileID: 1869827850117604632}
+  - {fileID: 244223505999404519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7765312220004777451
@@ -4874,7 +4907,7 @@ MonoBehaviour:
   - {fileID: 3758712415286881690}
   _pathNodesList: []
   _neighbords: []
-  _lights: {fileID: 0}
+  _lights: {fileID: 4386837349266793397}
   _enemies: []
   _finalBox: {fileID: 7349678459719921018, guid: 4eabdb3dd5b2db64090a67be723b4445,
     type: 3}
@@ -4900,6 +4933,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4954.3457, y: 393.74356, z: 2505.1377}
   m_Center: {x: -212.45079, y: 150.95512, z: 1347.1787}
+--- !u!114 &1308919163174444666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7077171652149376914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84a8c0b87a9d25f409a9fe2177fc9294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  terrain: {fileID: 8603204408026301138}
+  _offset: {x: -17.5, y: 0, z: 2}
 --- !u!1 &7088071512829724264
 GameObject:
   m_ObjectHideFlags: 0
@@ -14039,7 +14086,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -14110,6 +14157,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19072,7 +19124,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -19143,6 +19195,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19894,7 +19951,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -19989,7 +20046,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 339.2
+      value: 339.19983
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -20030,6 +20087,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -20246,7 +20308,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -20382,6 +20444,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (19)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -27281,7 +27348,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -27352,6 +27419,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -29035,7 +29107,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -29120,7 +29192,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -182.8
+      value: -182.79996
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -29130,7 +29202,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 712.7
+      value: 712.6999
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -29171,6 +29243,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41733,7 +41810,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -41828,7 +41905,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3397.6
+      value: 3397.5999
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -41869,6 +41946,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (17)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -51276,7 +51358,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -51348,6 +51430,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Candle (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -51365,7 +51452,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -51501,6 +51588,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -53352,7 +53444,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -53488,6 +53580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (20)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -54913,7 +55010,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -55049,6 +55146,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -58605,7 +58707,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -58742,6 +58844,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: pruebalampara (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -58759,7 +58866,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -58830,6 +58937,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -64800,7 +64912,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -64885,7 +64997,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 136
+      value: 136.00002
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -64895,7 +65007,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 712.7
+      value: 712.6999
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -64936,6 +65048,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -65998,7 +66115,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -66069,6 +66186,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73584,7 +73706,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -73720,6 +73842,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (11)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -76150,7 +76277,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -76235,7 +76362,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2512.9802
+      value: 2512.98
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -76286,6 +76413,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -76929,7 +77061,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -77019,12 +77151,12 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 715
+      value: 714.99994
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 297
+      value: 297.00012
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -77065,6 +77197,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -83632,7 +83769,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -83717,7 +83854,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 148.4802
+      value: 148.48018
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -83768,6 +83905,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6273304926817569723, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -86632,7 +86774,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -86722,7 +86864,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 783
+      value: 783.00006
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -86768,6 +86910,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -90918,7 +91065,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -91013,7 +91160,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1473
+      value: 1472.9995
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -91054,6 +91201,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -95151,7 +95303,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -95246,7 +95398,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 339.2
+      value: 339.19983
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -95287,6 +95439,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -97821,7 +97978,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -97906,7 +98063,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2512.9802
+      value: 2512.98
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -97957,6 +98114,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -98352,7 +98514,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -98442,12 +98604,12 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 686
+      value: 685.99994
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 426
+      value: 425.99982
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -98488,6 +98650,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -102782,7 +102949,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -102918,6 +103085,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (18)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6559897262583382404, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -116494,7 +116666,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -116565,6 +116737,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -117019,7 +117196,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 4666656339979539820, guid: 58015099532cef54f8046e696736d34a,
         type: 3}
@@ -117090,6 +117267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Candle (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442771242987704278, guid: 58015099532cef54f8046e696736d34a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -126399,7 +126581,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1407977303939456349}
+    m_TransformParent: {fileID: 244223505999404519}
     m_Modifications:
     - target: {fileID: 364957177148316519, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -126484,7 +126666,7 @@ PrefabInstance:
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -179.41983
+      value: -179.41985
       objectReference: {fileID: 0}
     - target: {fileID: 4932933348500699411, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}
@@ -126535,6 +126717,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: pruebalampara (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6006407093282214943, guid: 9f84fc47b20fc5742881203fd1384fd2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6273304926817569723, guid: 9f84fc47b20fc5742881203fd1384fd2,
         type: 3}

@@ -120,12 +120,11 @@ public class OnPlayCanvas : MonoBehaviour
         CancelInput();
         HandleMenuNavigation();
     }
+
     private void PauseInput()
     {
         if (Input.GetButtonDown("Pause"))
-        {
             TogglePauseMenu();
-        }
     }
 
     private void TogglePauseMenu()
@@ -145,14 +144,12 @@ public class OnPlayCanvas : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-
             Open(PauseMenu);
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
             _panels.Clear();
             PauseMenu.SetActive(false);
         }
@@ -180,19 +177,18 @@ public class OnPlayCanvas : MonoBehaviour
 
     public void Open(GameObject panel)
     {
-        if (panel == null)
+        if (panel == null) return;
+
+        if (_panels.Count > 0)
         {
-            Debug.LogWarning("Panel no asignado");
-            return;
+            GameObject active = _panels.Peek();
+            active.SetActive(false);
         }
 
-        if (!_panels.Contains(panel))
-        {
-            _panels.Push(panel);
-            panel.SetActive(true);
+        _panels.Push(panel);
+        panel.SetActive(true);
 
-            EventSystem.current.SetSelectedGameObject(null);
-        }
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void Close()
@@ -204,13 +200,22 @@ public class OnPlayCanvas : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(null);
 
-        if (_panels.Count == 0)
+        if (_panels.Count > 0)
         {
-            GameManager.Instance.IsPaused = false;
-            EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            GameObject previous = _panels.Peek();
+            previous.SetActive(true);
+
+            Button first = previous.GetComponentInChildren<Button>();
+            if (first != null)
+                SelectButton(first);
+
+            return;
         }
+
+        GameManager.Instance.IsPaused = false;
+        EventManager.Ejecute(EventManager.KindOfEvent.PauseGame);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void HandleMenuNavigation()
@@ -289,3 +294,4 @@ public class OnPlayCanvas : MonoBehaviour
         EventManager.Unscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
     }
 }
+

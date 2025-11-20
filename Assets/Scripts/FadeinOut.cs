@@ -13,17 +13,11 @@ public class FadeinOut : MonoBehaviour
         StartCoroutine(FadeOut());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator FadeOut()
     {
         if (_myBlack == null)
             yield break;
-
+        _myBlack.gameObject.SetActive(true);
         var elapsed = 0f; 
 
         while (elapsed <= _fadeTime)
@@ -42,7 +36,7 @@ public class FadeinOut : MonoBehaviour
 
         if (_myBlack == null)
             yield break;
-
+        _myBlack.gameObject.SetActive(true);
         var elapsed = 0f;
 
         while (elapsed <= _fadeTime)
@@ -66,4 +60,5 @@ public class FadeinOut : MonoBehaviour
         if (other.tag == "Fade")
             StartFadeIn();
     }
+
 }

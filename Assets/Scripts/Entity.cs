@@ -11,15 +11,15 @@ public class Entity : MonoBehaviour
     public float _visionTimer = 0f;
     public float _visionThreshold = 1f;
     public bool IsGrounded;
-    public bool UseGravity=true;
+    public bool UseGravity = true;
     public float GravValue = 0;
     public LayerMask GroundLayer;
     protected RaycastHit _groundDetect;
     public float GroundDistanceDetector;
     public Transform Tg;
     public MazeCell Cell;
-    public bool Ready=true;
-    public bool Stuned=false;
+    public bool Ready = true;
+    public bool Stuned = false;
     private GameObject _venomEffect;
     private GameObject _thunderEffect;
     private GameObject _thunderImpact;
@@ -31,7 +31,7 @@ public class Entity : MonoBehaviour
         Enemy
     }
     public KindOfEntity Kind;
-    public List<Entity> Targets=new List<Entity>();
+    public List<Entity> Targets = new List<Entity>();
     public List<PathNode> TakePath(Transform pos, LayerMask nodesLayer, int maxTries = 5)
     {
 
@@ -71,7 +71,7 @@ public class Entity : MonoBehaviour
         return new List<PathNode>();
     }
 
-    public void Detection(EnemyStats stats,Transform pos, Action CombatState)
+    public void Detection(EnemyStats stats, Transform pos, Action CombatState)
     {
 
         Transform potentialTarget = null;
@@ -140,12 +140,12 @@ public class Entity : MonoBehaviour
 
     public void IsGroundedDetector()
     {
-       Physics.Raycast(origin: transform.position,direction:-Vector3.up, layerMask: GroundLayer, maxDistance: 10, hitInfo: out _groundDetect);
-        if(_groundDetect.collider!=null)
+        Physics.Raycast(origin: transform.position, direction: -Vector3.up, layerMask: GroundLayer, maxDistance: 10, hitInfo: out _groundDetect);
+        if (_groundDetect.collider != null)
         {
-            if(Vector3.Distance(transform.position,_groundDetect.point)<GroundDistanceDetector)
+            if (Vector3.Distance(transform.position, _groundDetect.point) < GroundDistanceDetector)
             {
-                IsGrounded=true;
+                IsGrounded = true;
             }
             else
             {
@@ -171,11 +171,11 @@ public class Entity : MonoBehaviour
     }
     public virtual void PauseForMoment(float time)
     {
-        if(!IsGrounded||Life<=0)
+        if (!IsGrounded || Life <= 0)
         {
             return;
         }
-        _thunderImpact= GameObjectFactory.Instance.GetObj(GenericObjectType.LighningImpact, transform.position+Vector3.up*2, transform.rotation);
+        _thunderImpact = GameObjectFactory.Instance.GetObj(GenericObjectType.LighningImpact, transform.position + Vector3.up * 2, transform.rotation);
         _thunderImpact.transform.parent = transform;
         if (_thunderImpact.TryGetComponent<ParticleSystem>(out var Component1))
         {
@@ -188,12 +188,12 @@ public class Entity : MonoBehaviour
             Component.Play();
         }
         Ready = false;
-        _stopRoutine=StartCoroutine(Stop(time));
+        _stopRoutine = StartCoroutine(Stop(time));
     }
     IEnumerator Stop(float time)
     {
         float i = 0;
-        while(i<time)
+        while (i < time)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
             i += 0.1f;
@@ -223,7 +223,7 @@ public class Entity : MonoBehaviour
     }
     public void FinishElectricPause()
     {
-        if(_stopRoutine!=null)
+        if (_stopRoutine != null)
         {
             StopCoroutine(_stopRoutine);
         }
@@ -254,16 +254,16 @@ public class Entity : MonoBehaviour
         {
             return;
         }
-        if (GameObjectFactory.Instance!=null)
+        if (GameObjectFactory.Instance != null)
         {
-            _venomEffect= GameObjectFactory.Instance.GetObj(GenericObjectType.PoisonEffect,transform.position,transform.rotation);
+            _venomEffect = GameObjectFactory.Instance.GetObj(GenericObjectType.PoisonEffect, transform.position, transform.rotation);
             _venomEffect.transform.parent = transform;
-            if(_venomEffect.TryGetComponent<ParticleSystem>(out var Component))
+            if (_venomEffect.TryGetComponent<ParticleSystem>(out var Component))
             {
                 Component.Play();
             }
         }
-        EventManager.Ejecute(EventManager.KindOfEvent.GetVenemous, this,poisonDuration,tickRate,damagePerTick);
+        EventManager.Ejecute(EventManager.KindOfEvent.GetVenemous, this, poisonDuration, tickRate, damagePerTick);
     }
     public virtual void PopVenemous()
     {

@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public int RoomsAvailable;
     public float DificultLevel = 0;
     public List<Transform> EnemySeparation = new List<Transform>();
+    [SerializeField] private GameObject[] _initializers;
     [Header("IA Config")]
     [Range(0.1f, 1f)] public float SeparationPriority=1;
     [Range(0.1f, 1f)] public float ArrivePriotity=0.8f;
@@ -81,6 +82,15 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        
+        foreach(GameObject i in _initializers)
+        {
+            if(i.TryGetComponent<Iinitializers>(out var confi))
+            {
+                confi.Initialize();
+            }
+            
+        }
         StartCoroutine(PatNodeInitialize());
     }
     public bool FieldOfView(GameObject Caster, GameObject Target, float AreaOfVision, float Distance, float rad)
