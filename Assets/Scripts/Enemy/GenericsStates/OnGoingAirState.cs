@@ -10,7 +10,7 @@ public class OnGoingAirState : IState
     float _maxTimer;
     Action _onAirState;
     private float _targetY;
-    public OnGoingAirState(Entity Ent,Action OnAirState,float Distance,float CeilingOffset, Rigidbody Rb)
+    public OnGoingAirState(Entity Ent, Action OnAirState, float Distance, float CeilingOffset, Rigidbody Rb)
     {
         _ent = Ent;
         _rb = Rb;

@@ -8,6 +8,7 @@ public class ToTheGroundState : IState
     float _force;
     EnemyCatalogue _kind;
     Action _combatMode;
+    private float _iti = 0;
     public ToTheGroundState(Entity Ent,Rigidbody Rb,float Force,EnemyCatalogue Kind,Action CombatMode)
     {
         _ent = Ent;
@@ -18,6 +19,7 @@ public class ToTheGroundState : IState
     }
     public void OnEnter()
     {
+        _iti = 0;
         _ent.Stuned = true;
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         _ent.GravValue = GameManager.Instance.EnemyConfiguration[_kind].GravityForce;
@@ -38,11 +40,15 @@ public class ToTheGroundState : IState
 
     public void OnUpdate()
     {
+        _iti += Time.deltaTime;
         if (_ent.IsGrounded)
         {
             if (!_ent.Stuned)
             {
-               _combatMode();
+                if (_iti > 1.5f)
+                {
+                    _combatMode();
+                }
             }
         }
     }

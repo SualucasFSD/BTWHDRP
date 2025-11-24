@@ -213,6 +213,7 @@ public class Pause : MonoBehaviour
     private Dictionary<GameObject, Coroutine> pausedObjects = new Dictionary<GameObject, Coroutine>();
     private Dictionary<GameObject, float> remainingTimes = new Dictionary<GameObject, float>();
 
+    //private Entity _pjEntity;
     private void Awake()
     {
         instance = this;
@@ -258,8 +259,10 @@ public class Pause : MonoBehaviour
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>(true))
         {
             if (!rb.gameObject.activeInHierarchy || pausedRBs.ContainsKey(rb))
+            {
                 continue;
-
+            }
+            if (rb.CompareTag("Weapon")) { continue; }
             RigidbodyState state = new RigidbodyState
             {
                 //velocity = rb.velocity,
@@ -292,7 +295,7 @@ public class Pause : MonoBehaviour
         foreach (var rb in new List<Rigidbody>(pausedRBs.Keys))
         {
             if (rb == null) continue;
-
+            if (rb.CompareTag("Weapon")) { continue; }
             var s = pausedRBs[rb];
             rb.isKinematic = s.isKinematic;
             rb.useGravity = s.useGravity;
@@ -351,6 +354,7 @@ public class Pause : MonoBehaviour
         {
             if (!rb.isKinematic)
             {
+                if (rb.CompareTag("Weapon")) {continue;}
                 rbs.Add(rb);
                 states.Add(new RigidbodyState
                 {
@@ -413,11 +417,17 @@ public class Pause : MonoBehaviour
                 anim.speed = 1;
 
             foreach (var rb in t.GetComponentsInChildren<Rigidbody>(true))
+            {
+                if (rb.CompareTag("Weapon")) { continue; }
                 rb.isKinematic = false;
+            }
         }
     }
     #endregion
+   /* IEnumerator PjStunt(float Duration)
+    {
 
+    }*/
     private void OnDestroy()
     {
         EventManager.Unscribe(EventManager.KindOfEvent.PauseGame, PauseApp);

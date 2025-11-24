@@ -24,6 +24,7 @@ public class Entity : MonoBehaviour
     private GameObject _thunderEffect;
     private GameObject _thunderImpact;
     protected Coroutine _stopRoutine;
+    public bool IsRayStunable=true;
     //private float _pauseTime=0;
     public enum KindOfEntity
     {

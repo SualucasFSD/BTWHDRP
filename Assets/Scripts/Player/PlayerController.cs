@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        if(!_model.Ready)
+        {
+            return;
+        }
         _jumpTime += Time.fixedDeltaTime;
         _dodgeTime += Time.fixedDeltaTime;
         if (_model.ManualMovement)

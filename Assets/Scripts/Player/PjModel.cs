@@ -98,7 +98,12 @@ public class PjModel : Entity, Idamageable
     }
     private void Update()
     {
+        EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position, Dir);
         if (GameManager.Instance.IsPaused)
+        {
+            return;
+        }
+        if(!Ready)
         {
             return;
         }
@@ -127,7 +132,7 @@ public class PjModel : Entity, Idamageable
         _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
         //if (_limitZone) { Debug.LogWarning("LimitZone"); }
         EjecutePower();
-        EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position, Dir);
+        //EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position, Dir);
     }
     private void FixedUpdate()
     {
@@ -157,6 +162,10 @@ public class PjModel : Entity, Idamageable
                 _actualJumps = 0;
                 _jumpTimerReset = 0;
             }
+        }
+        if (!Ready)
+        {
+            return;
         }
         RotateTowardsDir();
         if (IsGrounded && Dir == Vector3.zero && _rb.linearVelocity.magnitude < 0.1f)
