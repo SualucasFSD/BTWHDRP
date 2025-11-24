@@ -5,9 +5,6 @@
     "m_Properties": [
         {
             "m_Id": "dc0d8e5047324a33bd73d23783c43724"
-        },
-        {
-            "m_Id": "dda9b6bf4ec1495ba6805bf8a115d5bc"
         }
     ],
     "m_Keywords": [],
@@ -40,9 +37,6 @@
             "m_Id": "fa89b935a7954112860e534d15c57f0a"
         },
         {
-            "m_Id": "d9ab2f609fb8449da00c02d3d137d5c6"
-        },
-        {
             "m_Id": "e4efab5c4040437cb83a148d2b69a0da"
         },
         {
@@ -52,20 +46,6 @@
     "m_GroupDatas": [],
     "m_StickyNoteDatas": [],
     "m_Edges": [
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "d9ab2f609fb8449da00c02d3d137d5c6"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "e4efab5c4040437cb83a148d2b69a0da"
-                },
-                "m_SlotId": 0
-            }
-        },
         {
             "m_OutputSlot": {
                 "m_Node": {
@@ -204,9 +184,6 @@
     "m_ChildObjectList": [
         {
             "m_Id": "dc0d8e5047324a33bd73d23783c43724"
-        },
-        {
-            "m_Id": "dda9b6bf4ec1495ba6805bf8a115d5bc"
         }
     ]
 }
@@ -376,7 +353,7 @@
     "m_TransparentDepthPrepass": false,
     "m_TransparentDepthPostpass": false,
     "m_SupportLodCrossFade": false,
-    "m_DoubleSidedMode": 0,
+    "m_DoubleSidedMode": 1,
     "m_DOTSInstancing": false,
     "m_CustomVelocity": false,
     "m_Tessellation": false,
@@ -505,21 +482,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "8e35719402e5445abdd1bfab0db01bed",
-    "m_Id": 0,
-    "m_DisplayName": "Clip",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.Rendering.HighDefinition.ShaderGraph.HDUnlitData",
     "m_ObjectId": "aaf40fa9623e46d4ad5142a4c7849328",
     "m_EnableShadowMatte": false,
@@ -611,42 +573,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
-    "m_ObjectId": "d9ab2f609fb8449da00c02d3d137d5c6",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "Property",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -208.0,
-            "y": 568.0,
-            "width": 95.0,
-            "height": 34.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "8e35719402e5445abdd1bfab0db01bed"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Property": {
-        "m_Id": "dda9b6bf4ec1495ba6805bf8a115d5bc"
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "da6947cc858e46d8bcf34f99e4dd03e2",
     "m_Id": 0,
@@ -690,46 +616,6 @@
     },
     "isMainColor": false,
     "m_ColorMode": 1
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "dda9b6bf4ec1495ba6805bf8a115d5bc",
-    "m_Guid": {
-        "m_GuidSerialized": "09699a7b-ab21-47e5-b1bc-bd513cf33fb4"
-    },
-    "m_Name": "Clip",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Clip",
-    "m_DefaultReferenceName": "_Clip",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_PerRendererData": false,
-    "m_customAttributes": [],
-    "m_Value": 1.0,
-    "m_FloatType": 1,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    },
-    "m_SliderType": 0,
-    "m_SliderPower": 3.0,
-    "m_EnumType": 0,
-    "m_CSharpEnumString": "",
-    "m_EnumNames": [
-        "Default"
-    ],
-    "m_EnumValues": [
-        0
-    ]
 }
 
 {
@@ -857,10 +743,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -279.0,
-            "y": 211.00001525878907,
+            "x": -247.0,
+            "y": 221.00001525878907,
             "width": 105.0,
-            "height": 34.0
+            "height": 34.00001525878906
         }
     },
     "m_Slots": [
