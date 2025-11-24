@@ -5,6 +5,7 @@ using UnityEngine;
 public class GenericDestroyable : MonoBehaviour, Idamageable
 {
     [SerializeField] private MeshRenderer[] _mesh;
+    [SerializeField] private MeshRenderer _fakeMesh;
     [SerializeField] private float _maxLife = 100f;
     [SerializeField] private ParticleSystem _damageEffect;
     [SerializeField] private bool _isDestroyable;
@@ -61,6 +62,9 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
         {
             return;
         }
+
+        if(_fakeMesh != null && _fakeMesh.enabled == true)
+            _fakeMesh.enabled = false;
 
         int targetStateIndex = Mathf.FloorToInt((1 - _life / _maxLife) * _mesh.Length);
 
