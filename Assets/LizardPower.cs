@@ -48,6 +48,14 @@ public class LizardPower : MonoBehaviour, IPjPower
             {
                 continue;
             }
+            if(!entity.IsRayStunable)
+            {
+                continue;
+            }
+            if(!entity.IsGrounded)
+            {
+                continue;
+            }
             EventManager.Ejecute(EventManager.KindOfEvent.PauseOneEnemy, col.gameObject,_pauseDuration);
         }
         //print("Lizard");

@@ -8,7 +8,8 @@ public enum EnemyCatalogue
     Mague,
     SavageDog,
     Lizard,
-    VenomLancer
+    VenomLancer,
+    DemonBoss
 }
 public enum PjPower
 {

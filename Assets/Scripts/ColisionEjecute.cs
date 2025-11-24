@@ -30,6 +30,10 @@ public class ColisionEjecute : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if(GameManager.Instance.IsPaused)
+        {
+            return;
+        }
         if (_boolValue)
         {
             _timer += Time.deltaTime;
