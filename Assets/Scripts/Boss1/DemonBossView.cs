@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class DemonBossView : MonoBehaviour
@@ -24,6 +25,11 @@ public class DemonBossView : MonoBehaviour
         _model.OnMove += OnMove;
         _model.Idle += Idle;
         _model.ChargeRay += RayShoot;
+        _model.OnMaxHeight += MaxHeight;
+        _model.FallExplo += FallExp;
+        _model.Jump += Jump;
+        _model.JumpPrepare += JumpPrepare;
+        _model.FuriousWalk += PunchingWalk;
     }
     //_animator.CrossFadeInFixedTime("JumpForce", 0.25f, 0, 0f);
     private void OnMove(Vector3 dir)
@@ -59,10 +65,32 @@ public class DemonBossView : MonoBehaviour
     {
         _animator.CrossFadeInFixedTime("Idle"+i, 0.25f, 0, 0f);
     }
+    private void Jump()
+    {
+        _animator.CrossFadeInFixedTime("ImpulseJump", 0.25f, 0, 0f);
+    }
+    private void JumpPrepare()
+    {
+        _animator.CrossFadeInFixedTime("PrepareJump", 0.25f, 0, 0f);
+    }
+    private void FallExp()
+    {
+        _animator.CrossFadeInFixedTime("HitGround", 0.25f, 0, 0f);
+    }
+    private void MaxHeight()
+    {
+        _animator.CrossFadeInFixedTime("OnAir", 0.25f, 0, 0f);
+    }
+    private void PunchingWalk(bool p)
+    {
+        _animator.SetBool("PunchWalk", p);
+    }
+
     public void SpareThrow()
     {
         _model.SpereActive();
     }
+
     private void OnAnimatorMove()
     {
         transform.parent.position += _animator.deltaPosition;

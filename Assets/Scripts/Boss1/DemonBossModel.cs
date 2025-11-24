@@ -943,7 +943,12 @@ public class DemonBossModel : Entity, Idamageable
     public event Action OnAirHit = delegate { };
     public event Action OnHitStunt = delegate { };
     public event Action OnAttackClose=delegate { };
-
+    public event Action OnMaxHeight=delegate { };
+    public event Action Jump=delegate { };
+    public event Action JumpPrepare=delegate { };
+    public event Action FallExplo=delegate { };
+    public event Action PrepareExplosion=delegate { };
+    public event Action<bool> FuriousWalk=delegate { };
     private void Awake()
     {
         IsRayStunable = false;
@@ -1103,13 +1108,18 @@ public class DemonBossModel : Entity, Idamageable
     public void StartCloseAttackCombo()
     {
         if (_isDoingCloseCombo || Stuned)
+        {
             return;
+        }
+        Idle(2);
+        FuriousWalk(true);
         ResetBossState();
         StartCoroutine(CloseAttackCombo());
     }
 
     private IEnumerator CloseAttackCombo()
     {
+        yield return new WaitForSeconds(1.2f);
         _isDoingCloseCombo = true;
         _moveActivate = true;
         _rotationActivate = true;
@@ -1137,6 +1147,7 @@ public class DemonBossModel : Entity, Idamageable
 
             if (_rotationActivate)
             {
+                OnMove(Vector3.forward);
                 RotateToTarget(_tgPos);
             }
 
@@ -1144,9 +1155,8 @@ public class DemonBossModel : Entity, Idamageable
             {
                 StopMove();
                 StopRotate();
-
+                OnMove(Vector3.zero);
                 OnAttackClose();
-                print("Punches");
 
                 float wait = 0f;
                 while (wait < 4f)
@@ -1211,8 +1221,9 @@ public class DemonBossModel : Entity, Idamageable
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
             if (!_isShieldCharge || Stuned)
+            {
                 yield break;
-
+            }
             Vector3 current = transform.position;
             Vector3 toTarget = target - current;
 
@@ -1220,16 +1231,14 @@ public class DemonBossModel : Entity, Idamageable
             {
                 _rb.MovePosition(target);
                 _rb.angularVelocity = Vector3.zero;
+
+                DashFin();
                 yield break;
             }
 
             RotateToTarget(_tgNoPredict.transform.position);
 
-            Vector3 next = Vector3.MoveTowards(
-                current,
-                target,
-                dashSpeed * Time.deltaTime
-            );
+            Vector3 next = Vector3.MoveTowards(current,target,dashSpeed * Time.deltaTime);
 
             _rb.MovePosition(next);
         }
@@ -1374,8 +1383,9 @@ public class DemonBossModel : Entity, Idamageable
     public void StartExplosionCombo()
     {
         if (_isPerformingExplosion)
+        {
             return;
-
+        }
         ResetBossState();
         StartCoroutine(ExplosionComboRoutine());
     }
@@ -1385,8 +1395,14 @@ public class DemonBossModel : Entity, Idamageable
         _isPerformingExplosion = true;
         _moveActivate = false;
         _rotationActivate = false;
+        JumpPrepare();
+        //FaceCenter();
 
-        FaceCenter();
+        while (!IsFacingCenter())
+        {
+            FaceCenter();
+            yield return null;
+        }
 
         yield return StartCoroutine(JumpToCenterRoutine());
 
@@ -1419,20 +1435,33 @@ public class DemonBossModel : Entity, Idamageable
 
         AreaDamage();
         DestroyRocks(spawnedRocks);
-
+        Idle(2);
         _isPerformingExplosion = false;
         //_moveActivate = true;
         //_rotationActivate = true;
     }
+    private bool IsFacingCenter(float toleranceDegrees = 5f)
+    {
+        Vector3 dir = _centerPoint.position - transform.position;
+        dir.y = 0;
 
+        if (dir.sqrMagnitude < 0.1f)
+            return true;
+
+        Quaternion target = Quaternion.LookRotation(dir.normalized);
+        float angle = Quaternion.Angle(transform.rotation, target);
+
+        return angle < toleranceDegrees;
+    }
     private void FaceCenter()
     {
         Vector3 dir = _centerPoint.position - transform.position;
         dir.y = 0;
+
         if (dir.sqrMagnitude > 0.1f)
         {
             Quaternion target = Quaternion.LookRotation(dir.normalized);
-            transform.rotation = target;
+            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * _rotationForce);
         }
     }
 
@@ -1451,7 +1480,7 @@ public class DemonBossModel : Entity, Idamageable
         UseGravity = false;
         IsGrounded = false;
         gameObject.layer = 18;
-
+        Jump();
         while (_rb.position.y < peakHeight)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
@@ -1464,10 +1493,10 @@ public class DemonBossModel : Entity, Idamageable
 
             _rb.MovePosition(_rb.position + finalDir * ascendSpeed * Time.deltaTime);
         }
-
-        yield return new WaitForSeconds(0.25f);
+        OnMaxHeight();
+        yield return new WaitForSeconds(0.5f);
         //MaxHeigh();
-
+        FallExplo();
         Vector3 fallTarget = new Vector3(targetPos.x, startPos.y, targetPos.z);
 
         while (_rb.position.y > fallTarget.y)
@@ -1602,9 +1631,10 @@ public class DemonBossModel : Entity, Idamageable
         {
             yield return ChargeAndShootRay(i);
         }
-
+        _shootRay = false;
         _isPerformingMultiRayCombo = false;
         Idle(1);
+        OnMove(Vector3.zero);
         //_moveActivate = true;
         //_rotationActivate = true;
     }
@@ -1681,23 +1711,14 @@ public class DemonBossModel : Entity, Idamageable
     }
     private IEnumerator ChargeAndShootRay(int index)
     {
-        ChargeRay(index);
+        ChargeRay(index + 1);
 
         Transform throwPoint = _rayThrowPoints[index];
+        throwPoint.GetComponent<RayMatCharge>().Active();
 
-        RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
-
-        _spawnedRays.Add(ray);
-
-        ray.Active();
-
-        float timer = 0f;
-
-        while (timer < 1f)
+        while (!_shootRay)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-
-            timer += Time.deltaTime;
 
             Vector3 dir = (_tgPos - transform.position);
             dir.y = 0f;
@@ -1705,9 +1726,19 @@ public class DemonBossModel : Entity, Idamageable
             RotateTowardsDuringMultiRay(dir);
         }
 
+        throwPoint.GetComponent<RayMatCharge>().Reinicio();
+
+        ShootRay(index + 1);
+
+        RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
+
+        _spawnedRays.Add(ray);
+
         _activatedRays.Add(ray);
-        ShootRay(index);
-        ray.GetTg(_tgPos);
+
+        ray.GetTg(_tgNoPredict.transform.position);
+
+        _shootRay = false;
 
         while (ray != null)
         {
@@ -1888,25 +1919,26 @@ public class DemonBossModel : Entity, Idamageable
                 RotateToTarget(dir);
 
                 float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
-                if (angle < 5f) break;
+                if (angle < 15f) break;
             }
 
             _waitingToShootRay = false;
 
-            RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, transform.rotation).GetComponent<RayShoot>();
-            //RayShoot spawnedRay = Instantiate(_rayPrefab,_rayThrowPoints[0].position,Quaternion.identity, _rayThrowPoints[0]).GetComponent<RayShoot>();
+            /*RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, _rayThrowPoints[0].rotation).GetComponent<RayShoot>();
             spawnedRay.transform.parent = _rayThrowPoints[0];
             _spawnedRays.Add(spawnedRay);
 
-            spawnedRay.Active();
+            spawnedRay.Active();*/
+            _rayThrowPoints[0].GetComponent<RayMatCharge>().Active();
             ChargeRay(1);
             _performingRaySequence = true;
 
             yield return new WaitUntil(() => _shootRay==true);
-
+            _rayThrowPoints[0].GetComponent<RayMatCharge>().Reinicio();
+            RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, _rayThrowPoints[0].rotation).GetComponent<RayShoot>();
+            _spawnedRays.Add(spawnedRay);
             _activatedRays.Add(spawnedRay);
-
-            spawnedRay.GetTg(_tgPos);
+            spawnedRay.GetTg(_tgNoPredict.transform.position);
 
             _shootRay = false;
             yield return new WaitForSeconds(1f);
