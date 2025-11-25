@@ -31,10 +31,11 @@ ShaderVariantCollection:
         passType: 11
       - keywords: _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _EMISSIVE_COLOR_MAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 13
       - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
           _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
-        passType: 13
-      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
           _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
@@ -64,6 +65,8 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
           _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: _DISABLE_SSR_TRANSPARENT _EMISSIVE_COLOR_MAP _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT _NORMALMAP_TANGENT_SPACE
           _REFRACTION_PLANE _SURFACE_TYPE_TRANSPARENT
@@ -1085,9 +1088,33 @@ ShaderVariantCollection:
         passType: 0
       - keywords: 
         passType: 8
+      - keywords: _ALPHATEST_ON
+        passType: 8
+      - keywords: 
+        passType: 11
+      - keywords: _ALPHATEST_ON
+        passType: 11
+      - keywords: 
+        passType: 12
+      - keywords: _ALPHATEST_ON
+        passType: 12
+      - keywords: 
+        passType: 13
+      - keywords: _ALPHATEST_ON
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: 091d7f222ade3b649a70079fe2aac1bf,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 8
       - keywords: 
         passType: 11
       - keywords: 
         passType: 12
       - keywords: 
+        passType: 13
+      - keywords: _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
         passType: 13
