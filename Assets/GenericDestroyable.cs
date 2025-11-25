@@ -10,6 +10,8 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
     [SerializeField] private ParticleSystem _damageEffect;
     [SerializeField] private bool _isDestroyable;
     [SerializeField] private bool _hitDestroyableEnemy = false;
+    [SerializeField] Collider _fixedCol;
+    [SerializeField] bool _meshStay = false;
     private float _life;
     private int _currentStateIndex = -1;
 
@@ -27,6 +29,9 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
         }
         _life -= dmg;
         _life = Mathf.Max(0, _life);
+
+        if(_fixedCol != null) 
+            _fixedCol.enabled = false;
 
         UpdateMeshState();
 
@@ -93,6 +98,11 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
 
         for (int i = 0; i < _mesh.Length; i++)
         {
+            if (_meshStay)
+            {
+                _mesh[i].enabled = true;
+                return;
+            }
             _mesh[i].enabled = false;
         }
     }
