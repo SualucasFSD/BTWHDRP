@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F3))
         {
-            SceneManager.LoadScene("Boss1Level");
+            SceneManager.LoadScene("BossArena");
         }
         if(GenericUpdate != null) { GenericUpdate(); }
         DecalUpdate();

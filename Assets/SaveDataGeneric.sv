@@ -1,5 +1,5 @@
 {
     "Save": true,
-    "Gold": 1500.0,
+    "Gold": 3000.0,
     "Diamond": 0.0
 }
