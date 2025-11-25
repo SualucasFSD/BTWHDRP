@@ -308,4 +308,9 @@ public class GameManager : MonoBehaviour
 
         _rb.linearVelocity = finalVelocity;
     }
+
+    public void LoadHub()
+    {
+        SceneManager.LoadScene("Hub");
+    }
 }

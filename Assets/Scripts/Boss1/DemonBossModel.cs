@@ -1345,6 +1345,9 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 public class DemonBossModel : Entity, Idamageable
 {
+    [SerializeField] FadeinOut _fade;
+    [SerializeField] AcquireAbility _chooseAbility;
+
     [Header("General Components and Values")]
     [SerializeField][Range(0, 1000)] private float _shieldLife = 1000;
     [SerializeField] private GameObject _victoryPanel;
@@ -1940,6 +1943,7 @@ public class DemonBossModel : Entity, Idamageable
             if (Life <= 0)
             {
                 _isdead = true;
+                StartCoroutine(Ending());
                 if (_shieldCharge != null)
                 {
                     StopCoroutine(_shieldCharge);
@@ -1956,6 +1960,19 @@ public class DemonBossModel : Entity, Idamageable
                 OnDeath();
             }
         }
+    }
+
+    IEnumerator Ending()
+    {
+        _fade.StartFadeIn();
+        yield return new WaitForSeconds(2);
+        _chooseAbility.StartCoroutine(_chooseAbility.OnAbilityAcquired());
+        if (SaveSystemManager.instance != null)
+        {
+            SaveSystemManager.instance._saveDatas[0] = new DataSave();
+        }
+        yield return new WaitForSeconds(5);
+        GameManager.Instance.LoadHub();
     }
 
     public void TakeHealt(float amount) { }
