@@ -29,12 +29,13 @@ public class PjModel : Entity, Idamageable
     [SerializeField][Range(0, 15)] private float _gravityForce;
     [SerializeField][Range(0.2f, 4)] private float _movSpeedMultiplier;
     [Header("Cosas Varias")]
+    [SerializeField] FadeinOut _fade;
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
     [SerializeField] private ParticleSystem _deathParticle;
     //[SerializeField] private GameObject _deathCustomPass;
-    [SerializeField] private Renderer[] _matPlayerRender = new Renderer[4];
+    [SerializeField] private Material[] _matPlayerRender = new Material[4];
     [SerializeField] private float _materialLerpDuration = 3;
     public bool IsDodging = false;
     public float RotationSpeedMultiply = 1;
@@ -526,10 +527,6 @@ public class PjModel : Entity, Idamageable
             GameManager.Instance.RemoveEntity(this, Kind);
             gameObject.layer = 18;
             EventManager.Ejecute(EventManager.KindOfEvent.OnDeath);
-            if (_deathParticle != null)
-            {
-                _deathParticle.Play();
-            }
             /* if(_deathCustomPass!=null)
              {
                  _deathCustomPass.SetActive(true);
@@ -545,30 +542,40 @@ public class PjModel : Entity, Idamageable
     }
     IEnumerator PostDeadThings()
     {
-        yield return new WaitForSeconds(3);
-        if (TryGetComponent<FadeinOut>(out var compo))
-        {
-            compo.StartFadeIn();
-        }
-        if (_materialLerpDuration <= 0f)
-        {
-            _materialLerpDuration = 3;
-        }
-        float time = 0f;
+        yield return new WaitForSeconds(.5f);
 
+        float time = 0f;
+        if (_deathParticle != null)
+        {
+            _deathParticle.Play();
+        }
         while (time < _materialLerpDuration)
         {
             time += Time.deltaTime;
-
             for (int i = 0; i < _matPlayerRender.Length; i++)
             {
                 if (_matPlayerRender[i] != null)
                 {
-                    _matPlayerRender[i].material.SetFloat("_Clip", Mathf.Lerp(0, 8f, time / _materialLerpDuration));
+                    _matPlayerRender[i].SetFloat("_Clip", Mathf.Lerp(0, 8f, time / _materialLerpDuration));
                 }
             }
 
             yield return null;
+        }
+        _fade.StartFadeIn();
+        yield return new WaitForSeconds(3);
+
+
+        if (_materialLerpDuration <= 0f)
+        {
+            _materialLerpDuration = 3;
+        }
+        for (int i = 0; i < _matPlayerRender.Length; i++)
+        {
+            if (_matPlayerRender[i] != null)
+            {
+                _matPlayerRender[i].SetFloat("_Clip", 0);
+            }
         }
         EventManager.Ejecute(EventManager.KindOfEvent.ResetLevel, "Hub");
     }
