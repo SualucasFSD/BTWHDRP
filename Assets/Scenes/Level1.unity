@@ -11286,7 +11286,7 @@ MonoBehaviour:
         m_Version: 0
         filterFoldout: 1
         rendererFoldout: 1
-        renderQueueType: 7
+        renderQueueType: 5
         layerMask:
           serializedVersion: 2
           m_Bits: 1048576
@@ -12169,11 +12169,11 @@ Transform:
   m_GameObject: {fileID: 646014496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.03676, y: -0.80728835, z: -15.369669}
+  m_LocalPosition: {x: 11.49676, y: 0, z: 23.07033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1483163372}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &647332808
 PrefabInstance:
@@ -29628,7 +29628,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 646014497}
   - {fileID: 172051979}
   - {fileID: 1932048531}
   - {fileID: 474811286}
@@ -46593,7 +46592,7 @@ MonoBehaviour:
   _zoomFov: 30
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 17345
+    m_Bits: 16833
   _lockeableLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -47054,6 +47053,7 @@ SceneRoots:
   - {fileID: 8329337838200755576}
   - {fileID: 2013410475}
   - {fileID: 530272009}
+  - {fileID: 646014497}
   - {fileID: 911289774}
   - {fileID: 958128001}
   - {fileID: 1852297853}

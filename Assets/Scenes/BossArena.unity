@@ -11318,7 +11318,7 @@ MonoBehaviour:
   _mySource: {fileID: 0}
   text: {fileID: 392149777}
   _particles: {fileID: 1974343214}
-  _desiredText: Room Cleared
+  _desiredText: You're not worthy
   _textSpeed: 0.1
   isPlaying: 0
 --- !u!114 &671704723
@@ -30237,6 +30237,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1524655733}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1674408903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2890756224583562029, guid: b28475f4e9a07cd41acc2fb939a9483a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4816866}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d670e93fe4bfa4439b466d1182af5e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1678726701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32177,7 +32189,7 @@ MonoBehaviour:
         m_Version: 0
         filterFoldout: 1
         rendererFoldout: 1
-        renderQueueType: 7
+        renderQueueType: 5
         layerMask:
           serializedVersion: 2
           m_Bits: 1048576
@@ -34939,7 +34951,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 531163861}
   m_PlaneDistance: 750
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -73185,6 +73197,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
         type: 3}
+      propertyPath: _fade
+      value: 
+      objectReference: {fileID: 1674408903}
+    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
+        type: 3}
       propertyPath: _healtBar
       value: 
       objectReference: {fileID: 1789482907}
@@ -73193,6 +73210,11 @@ PrefabInstance:
       propertyPath: _centerPoint
       value: 
       objectReference: {fileID: 2060777489}
+    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
+        type: 3}
+      propertyPath: _chooseAbility
+      value: 
+      objectReference: {fileID: 671704722}
     - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
         type: 3}
       propertyPath: lifebarToClose
