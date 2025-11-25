@@ -65,6 +65,7 @@ public class KnightView : PjView
         _pjModel.OnDodge += OnDodge;
         _pjModel.OnDirectionalMovement += OnDirectionalMove;
         _pjModel.OnLifeUpdate += OnLifeUpdate;
+        _pjModel.OnDeath += DeathAnim;
     }
     private void Update()
     {
@@ -98,6 +99,13 @@ public class KnightView : PjView
     private void OnLanding()
     {
         _animator.SetBool("IsGrounded", true);
+    }
+    private void DeathAnim()
+    {
+        
+         _animator.CrossFadeInFixedTime("WarriorDeath", 0.25f, 0, 0f);
+
+        _animator.CrossFadeInFixedTime("WarriorDeath", 0.25f, 1, 0f);
     }
     private void OnJump()
     {

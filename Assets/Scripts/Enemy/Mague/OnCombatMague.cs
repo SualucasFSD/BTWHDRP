@@ -67,8 +67,9 @@ public class OnCombatMague : IState
             _magicTimer += Time.deltaTime;
 
             if (_tg != null)
+            {
                 _rotateDir = _tg.transform.position - _entity.transform.position;
-
+            }
             if (_magicTimer > 1.5f)
             {
                 _entity.MagicInstance(_tg.transform);
@@ -76,8 +77,10 @@ public class OnCombatMague : IState
             }
 
             if (_entity.NumbOfBullets >= 3)
+            {
                 _entity.Shoot();
-
+            }
+            _tg = null;
             return;
         }
 
@@ -105,7 +108,6 @@ public class OnCombatMague : IState
                 PathReload();
                 _pathRetryTimer = 0f;
             }
-
             return;
         }
 

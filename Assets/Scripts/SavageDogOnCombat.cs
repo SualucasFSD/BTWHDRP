@@ -54,6 +54,7 @@ public class SavageDogOnCombat : IState
             if (GameManager.Instance.LineOfSight(_entity.transform.position, _tg.transform.position))
             {
                 HandleCombat();
+                _tg = null;
                 return;
             }
         }
@@ -62,6 +63,7 @@ public class SavageDogOnCombat : IState
             if (GameManager.Instance.SphereLineOfSight(_entity.transform.position,_tg.transform.position,GameManager.Instance.EnemyConfiguration[EnemyCatalogue.SavageDog].Radius))
             {
                 HandleCombat();
+                _tg = null;
                 return;
             }
         }

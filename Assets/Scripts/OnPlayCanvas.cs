@@ -109,7 +109,7 @@ public class OnPlayCanvas : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Suscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
+        //EventManager.Suscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
         EventManager.Suscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
         EventManager.Suscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
     }
@@ -261,7 +261,7 @@ public class OnPlayCanvas : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(btn.gameObject);
     }
 
-    public void OnDeath(params object[] p)
+   /* public void OnDeath(params object[] p)
     {
         enabled = false;
 
@@ -273,7 +273,7 @@ public class OnPlayCanvas : MonoBehaviour
 
         _panels.Clear();
         EventSystem.current.SetSelectedGameObject(null);
-    }
+    }*/
 
     public void RestartScene(params object[] p)
     {
@@ -289,7 +289,7 @@ public class OnPlayCanvas : MonoBehaviour
 
     private void OnDestroy()
     {
-        EventManager.Unscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
+        //EventManager.Unscribe(EventManager.KindOfEvent.OnDeath, OnDeath);
         EventManager.Unscribe(EventManager.KindOfEvent.ResetLevel, RestartScene);
         EventManager.Unscribe(EventManager.KindOfEvent.MainMenu, MainMenuScene);
     }

@@ -1117,6 +1117,96 @@ public class DemonBossModel : Entity, Idamageable
         StartCoroutine(CloseAttackCombo());
     }
 
+    /* private IEnumerator CloseAttackCombo()
+     {
+         yield return new WaitForSeconds(1.2f);
+         _isDoingCloseCombo = true;
+         _moveActivate = true;
+         _rotationActivate = true;
+
+         float walkTimer = 0f;
+         float maxWalkTime = 5f;
+         float dashDistance = 15f;
+         float hitDistance = 3f;
+         float dashOffset = 2f;
+
+         _closeAttackCounter++;
+
+         while (true)
+         {
+             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
+             if (!_isShieldCharge || Stuned)
+             {
+                 ResetCloseCombo();
+                 yield break;
+             }
+
+             Vector3 toPlayer = _tgPos - transform.position;
+             float distance = toPlayer.magnitude;
+
+             if (_rotationActivate)
+             {
+                 OnMove(Vector3.forward);
+                 RotateToTarget(_tgPos);
+             }
+
+             if (distance <= hitDistance)
+             {
+                 StopMove();
+                 StopRotate();
+                 OnMove(Vector3.zero);
+                 OnAttackClose();
+
+                 float wait = 0f;
+                 while (wait < 4f)
+                 {
+                     yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
+                     if (!_isShieldCharge || Stuned)
+                     {
+                         ResetCloseCombo();
+                         yield break;
+                     }
+
+                     wait += Time.deltaTime;
+                 }
+
+                 bool repeat = Random.value <= 0.75f;
+
+                 if (!repeat || _closeAttackCounter >= 3)
+                 {
+                     ResetCloseCombo(true);
+                     yield break;
+                 }
+
+                 walkTimer = 0f;
+                 _moveActivate = true;
+                 _rotationActivate = true;
+                 continue;
+             }
+
+             walkTimer += Time.deltaTime;
+
+             if (walkTimer >= maxWalkTime || distance >= dashDistance)
+             {
+                 Impulse();
+                 yield return DashToPlayer(dashOffset);
+
+                 if (!_isShieldCharge || Stuned)
+                 {
+                     ResetCloseCombo();
+                     yield break;
+                 }
+
+                 walkTimer = 0f;
+                 continue;
+             }
+
+             Dir = toPlayer.normalized;
+             OnMovePj();
+         }
+     }*/
     private IEnumerator CloseAttackCombo()
     {
         yield return new WaitForSeconds(1.2f);
@@ -1153,9 +1243,23 @@ public class DemonBossModel : Entity, Idamageable
 
             if (distance <= hitDistance)
             {
+                Vector3 forward = transform.forward;
+                Vector3 toPlayerDir = toPlayer.normalized;
+                float angleToPlayer = Vector3.Angle(forward, toPlayerDir);
+
+                if (angleToPlayer > 35)
+                {
+                    // Sigue moviéndose para alinearse
+                    walkTimer += Time.deltaTime;
+                    Dir = toPlayer.normalized;
+                    OnMovePj();
+                    continue;
+                }
+
                 StopMove();
                 StopRotate();
                 OnMove(Vector3.zero);
+
                 OnAttackClose();
 
                 float wait = 0f;
@@ -1207,6 +1311,7 @@ public class DemonBossModel : Entity, Idamageable
             OnMovePj();
         }
     }
+
 
     private IEnumerator DashToPlayer(float offset)
     {
@@ -1851,7 +1956,16 @@ public class DemonBossModel : Entity, Idamageable
             StartDash();
         }
     }
+    private void RotateDuringCharge()
+    {
+        Vector3 dir = (_tgPos - transform.position);
+        dir.y = 0f;
 
+        if (dir.sqrMagnitude < 0.001f) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRot, _rotationForce * Time.fixedDeltaTime));
+    }
     private void StartDash()
     {
         Impulse();
@@ -1909,35 +2023,26 @@ public class DemonBossModel : Entity, Idamageable
             _rotationActivate = false;
             _moveActivate = false;
 
-            while (true)
+            _rayThrowPoints[0].GetComponent<RayMatCharge>().Active();
+            ChargeRay(1);
+
+            while (!_shootRay)
             {
                 yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-                Vector3 dir = (_tgPos - transform.position);
-                dir.y = 0f;
+                RotateDuringCharge();
 
-                RotateToTarget(dir);
-
-                float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
-                if (angle < 15f) break;
+                yield return null;
             }
 
             _waitingToShootRay = false;
-
-            /*RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, _rayThrowPoints[0].rotation).GetComponent<RayShoot>();
-            spawnedRay.transform.parent = _rayThrowPoints[0];
-            _spawnedRays.Add(spawnedRay);
-
-            spawnedRay.Active();*/
-            _rayThrowPoints[0].GetComponent<RayMatCharge>().Active();
-            ChargeRay(1);
-            _performingRaySequence = true;
-
-            yield return new WaitUntil(() => _shootRay==true);
             _rayThrowPoints[0].GetComponent<RayMatCharge>().Reinicio();
-            RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, _rayThrowPoints[0].rotation).GetComponent<RayShoot>();
+
+            RayShoot spawnedRay = Instantiate(_rayPrefab,_rayThrowPoints[0].position,_rayThrowPoints[0].rotation).GetComponent<RayShoot>();
+
             _spawnedRays.Add(spawnedRay);
             _activatedRays.Add(spawnedRay);
+
             spawnedRay.GetTg(_tgNoPredict.transform.position);
 
             _shootRay = false;
@@ -1947,16 +2052,12 @@ public class DemonBossModel : Entity, Idamageable
         _performingRaySequence = false;
         _dashCounter++;
 
-        //Finalizando Dash
         if (_dashCounter >= 4)
         {
-            //_moveActivate = true;
-            //_rotationActivate = true;
             Idle(1);
             _isRotatingToDash = false;
             _isDashing = false;
             _currentDashTarget = null;
-            //StartMultiRayCombo();
             yield break;
         }
 

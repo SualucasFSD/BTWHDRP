@@ -9,6 +9,7 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
     [SerializeField] private float _maxLife = 100f;
     [SerializeField] private ParticleSystem _damageEffect;
     [SerializeField] private bool _isDestroyable;
+    [SerializeField] private bool _hitDestroyableEnemy = false;
     private float _life;
     private int _currentStateIndex = -1;
 
@@ -53,7 +54,21 @@ public class GenericDestroyable : MonoBehaviour, Idamageable
 
     private void OnTriggerEnter(Collider other)
     {
-        TakeDamage(100, 0, Vector3.zero);
+        if (_hitDestroyableEnemy)
+        {
+            if (other.gameObject.TryGetComponent<Entity>(out var compo))
+            {
+                if (compo.Kind == Entity.KindOfEntity.Enemy)
+                {
+                    TakeDamage(100, 0, Vector3.zero);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            TakeDamage(100, 0, Vector3.zero);
+        }
     }
 
     private void UpdateMeshState()

@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]
@@ -30,6 +31,10 @@ public class PjModel : Entity, Idamageable
     [SerializeField] private EsqeletonPower _powerSkeleton;
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
+    [SerializeField] private ParticleSystem _deathParticle;
+    //[SerializeField] private GameObject _deathCustomPass;
+    [SerializeField] private Renderer[] _matPlayerRender = new Renderer[4];
+    [SerializeField] private float _materialLerpDuration = 3;
     public bool IsDodging = false;
     public float RotationSpeedMultiply = 1;
     //Privates
@@ -47,7 +52,7 @@ public class PjModel : Entity, Idamageable
     private float _delayActions = 0;
     //AutoRotate Area
     [SerializeField] private LayerMask _enemyLayer;
-    private bool _haveCloseEnemy=false;
+    private bool _haveCloseEnemy = false;
     private GameObject _closeEnemy;
     public float RotationSpeedMultiplyNoLock = 1;
     //[SerializeField] private float _autoRotateRadius = 6f;
@@ -75,6 +80,7 @@ public class PjModel : Entity, Idamageable
     public event Action<float> OnFall = delegate { };
     public event Action OnLanding = delegate { };
     public event Action OnRunAttack = delegate { };
+    //public event Action OnDeath=delegate{};
     #endregion
     private void Awake()
     {
@@ -476,7 +482,7 @@ public class PjModel : Entity, Idamageable
     }
     #endregion
     #region Genericos
-    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage=false, float pushForce = 1000)
+    public void TakeDamage(float dmg, float exp, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStunDamage = false, float pushForce = 1000)
     {
         if (pushDirection != Vector3.zero)
         {
@@ -503,9 +509,49 @@ public class PjModel : Entity, Idamageable
         if (Life <= 0)
         {
             GameManager.Instance.RemoveEntity(this, Kind);
+            gameObject.layer = 18;
             EventManager.Ejecute(EventManager.KindOfEvent.OnDeath);
-            Destroy(gameObject);
+            if (_deathParticle != null)
+            {
+                _deathParticle.Play();
+            }
+            /* if(_deathCustomPass!=null)
+             {
+                 _deathCustomPass.SetActive(true);
+             }*/
+            OnDeath();
+
+            StartCoroutine(PostDeadThings());
         }
+    }
+    IEnumerator PostDeadThings()
+    {
+        yield return new WaitForSeconds(3);
+        if (TryGetComponent<FadeinOut>(out var compo))
+        {
+            compo.StartFadeIn();
+        }
+        if (_materialLerpDuration <= 0f)
+        {
+            _materialLerpDuration = 3;
+        }
+        float time = 0f;
+
+        while (time < _materialLerpDuration)
+        {
+            time += Time.deltaTime;
+
+            for (int i = 0; i < _matPlayerRender.Length; i++)
+            {
+                if (_matPlayerRender[i] != null)
+                {
+                    _matPlayerRender[i].material.SetFloat("_Clip", Mathf.Lerp(0, 8f, time / _materialLerpDuration));
+                }
+            }
+
+            yield return null;
+        }
+        EventManager.Ejecute(EventManager.KindOfEvent.ResetLevel, "Hub");
     }
     public void TakeHealt(float amount)
     {
