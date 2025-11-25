@@ -1358,6 +1358,7 @@ public class DemonBossModel : Entity, Idamageable
     [SerializeField] private float _moveForce;
     [SerializeField] private float _groundImpulse = 2500f;
     [SerializeField] private Image _shieldPercent;
+    [SerializeField] private ParticleSystem _shieldDmg;
     [SerializeField] private ParticleSystem _shieldBrokeEffect;
     [SerializeField] private Transform _centerPoint;
     [SerializeField] private GameObject _rocksHide;
@@ -1888,11 +1889,14 @@ public class DemonBossModel : Entity, Idamageable
         if (_isShieldCharge)
         {
             _shieldLife -= dmg;
+              if (_shieldBrokeEffect != null)
+                _shieldDmg.Play();
+        
+
             if (_shieldLife <= 0)
             {
-                if (_shieldBrokeEffect != null)
-                    _shieldBrokeEffect.Play();
 
+                _shieldBrokeEffect.Play();
                 _isShieldCharge = false;
 
                 // stop only combo coroutines (no StopAllCoroutines)
@@ -2031,7 +2035,7 @@ public class DemonBossModel : Entity, Idamageable
 
         if (_bigThunderWave != null)
         {
-            Instantiate(_bigThunderWave, transform.position, Quaternion.identity);
+            Instantiate(_bigThunderWave, transform.position - Vector3.up, Quaternion.identity);
         }
         List<Transform> spawnedRocks = SpawnRocksAroundBoss();
 

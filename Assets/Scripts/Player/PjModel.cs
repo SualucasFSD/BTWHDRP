@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]

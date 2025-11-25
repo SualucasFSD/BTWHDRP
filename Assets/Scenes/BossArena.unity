@@ -3374,7 +3374,7 @@ MonoBehaviour:
   _zoomFov: 30
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 17345
+    m_Bits: 16833
   _lockeableLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -49851,6 +49851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73b9f9a6d5f983e45ac161ef51d042c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fade: {fileID: 0}
   SceneName: Boss1Level
 --- !u!33 &843197905821045794
 MeshFilter:
@@ -58474,6 +58475,79 @@ Transform:
   - {fileID: 6351715078055574886}
   m_Father: {fileID: 215821773469216049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2010978098928476754
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18.584568
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.98804337
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -57.92154
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134260025864991846, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607540446773341290, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_Name
+      value: DonaExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3607540446773341290, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ff094e52fe4581146b32189869bcd455, type: 3}
 --- !u!1 &2015461652763401917
 GameObject:
   m_ObjectHideFlags: 0
@@ -73126,17 +73200,6 @@ PrefabInstance:
       objectReference: {fileID: 1789482908}
     - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
         type: 3}
-      propertyPath: _bigThunderWave
-      value: 
-      objectReference: {fileID: 3607540446773341290, guid: ff094e52fe4581146b32189869bcd455,
-        type: 3}
-    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
-        type: 3}
-      propertyPath: _explosionParticle
-      value: 
-      objectReference: {fileID: 3299387891366035441}
-    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
-        type: 3}
       propertyPath: '_rayDashPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1363162383}
@@ -73275,12 +73338,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53db79fc4b70d1a43845178f54620d34, type: 3}
---- !u!198 &3299387891366035441 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3942717797898946834, guid: 53db79fc4b70d1a43845178f54620d34,
-    type: 3}
-  m_PrefabInstance: {fileID: 3299387891366035440}
-  m_PrefabAsset: {fileID: 0}
 --- !u!33 &3303567654156107337
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -111846,3 +111903,4 @@ SceneRoots:
   - {fileID: 2967845595630475876}
   - {fileID: 836205523}
   - {fileID: 1761065530}
+  - {fileID: 2010978098928476754}
