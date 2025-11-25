@@ -1623,7 +1623,7 @@ public class DemonBossModel : Entity, Idamageable
         var p = GameManager.Instance.RefreshEnemy(Kind);
         foreach (var r in p)
         {
-            if (!GameManager.Instance.SphereLineOfSight(_tgPos, transform.position, 0.5f))
+            if (!GameManager.Instance.SphereLineOfSight(_tgNoPredict.transform.position, transform.position, 0.5f))
             { continue; }
             if (Vector3.Distance(transform.position, r.transform.position) < 500)
             {
@@ -2018,11 +2018,16 @@ public class DemonBossModel : Entity, Idamageable
         }
         List<Transform> spawnedRocks = SpawnRocksAroundBoss();
 
+        PrepareExplosion();
+        if(_explosionParticle!=null)
+        {
+            _explosionParticle.Play();
+        }
         yield return StartCoroutine(RaiseRocksRoutine(spawnedRocks));
 
         float timer = 0f;
 
-        PrepareExplosion();
+        //PrepareExplosion();
         while (timer < _explosionChargeTime)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
@@ -2037,6 +2042,10 @@ public class DemonBossModel : Entity, Idamageable
             timer += Time.deltaTime;
         }
         FinishExplosion();
+        if (_explosionParticle != null)
+        {
+            _explosionParticle.Play();
+        }
         AreaDamage();
         DestroyRocks(spawnedRocks);
         Idle(2);

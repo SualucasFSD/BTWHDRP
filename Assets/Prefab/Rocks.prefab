@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2042720083963518734}
   - component: {fileID: 4472137829398557294}
   - component: {fileID: 465967042526467745}
-  - component: {fileID: 5888165844894932921}
   m_Layer: 7
   m_Name: Rocks
   m_TagString: Untagged
@@ -91,29 +90,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5888165844894932921
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6657113479193438871}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 2095103
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1757405990690425971
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,7 +121,7 @@ PrefabInstance:
     - target: {fileID: 372900359115677326, guid: 4bf95e7deea278944bec802ca252f303,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.223
+      value: 0.499
       objectReference: {fileID: 0}
     - target: {fileID: 372900359115677326, guid: 4bf95e7deea278944bec802ca252f303,
         type: 3}

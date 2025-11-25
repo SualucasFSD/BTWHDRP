@@ -117,6 +117,10 @@ public class PjModel : Entity, Idamageable
             print(_gold);
             print(_diamond);
         }
+        foreach(var j in _matPlayerRender)
+        {
+            j.SetFloat("_Clip", 0);
+        }
     }
     private void Update()
     {
