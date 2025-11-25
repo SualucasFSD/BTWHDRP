@@ -68,7 +68,7 @@ Material:
     - _MaterialID: 1
     - _MaterialTypeMask: 2
     - _Metallic: 0.5
-    - _NormalScale: 80
+    - _NormalScale: 5000
     - _NormalsStrength: 0.5
     - _OpaqueCullMode: 2
     - _PerPixelSorting: 0
@@ -109,13 +109,13 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.043238953, g: 0.5188679, b: 0, a: 0.59607846}
+    - _BaseColor: {r: 0.5176471, g: 0.01909425, b: 0, a: 0.59607846}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _NormalSpeed: {r: 0, g: -0.15, b: 0, a: 0}
-    - _VoronoiColor: {r: 0.15861586, g: 0.7490198, b: 0, a: 1}
+    - _VoronoiColor: {r: 0.7490196, g: 0.08016844, b: 0, a: 1}
     - _VoronoidSpeed: {r: 0, g: -2, b: 0, a: 0}
-    - _VoronoidTiling: {r: 10, g: 10, b: 0, a: 0}
+    - _VoronoidTiling: {r: 1000, g: 1000, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2652328930574282769
