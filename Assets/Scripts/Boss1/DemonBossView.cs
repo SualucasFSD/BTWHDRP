@@ -5,6 +5,9 @@ public class DemonBossView : MonoBehaviour
 {
     [SerializeField] private DemonBossModel _model;
     [SerializeField] private Animator _animator;
+    [SerializeField] private float _hitDistance;
+    [SerializeField] private LayerMask _hitLayer;
+    [SerializeField] private float _punchDamage;
     private void Awake()
     {
         if(_animator==null)
@@ -91,6 +94,61 @@ public class DemonBossView : MonoBehaviour
         _model.SpereActive();
     }
 
+    public void PunchDamage()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _hitDistance, _hitLayer);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject == gameObject)
+            {
+                continue;
+            }
+            Entity entity = collider.GetComponent<Entity>();
+
+            if (entity == null)
+            {
+                GenericDestroyable destro = collider.GetComponent<GenericDestroyable>();
+                if (destro != null)
+                {
+                    destro.GetComponent<Idamageable>().TakeDamage(500, 0, Vector3.zero);
+                }
+                continue;
+            }
+            float verticalDiff = Mathf.Abs(entity.transform.position.y - transform.position.y);
+            if (verticalDiff > 2f)
+            {
+                continue;
+            }
+            if (!GameManager.Instance.LineOfSight(transform.position, entity.transform.position))
+            {
+                continue;
+            }
+            Vector3 origin = transform.position + Vector3.up * 1f - transform.forward * 0.5f;
+            Vector3 dirToEnemy = (entity.transform.position - origin).normalized;
+
+            if (Physics.Raycast(origin, dirToEnemy, out RaycastHit hit, _hitDistance, _hitLayer))
+            {
+                if (hit.collider.transform.root != entity.transform.root)
+                {
+                    continue;
+                }
+
+                float backFrontAngle = Vector3.Dot(transform.forward, dirToEnemy);
+
+                if (backFrontAngle > 0.35f)
+                {
+                    Idamageable damageable = entity.GetComponent<Idamageable>();
+                    if (damageable != null)
+                    {
+                        Vector3 pushDir = new Vector3((entity.transform.position - transform.position).x, 0f, (entity.transform.position - transform.position).z).normalized;
+
+                        damageable.TakeDamage(_punchDamage, 0 / 2f, pushDir, false, false, true, 1000);
+                    }
+                }
+            }
+        }
+    }
     private void OnAnimatorMove()
     {
         transform.parent.position += _animator.deltaPosition;

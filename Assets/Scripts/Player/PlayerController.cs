@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
     //private Vector3 _dir;
     private Vector3 _rawDir;
     private bool _stickInUse;
+    private bool _isDeath = false;
     private void Start()
     {
         _model=GetComponent<PjModel>();
+        EventManager.Suscribe(EventManager.KindOfEvent.OnDeath, OnPjDeath);
     }
     private void Update()
     {
@@ -32,6 +34,10 @@ public class PlayerController : MonoBehaviour
         if (_model.ManualMovement)
         {
           RotateCamera();
+            if(_isDeath)
+            {
+                return;
+            }
           ManualMovement();
           DodgeControll();
           JumpControl();
@@ -40,6 +46,10 @@ public class PlayerController : MonoBehaviour
           OnAttackFirshCombo();
           OnAttackSecondCombo();
         }
+    }
+    private void OnPjDeath(params object[] p)
+    {
+        _isDeath = true;
     }
     private void RotateCamera()
     {
@@ -147,5 +157,9 @@ public class PlayerController : MonoBehaviour
 
             _longTimeSecondCombo = 0f;
         }
+    }
+    private void OnDestroy()
+    {
+        EventManager.Unscribe(EventManager.KindOfEvent.OnDeath, OnPjDeath);
     }
 }

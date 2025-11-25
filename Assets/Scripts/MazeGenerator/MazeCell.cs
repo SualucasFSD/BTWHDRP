@@ -146,13 +146,15 @@ public class MazeCell : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_isActive) return;
-
+        
         PlayerController p = other.gameObject.GetComponent<PlayerController>();
         if (p != null)
         {
+            //OptimizerScript.instance.OnlyKeep(this);
             OptimizerScript.instance.Refresh(this);
             _principalDoor.SetActive(true);
             StartCoroutine(SpawnEnemies());
+            OptimizerScript.instance.OnlyKeep(this);
             _isActive = true;
         }
     }
