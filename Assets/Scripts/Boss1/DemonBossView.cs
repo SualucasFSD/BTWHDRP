@@ -33,6 +33,13 @@ public class DemonBossView : MonoBehaviour
         _model.Jump += Jump;
         _model.JumpPrepare += JumpPrepare;
         _model.FuriousWalk += PunchingWalk;
+        _model.PrepareExplosion += ExplosionCharge;
+        _model.FinishExplosion += ExplosionFinish;
+        _model.OnAirHit += HitAir;
+        _model.GetToGround += ToTheGround;
+        _model.GetToTheAir += ToTheAir;
+        _model.OnHitStunt += HitGround;
+        _model.OnStunt += Stuned;
     }
     //_animator.CrossFadeInFixedTime("JumpForce", 0.25f, 0, 0f);
     private void OnMove(Vector3 dir)
@@ -51,6 +58,14 @@ public class DemonBossView : MonoBehaviour
     private void LoopDash()
     {
         _animator.CrossFadeInFixedTime("DashLoop", 0.25f, 0, 0f);
+    }
+    private void ExplosionCharge()
+    {
+        _animator.CrossFadeInFixedTime("ExplosionCharge", 0.25f, 0, 0f);
+    }
+    private void ExplosionFinish()
+    {
+        _animator.CrossFadeInFixedTime("ExplosionFinal", 0.25f, 0, 0f);
     }
     private void DashFinish()
     {
@@ -88,7 +103,26 @@ public class DemonBossView : MonoBehaviour
     {
         _animator.SetBool("PunchWalk", p);
     }
-
+    private void HitGround()
+    {
+        _animator.CrossFadeInFixedTime("HitGround", 0.25f, 0, 0f);
+    }
+    private void HitAir()
+    {
+        _animator.CrossFadeInFixedTime("HitOnMidAir", 0.25f, 0, 0f);
+    }
+    private void ToTheAir()
+    {
+        _animator.CrossFadeInFixedTime("GoingUp", 0.25f, 0, 0f);
+    }
+    private void ToTheGround()
+    {
+        _animator.CrossFadeInFixedTime("KnockDown", 0.25f, 0, 0f);
+    }
+    private void Stuned()
+    {
+        _animator.CrossFadeInFixedTime("KnockDown", 0.25f, 0, 0f);
+    }
     public void SpareThrow()
     {
         _model.SpereActive();

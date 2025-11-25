@@ -10,6 +10,7 @@
 //{
 //    [Header("General Components and Values")]
 //    [SerializeField][Range(0, 1000)] private float _shieldLife = 1000;
+//    [SerializeField] private GameObject _victoryPanel;
 //    [SerializeField] private Rigidbody _rb;
 //    [SerializeField] private LayerMask _obstacleMask;
 //    [SerializeField] private ParticleSystem _bloodVfx;
@@ -32,7 +33,8 @@
 //    [SerializeField] private Transform[] _rayDashPoints = new Transform[16];
 //    private bool _waitingToShootRay = false;
 //    private bool _performingRaySequence = false;
-
+//    private bool explosionUsed45 = false;
+//    private bool explosionUsed20 = false;
 //    [Header("Dash")]
 //    [SerializeField] private float _dashForce;
 //    [SerializeField] private ParticleSystem _impulseParticle;
@@ -49,8 +51,7 @@
 //    [SerializeField] private float _chargeDuration;
 //    [SerializeField] private ParticleSystem _chargeParticle;
 //    [SerializeField] private ParticleSystem _explosionParticle;
-//    private float _explosionIti = 0;
-//    private float _areaDamage;
+//    [SerializeField] private float _areaDamage;
 //    //PRIVATES GENERIC
 //    [SerializeField] private float _multiRayRotateForce = 8f;
 //    private bool _isPerformingMultiRayCombo = false;
@@ -63,17 +64,39 @@
 //    private FsmDemonBoss _fsm = new FsmDemonBoss();
 //    private GameObject _tgNoPredict;
 //    private bool _isPerformingExplosion = false;
+//    private List<GameObject> _activeRocks = new List<GameObject>();
+//    private List<RayShoot> _spawnedRays = new List<RayShoot>();
+//    private HashSet<RayShoot> _activatedRays = new HashSet<RayShoot>();
+//    private int _closeAttackCounter = 0;
+//    private bool _isDoingCloseCombo = false;
+//    private bool _shootRay=false;
+//    private bool _fistToFistCombo=false;
+//    private bool _isdead = false;
+//    private Coroutine _shieldCharge;
+//    //private bool _bossBusy = false;
 //    //EVENTOS
 //    public event Action PrepareImpulse = delegate { };
 //    public event Action Impulse = delegate { };
 //    public event Action DashFin = delegate { };
+//    public event Action<int> Idle=delegate { };
+//    public event Action<int> ChargeRay=delegate { };
+//    public event Action<int> ShootRay=delegate { };
 //    public event Action<bool> Grounded = delegate { };
 //    public event Action<Vector3> OnMove = delegate { };
 //    public event Action GetToTheAir = delegate { };
 //    public event Action GetToGround = delegate { };
 //    public event Action OnAirHit = delegate { };
 //    public event Action OnHitStunt = delegate { };
-
+//    public event Action OnAttackClose=delegate { };
+//    public event Action OnMaxHeight=delegate { };
+//    public event Action Jump=delegate { };
+//    public event Action JumpPrepare=delegate { };
+//    public event Action FallExplo=delegate { };
+//    public event Action PrepareExplosion=delegate { };
+//    public event Action FinishExplosion=delegate { };
+//    public event Action<bool> FuriousWalk=delegate { };
+//    public event Action OnDeath=delegate { };
+//    public event Action OnStunt = delegate { };
 //    private void Awake()
 //    {
 //        IsRayStunable = false;
@@ -96,31 +119,126 @@
 //        _fsm.AddState(FsmDemonBoss.AgentStates.OnCombat, new DashStateDemonBoos());
 
 //        _fsm.ChangeState(FsmDemonBoss.AgentStates.OnCombat);
-//        Invoke(nameof(InvokeDash), 5);
-//    }
-//    private void InvokeDash()
-//    {
-//        StartExplosionCombo();
-//        //DashShoot();
 //    }
 
+//    /*private void Update()
+//     {
+//         _tgNoPredict = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(Kind), transform);
+//         if (GameManager.Instance.IsPaused)
+//             return;
+
+//         if (UseGravity)
+//         {
+//             if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].GravityForce)
+//                 GravValue += Time.deltaTime * 7f;
+//         }
+//         if (Input.GetKeyDown(KeyCode.Alpha1))
+//         {
+//             StartExplosionCombo();
+//         }
+//         if (Input.GetKeyDown(KeyCode.Alpha2))
+//         {
+//             DashShoot();
+//         }
+//         if (Input.GetKeyDown(KeyCode.Alpha3))
+//         {
+//             StartMultiRayCombo();
+//         }
+//         if (Input.GetKeyDown(KeyCode.Alpha4))
+//         {
+//             StartCloseAttackCombo();
+//         }
+//         _fsm.ArtificialUpdate();
+//     }*/
 //    private void Update()
 //    {
+//        if(_isdead)
+//        {
+//            return;
+//        }
 //        _tgNoPredict = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(Kind), transform);
 //        if (GameManager.Instance.IsPaused)
 //            return;
 
+
 //        if (UseGravity)
 //        {
-//            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].GravityForce)
+//            float maxGrav = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].GravityForce;
+//            if (GravValue < maxGrav)
 //                GravValue += Time.deltaTime * 7f;
 //        }
 
+//        if (_isPerformingExplosion ||
+//            _isPerformingMultiRayCombo ||
+//            _isDashing ||
+//            _fistToFistCombo ||
+//            Stuned ||
+//            !_isShieldCharge)
+//        {
+//            _fsm.ArtificialUpdate();
+//            return;
+//        }
+
+
+//        float hpPercent = Life / GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].Life;
+
+//        if (!explosionUsed45 && hpPercent <= 0.45f)
+//        {
+//            explosionUsed45 = true;
+//            StartExplosionCombo();
+//            _fsm.ArtificialUpdate();
+//            return;
+//        }
+
+//        if (!explosionUsed20 && hpPercent <= 0.20f)
+//        {
+//            explosionUsed20 = true;
+//            StartExplosionCombo();
+//            _fsm.ArtificialUpdate();
+//            return;
+//        }
+
+//        if (hpPercent > 0.60f)
+//        {
+//            print("Fase1");
+//            StartCloseAttackCombo();
+//            _fsm.ArtificialUpdate();
+//            return;
+//        }
+
+//        if (hpPercent <= 0.60f)
+//        {
+//            print("Fase2");
+//            float rng = Random.value;
+
+//            if (rng <= 0.50f)
+//            {
+//                StartCloseAttackCombo();
+//            }
+//            else
+//            {
+//                if (Random.Range(0, 100) > 50)
+//                {
+//                    StartMultiRayCombo();
+//                }
+//                else
+//                {
+//                    DashShoot();
+//                }
+//            }
+
+//            _fsm.ArtificialUpdate();
+//            return;
+//        }
 //        _fsm.ArtificialUpdate();
 //    }
 
 //    private void FixedUpdate()
 //    {
+//        if (_isdead)
+//        {
+//            return;
+//        }
 //        if (GameManager.Instance.IsPaused)
 //            return;
 
@@ -131,18 +249,17 @@
 //        {
 //            _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
 //        }
-//        if (Stuned || !_isShieldCharge)
-//        { return; }
-
+//        if (Stuned)
+//        {
+//            return;
+//        }
 //        if (_moveActivate)
 //        { OnMovePj(); }
 
-//        if (_rotationActivate)
-//        { RotateToTarget(_tgNoPredict.transform.position); }
-
 //        FixedUpdateDash();
 //    }
-//#region Move and Rotate Region
+
+//    #region Move and Rotate Region
 //    public void OnMovePj()
 //    {
 //        if (_tgPos == Vector3.zero || Stuned)
@@ -181,7 +298,7 @@
 //        var p = GameManager.Instance.RefreshEnemy(Kind);
 //        foreach (var r in p)
 //        {
-//            if(!GameManager.Instance.SphereLineOfSight(_tgPos,transform.position,0.5f))
+//            if (!GameManager.Instance.SphereLineOfSight(_tgPos, transform.position, 0.5f))
 //            { continue; }
 //            if (Vector3.Distance(transform.position - Vector3.up * 2, r.transform.position) < 500)
 //            {
@@ -216,27 +333,196 @@
 //        _tgPos = predictedPos;
 //    }
 //    #endregion
+
+//    #region FistToFistCombo
+//     public void StartCloseAttackCombo()
+//     {
+//         if (_isDoingCloseCombo || Stuned)
+//         {
+//             return;
+//         }
+//         Idle(2);
+//         FuriousWalk(true);
+//         ResetBossState();
+//         _fistToFistCombo = true;
+//         StartCoroutine(CloseAttackCombo());
+//     }
+
+//    private IEnumerator CloseAttackCombo()
+//    {
+//        yield return new WaitForSeconds(1.2f);
+//        _isDoingCloseCombo = true;
+//        _moveActivate = true;
+//        _rotationActivate = true;
+
+//        float walkTimer = 0f;
+//        float maxWalkTime = 5f;
+//        float dashDistance = 15f;
+//        float hitDistance = 3f;
+//        float dashOffset = 2f;
+
+//        _closeAttackCounter++;
+
+//        while (true)
+//        {
+//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
+//            if (!_isShieldCharge || Stuned)
+//            {
+//                ResetCloseCombo();
+//                yield break;
+//            }
+
+//            Vector3 toPlayer = _tgPos - transform.position;
+//            float distance = toPlayer.magnitude;
+
+//            if (_rotationActivate)
+//            {
+//                OnMove(Vector3.forward);
+//                RotateToTarget(_tgPos);
+//            }
+
+//            if (distance <= hitDistance)
+//            {
+//                Vector3 forward = transform.forward;
+//                Vector3 toPlayerDir = toPlayer.normalized;
+//                float angleToPlayer = Vector3.Angle(forward, toPlayerDir);
+
+//                if (angleToPlayer > 35)
+//                {
+//                    walkTimer += Time.deltaTime;
+//                    Dir = toPlayer.normalized;
+//                    OnMovePj();
+//                    continue;
+//                }
+
+//                StopMove();
+//                StopRotate();
+//                OnMove(Vector3.zero);
+
+//                OnAttackClose();
+
+//                float wait = 0f;
+//                while (wait < 4f)
+//                {
+//                    yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
+//                    if (!_isShieldCharge || Stuned)
+//                    {
+//                        ResetCloseCombo();
+//                        yield break;
+//                    }
+
+//                    wait += Time.deltaTime;
+//                }
+
+//                bool repeat = Random.value <= 0.75f;
+
+//                if (!repeat || _closeAttackCounter >= 3)
+//                {
+//                    ResetCloseCombo(true);
+//                    yield break;
+//                }
+
+//                walkTimer = 0f;
+//                _moveActivate = true;
+//                _rotationActivate = true;
+//                continue;
+//            }
+
+//            walkTimer += Time.deltaTime;
+
+//            if (walkTimer >= maxWalkTime || distance >= dashDistance)
+//            {
+//                Impulse();
+//                yield return DashToPlayer(dashOffset);
+
+//                if (!_isShieldCharge || Stuned)
+//                {
+//                    ResetCloseCombo();
+//                    yield break;
+//                }
+
+//                walkTimer = 0f;
+//                continue;
+//            }
+
+//            Dir = toPlayer.normalized;
+//            OnMovePj();
+//        }
+//    }
+
+//    private IEnumerator DashToPlayer(float offset)
+//    {
+//        float dashSpeed = 25f;
+
+//        Vector3 dir = (_tgNoPredict.transform.position - transform.position).normalized;
+//        Vector3 target = _tgNoPredict.transform.position - dir * offset;
+//        target.y = transform.position.y;
+
+//        while (true)
+//        {
+//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
+//            if (!_isShieldCharge || Stuned)
+//            {
+//                yield break;
+//            }
+//            Vector3 current = transform.position;
+//            Vector3 toTarget = target - current;
+
+//            if (toTarget.sqrMagnitude <= 0.2f)
+//            {
+//                _rb.MovePosition(target);
+//                _rb.angularVelocity = Vector3.zero;
+
+//                DashFin();
+//                yield break;
+//            }
+
+//            RotateToTarget(_tgNoPredict.transform.position);
+
+//            Vector3 next = Vector3.MoveTowards(current,target,dashSpeed * Time.deltaTime);
+
+//            _rb.MovePosition(next);
+//        }
+//    }
+//    private void ResetCloseCombo(bool normalEnd = false)
+//    {
+//        //StopMove();
+//        StopRotate();
+//        _fistToFistCombo = false;
+//        _isDoingCloseCombo = false;
+
+//        if (normalEnd)
+//            _closeAttackCounter = 0;
+//        else
+//            _closeAttackCounter = 0;
+
+//        _moveActivate = false;
+//        _rotationActivate = false;
+//    }
+
+//    private void StopMove()
+//    {
+//        _moveActivate = false;
+//        _rb.angularVelocity = Vector3.zero;
+//    }
+
+//    private void StopRotate()
+//    {
+//        _rotationActivate = false;
+//    }
+
+//    #endregion
+
 //    #region IdamageableRegion
 //    public void TakeDamage(float dmg, float stunt, Vector3 pushDirection, bool downHit = false, bool airHit = false, bool isStuntDamage = false, float pushForce = 1000)
 //    {
 //        if (Life <= 0)
 //            return;
 
-//        if (_isShieldCharge)
-//        {
-//            _shieldLife -= dmg;
-//            if (_shieldLife <= 0)
-//            {
-//                if (_shieldBrokeEffect != null)
-//                    _shieldBrokeEffect.Play();
-
-//                _isShieldCharge = false;
-//                //StopAllCoroutines();
-//                //ResetBossState();
-//                StartCoroutine(ShieldRechardRoutine());
-//            }
-//        }
-//        else
+//        if (Stuned)
 //        {
 //            if (_bloodVfx != null && isStuntDamage)
 //                _bloodVfx.Play();
@@ -252,6 +538,89 @@
 //                    OnAirHit();
 //                    MantainOnAir();
 //                }
+//            }
+//            return;
+//        }
+
+//        if (_isShieldCharge)
+//        {
+//            _shieldLife -= dmg;
+//            if (_shieldLife <= 0)
+//            {
+//                if (_shieldBrokeEffect != null)
+//                    _shieldBrokeEffect.Play();
+
+//                _isShieldCharge = false;
+
+//                StopAllCoroutines();
+//                ResetBossState();
+
+//                DestroyActiveRocks();
+
+//                foreach (var r in _spawnedRays.ToArray())
+//                {
+//                    if (r == null) continue;
+//                    if (!_activatedRays.Contains(r))
+//                    {
+//                        Destroy(r.gameObject);
+//                    }
+//                }
+//                _spawnedRays.Clear();
+//                _activatedRays.Clear();
+
+//                //OnHitStunt();
+//                OnStunt();
+//                //_isStunned = true;
+//                Stuned = true;
+
+//              _shieldCharge= StartCoroutine(ShieldRechardRoutine());
+//            }
+//        }
+//        else
+//        {
+//            if (_bloodVfx != null && isStuntDamage)
+//                _bloodVfx.Play();
+
+//            Life -= dmg;
+//            if (!downHit && isStuntDamage)
+//            {
+//                if (IsGrounded)
+//                {
+//                    OnHitStunt();
+//                }
+//                else
+//                {
+//                    OnAirHit();
+//                    MantainOnAir();
+//                }
+//            }
+//            /*if (!downHit && isStuntDamage)
+//            {
+//                if (IsGrounded&&!downHit)
+//                {
+//                    OnHitStunt();
+//                }
+//                else if(!airHit)
+//                {
+//                    OnAirHit();
+//                    MantainOnAir();
+//                }
+//            }*/
+//            if(Life<=0)
+//            {
+//               _isdead = true;
+//                if(_shieldCharge!=null)
+//                {
+//                    StopCoroutine(_shieldCharge);
+//                }
+//                _isShieldCharge=false;
+//                if(_victoryPanel!=null)
+//                {
+//                    _victoryPanel.SetActive(true);
+//                }
+//                gameObject.layer = 18;
+//                OnStunt();
+//                OnDeath();
 //            }
 //        }
 //    }
@@ -270,14 +639,27 @@
 //            yield return new WaitForSeconds(0.1f);
 //        }
 //        _isShieldCharge = true;
+//        Stuned = false;
+//        ResetBossState();
+//        _shieldCharge = null;
+//       // _moveActivate = true;
+//       // _rotationActivate = true;
+//       _currentDashTarget = null;
+//        _isDoingCloseCombo = false;
+//        _isPerformingExplosion = false;
+//        _isPerformingMultiRayCombo = false;
+//        _waitingToShootRay = false;
+//        _performingRaySequence = false;
 //    }
 //    #endregion
+
 //    #region ExplosionCombo
 //    public void StartExplosionCombo()
 //    {
 //        if (_isPerformingExplosion)
+//        {
 //            return;
-
+//        }
 //        ResetBossState();
 //        StartCoroutine(ExplosionComboRoutine());
 //    }
@@ -287,8 +669,14 @@
 //        _isPerformingExplosion = true;
 //        _moveActivate = false;
 //        _rotationActivate = false;
+//        JumpPrepare();
+//        //FaceCenter();
 
-//        FaceCenter();
+//        while (!IsFacingCenter())
+//        {
+//            FaceCenter();
+//            yield return null;
+//        }
 
 //        yield return StartCoroutine(JumpToCenterRoutine());
 
@@ -301,41 +689,54 @@
 //        yield return StartCoroutine(RaiseRocksRoutine(spawnedRocks));
 
 //        float timer = 0f;
-//        float explodeTime = 2.5f;
 
-//        while (timer < explodeTime)
+//        PrepareExplosion();
+//        while (timer < _explosionChargeTime)
 //        {
 //            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
 //            if (!_isShieldCharge)
 //            {
-//                //StunBoss();
 //                DestroyRocks(spawnedRocks);
 //                _isPerformingExplosion = false;
-//                _moveActivate = true;
-//                _rotationActivate = true;
+//                //_moveActivate = true;
+//                //_rotationActivate = true;
 //                yield break;
 //            }
 
 //            timer += Time.deltaTime;
 //        }
-
+//        FinishExplosion();
 //        AreaDamage();
 //        DestroyRocks(spawnedRocks);
-
+//        Idle(2);
+//        yield return new WaitForSeconds(1.5f);
 //        _isPerformingExplosion = false;
-//        _moveActivate = true;
-//        _rotationActivate = true;
+//        //_moveActivate = true;
+//        //_rotationActivate = true;
 //    }
+//    private bool IsFacingCenter(float toleranceDegrees = 5f)
+//    {
+//        Vector3 dir = _centerPoint.position - transform.position;
+//        dir.y = 0;
 
+//        if (dir.sqrMagnitude < 0.1f)
+//            return true;
+
+//        Quaternion target = Quaternion.LookRotation(dir.normalized);
+//        float angle = Quaternion.Angle(transform.rotation, target);
+
+//        return angle < toleranceDegrees;
+//    }
 //    private void FaceCenter()
 //    {
 //        Vector3 dir = _centerPoint.position - transform.position;
 //        dir.y = 0;
+
 //        if (dir.sqrMagnitude > 0.1f)
 //        {
 //            Quaternion target = Quaternion.LookRotation(dir.normalized);
-//            transform.rotation = target;
+//            transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * _rotationForce);
 //        }
 //    }
 
@@ -348,46 +749,42 @@
 //        float midHeight = (startPos.y + peakHeight) * 0.5f;
 
 //        float ascendSpeed = 45f;
-//        float forwardSpeed = 35f;
 //        float fallSpeed = 65f;
 
 //        //JumpExecute();
 //        UseGravity = false;
 //        IsGrounded = false;
 //        gameObject.layer = 18;
-
-//        while (transform.position.y < midHeight)
+//        Jump();
+//        while (_rb.position.y < peakHeight)
 //        {
 //            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-//            Vector3 dir = (targetPos - transform.position);
-//            dir.y = 1f;
-//            dir.Normalize();
+//            Vector3 horizontal = targetPos - _rb.position;
+//            horizontal.y = 0;
+//            horizontal.Normalize();
 
-//            transform.position += dir * ascendSpeed * Time.deltaTime;
+//            Vector3 finalDir = (horizontal * 0.2f + Vector3.up * 1f).normalized;
+
+//            _rb.MovePosition(_rb.position + finalDir * ascendSpeed * Time.deltaTime);
 //        }
-
-//        while (transform.position.y < peakHeight)
-//        {
-//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-
-//            Vector3 dir = (targetPos - transform.position);
-//            dir.y = 0.3f;
-//            dir.Normalize();
-
-//            transform.position += dir * forwardSpeed * Time.deltaTime;
-//        }
-
-//        yield return new WaitForSeconds(0.25f);
+//        OnMaxHeight();
+//        yield return new WaitForSeconds(0.5f);
 //        //MaxHeigh();
-
+//        FallExplo();
 //        Vector3 fallTarget = new Vector3(targetPos.x, startPos.y, targetPos.z);
 
-//        while (transform.position.y > fallTarget.y)
+//        while (_rb.position.y > fallTarget.y)
 //        {
 //            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-//            transform.position = Vector3.MoveTowards(transform.position,fallTarget,fallSpeed * Time.deltaTime);
+//            Vector3 nextPos = Vector3.MoveTowards(
+//                _rb.position,
+//                fallTarget,
+//                fallSpeed * Time.deltaTime
+//            );
+
+//            _rb.MovePosition(nextPos);
 //        }
 
 //        UseGravity = true;
@@ -404,10 +801,12 @@
 //        for (int i = 0; i < amount; i++)
 //        {
 //            float angle = i * (360f / amount);
-//            Vector3 offset = new Vector3( Mathf.Cos(angle * Mathf.Deg2Rad) *_rockSpawnRadius,-5f,Mathf.Sin(angle * Mathf.Deg2Rad) *_rockSpawnRadius);
+//            Vector3 offset = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad) * _rockSpawnRadius, -5f, Mathf.Sin(angle * Mathf.Deg2Rad) * _rockSpawnRadius);
 
 //            GameObject rock = Instantiate(_rocksHide, transform.position + offset, Quaternion.identity);
 //            rocks.Add(rock.transform);
+
+//            _activeRocks.Add(rock);
 //        }
 
 //        return rocks;
@@ -416,19 +815,39 @@
 
 //    private IEnumerator RaiseRocksRoutine(List<Transform> rocks)
 //    {
-//        float duration = 1.5f;
 //        float timer = 0f;
+//        List<Vector3> startPositions = new List<Vector3>();
+//        List<Vector3> endPositions = new List<Vector3>();
 
-//        while (timer < duration)
+//        foreach (var r in rocks)
+//        {
+//            Vector3 start = r.position;
+//            Vector3 end = start + Vector3.up * _rockRiseHeight;
+
+//            startPositions.Add(start);
+//            endPositions.Add(end);
+//        }
+
+//        while (timer < _rockRiseDuration)
 //        {
 //            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-//            foreach (var r in rocks)
-//                r.position += Vector3.up * 2f * Time.deltaTime;
+//            float t = timer / _rockRiseDuration;
+
+//            for (int i = 0; i < rocks.Count; i++)
+//            {
+//                rocks[i].position = Vector3.Lerp(startPositions[i], endPositions[i], t);
+//            }
 
 //            timer += Time.deltaTime;
 //        }
+
+//        for (int i = 0; i < rocks.Count; i++)
+//        {
+//            rocks[i].position = endPositions[i];
+//        }
 //    }
+
 //    private void DestroyRocks(List<Transform> rocks)
 //    {
 //        foreach (var r in rocks)
@@ -438,9 +857,28 @@
 //                Instantiate(_rocksDestroyParticles, r.position, Quaternion.identity);
 //            }
 //            Destroy(r.gameObject);
+
+//            _activeRocks.Remove(r.gameObject);
 //        }
 //    }
+
+//    private void DestroyActiveRocks()
+//    {
+//        if (_activeRocks == null || _activeRocks.Count == 0) return;
+
+//        foreach (var rock in _activeRocks.ToArray())
+//        {
+//            if (rock == null) continue;
+//            if (_rocksDestroyParticles != null)
+//            {
+//                Instantiate(_rocksDestroyParticles, rock.transform.position, Quaternion.identity);
+//            }
+//            Destroy(rock);
+//        }
+//        _activeRocks.Clear();
+//    }
 //    #endregion
+
 //    #region MultiRayThrow
 //    public void StartMultiRayCombo()
 //    {
@@ -449,6 +887,7 @@
 //            return;
 //        }
 //        ResetBossState();
+//        PrepareImpulse();
 //        StartCoroutine(MultiRayComboRoutine());
 //    }
 //    private IEnumerator MultiRayComboRoutine()
@@ -460,17 +899,19 @@
 //        Transform initialPoint = PickRandomDashPoint();
 
 //        yield return RotateTowardsPoint(initialPoint.position);
-
+//        Impulse();
 //        yield return MoveToPoint(initialPoint.position);
-
+//        DashFin();
 //        for (int i = 0; i < 4; i++)
 //        {
 //            yield return ChargeAndShootRay(i);
 //        }
-
+//        _shootRay = false;
 //        _isPerformingMultiRayCombo = false;
-//        _moveActivate = true;
-//        _rotationActivate = true;
+//        Idle(1);
+//        OnMove(Vector3.zero);
+//        //_moveActivate = true;
+//        //_rotationActivate = true;
 //    }
 //    private IEnumerator MoveToPoint(Vector3 point)
 //    {
@@ -481,6 +922,8 @@
 
 //        while (true)
 //        {
+//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
 //            Vector3 diff = targetPos - transform.position;
 //            diff.y = 0f;
 
@@ -525,6 +968,8 @@
 
 //        while (true)
 //        {
+//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+
 //            float angle = Quaternion.Angle(_rb.rotation, targetRot);
 
 //            if (angle < 4f)
@@ -537,36 +982,48 @@
 //                    _multiRayRotateForce * Time.deltaTime
 //                )
 //            );
-
-//            yield return null;
 //        }
 //    }
 //    private IEnumerator ChargeAndShootRay(int index)
 //    {
+//        ChargeRay(index + 1);
+
 //        Transform throwPoint = _rayThrowPoints[index];
+//        throwPoint.GetComponent<RayMatCharge>().Active();
 
-//        RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
-
-//        ray.Active();
-
-//        float timer = 0f;
-
-//        while (timer < 1f)
+//        while (!_shootRay)
 //        {
-//            timer += Time.deltaTime;
+//            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
 //            Vector3 dir = (_tgPos - transform.position);
 //            dir.y = 0f;
 
 //            RotateTowardsDuringMultiRay(dir);
-
-//            yield return null;
 //        }
 
-//        ray.GetTg(_tgPos);
+//        throwPoint.GetComponent<RayMatCharge>().Reinicio();
+
+//        ShootRay(index + 1);
+
+//        RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
+
+//        _spawnedRays.Add(ray);
+
+//        _activatedRays.Add(ray);
+
+//        ray.GetTg(_tgNoPredict.transform.position);
+
+//        _shootRay = false;
 
 //        while (ray != null)
+//        {
+//            if (GameManager.Instance.IsPaused)
+//            {
+//                yield return null;
+//                continue;
+//            }
 //            yield return null;
+//        }
 //    }
 //    private void RotateTowardsDuringMultiRay(Vector3 dir)
 //    {
@@ -587,6 +1044,7 @@
 //        return _rayDashPoints[Random.Range(0, _rayDashPoints.Length)];
 //    }
 //    #endregion
+
 //    #region DashRegion
 //    public void DashShoot()
 //    {
@@ -601,7 +1059,7 @@
 
 //    private void PickInitialDashPoint()
 //    {
-//        _currentDashTarget = _rayDashPoints[UnityEngine.Random.Range(0, _rayDashPoints.Length)];
+//        _currentDashTarget = _rayDashPoints[Random.Range(0, _rayDashPoints.Length)];
 //        StartDashRotation();
 //    }
 
@@ -611,7 +1069,7 @@
 
 //        var farthest3 = _rayDashPoints.OrderByDescending(t => Vector3.Distance(myPos, t.position)).Take(3).ToArray();
 
-//        _currentDashTarget = farthest3[UnityEngine.Random.Range(0, farthest3.Length)];
+//        _currentDashTarget = farthest3[Random.Range(0, farthest3.Length)];
 
 //        StartDashRotation();
 //    }
@@ -628,7 +1086,9 @@
 //    private void FixedUpdateDash()
 //    {
 //        if (_performingRaySequence || _waitingToShootRay)
+//        {
 //            return;
+//        }
 
 //        if (_isRotatingToDash)
 //        {
@@ -658,7 +1118,7 @@
 //            return;
 
 //        Quaternion targetRot = Quaternion.LookRotation(dir.normalized, Vector3.up);
-//        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRot, _rotationForce/2 * Time.fixedDeltaTime));
+//        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRot, _rotationForce / 2 * Time.fixedDeltaTime));
 
 //        if (Quaternion.Angle(_rb.rotation, targetRot) < _rotationAngleThreshold)
 //        {
@@ -666,7 +1126,16 @@
 //            StartDash();
 //        }
 //    }
+//    private void RotateDuringCharge()
+//    {
+//        Vector3 dir = (_tgPos - transform.position);
+//        dir.y = 0f;
 
+//        if (dir.sqrMagnitude < 0.001f) return;
+
+//        Quaternion targetRot = Quaternion.LookRotation(dir);
+//        _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRot, _rotationForce * Time.fixedDeltaTime));
+//    }
 //    private void StartDash()
 //    {
 //        Impulse();
@@ -677,8 +1146,9 @@
 //    private void DashMovement()
 //    {
 //        if (_currentDashTarget == null)
+//        {
 //            return;
-
+//        }
 //        Vector3 targetPos = _currentDashTarget.position;
 //        targetPos.y = transform.position.y;
 
@@ -720,51 +1190,52 @@
 //        if (_dashCounter > 0)
 //        {
 //            _waitingToShootRay = true;
-//        _rotationActivate = false;
-//        _moveActivate = false;
+//            _rotationActivate = false;
+//            _moveActivate = false;
 
-//        while (true)
-//        {
-//            Vector3 dir = (_tgPos - transform.position);
-//            dir.y = 0f;
+//            _rayThrowPoints[0].GetComponent<RayMatCharge>().Active();
+//            ChargeRay(1);
 
-//            RotateToTarget(dir);
+//            while (!_shootRay)
+//            {
+//                yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-//            float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
-//            if (angle < 5f) break;
+//                RotateDuringCharge();
 
-//            yield return null;
-//        }
+//                yield return null;
+//            }
 
-//        _waitingToShootRay = false;
+//            _waitingToShootRay = false;
+//            _rayThrowPoints[0].GetComponent<RayMatCharge>().Reinicio();
 
-//        RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, transform.rotation).GetComponent<RayShoot>();
-//        spawnedRay.Active();
-//        _performingRaySequence = true;
+//            RayShoot spawnedRay = Instantiate(_rayPrefab,_rayThrowPoints[0].position,_rayThrowPoints[0].rotation).GetComponent<RayShoot>();
 
-//        yield return new WaitForSeconds(1f);
+//            _spawnedRays.Add(spawnedRay);
+//            _activatedRays.Add(spawnedRay);
 
-//        spawnedRay.GetTg(_tgPos);
+//            spawnedRay.GetTg(_tgNoPredict.transform.position);
 
-//        yield return new WaitForSeconds(1f);
+//            _shootRay = false;
+//            yield return new WaitForSeconds(1f);
 //        }
 
 //        _performingRaySequence = false;
 //        _dashCounter++;
 
-//        //Finalizando Dash
 //        if (_dashCounter >= 4)
 //        {
-//            _moveActivate = true;
-//            _rotationActivate = true;
+//            Idle(1);
 //            _isRotatingToDash = false;
 //            _isDashing = false;
 //            _currentDashTarget = null;
-//            StartMultiRayCombo();
 //            yield break;
 //        }
 
 //        PickNextDashPoint();
+//    }
+//    public void SpereActive()
+//    {
+//        _shootRay=true;
 //    }
 //    private void CheckDashStun(Vector3 startPos, Vector3 endPos)
 //    {
@@ -781,7 +1252,7 @@
 //        Quaternion orientation = Quaternion.LookRotation(direction.normalized);
 
 //        Collider[] cols = Physics.OverlapBox(center, halfSize, orientation, _enemyLayer);
-//        print("DashDamage");
+//        //print("DashDamage");
 //        foreach (Collider col in cols)
 //        {
 //            Entity entity = col.GetComponent<Entity>();
@@ -794,7 +1265,7 @@
 //            {
 //                continue;
 //            }
-//            if(!entity.IsGrounded)
+//            if (!entity.IsGrounded)
 //            {
 //                continue;
 //            }
@@ -802,6 +1273,7 @@
 //        }
 //    }
 //    #endregion
+
 //    #region GenericRegion
 //    public override void FlyFunct()
 //    {
@@ -842,11 +1314,15 @@
 //        _isRotatingToDash = false;
 //        _waitingToShootRay = false;
 //        _performingRaySequence = false;
-//        _moveActivate = false;
-//        _rotationActivate = false;
-
+//        _fistToFistCombo = false;
+//        //_moveActivate = false;
+//        //_rotationActivate = false;
+//        _shootRay=false;
 //        _currentDashTarget = null;
 //        _dashCounter = 0;
+
+//        _isDoingCloseCombo = false;
+//        _closeAttackCounter = 0;
 
 //        _rb.angularVelocity = Vector3.zero;
 //    }
@@ -861,14 +1337,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+
 [RequireComponent(typeof(Rigidbody))]
 public class DemonBossModel : Entity, Idamageable
 {
     [Header("General Components and Values")]
     [SerializeField][Range(0, 1000)] private float _shieldLife = 1000;
+    [SerializeField] private GameObject _victoryPanel;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private ParticleSystem _bloodVfx;
@@ -885,12 +1364,17 @@ public class DemonBossModel : Entity, Idamageable
     [SerializeField] private float _rockRiseDuration = 1.5f;
     [SerializeField] private float _explosionChargeTime = 3f;
     [SerializeField] private GameObject _bigThunderWave;
+    [SerializeField] private Image _healtBar;
+    [SerializeField] private GameObject lifebarToClose;
     [Header("Ray Throw")]
     [SerializeField] private GameObject _rayPrefab;
     [SerializeField] private Transform[] _rayThrowPoints = new Transform[4];
     [SerializeField] private Transform[] _rayDashPoints = new Transform[16];
+    private float _maxLife;
     private bool _waitingToShootRay = false;
     private bool _performingRaySequence = false;
+    private bool explosionUsed45 = false;
+    private bool explosionUsed20 = false;
 
     [Header("Dash")]
     [SerializeField] private float _dashForce;
@@ -904,11 +1388,13 @@ public class DemonBossModel : Entity, Idamageable
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private float _stunDuration = 3f;
     [SerializeField] private Vector3 _boxHalfExtents = new Vector3(2f, 2f, 2f);
+
     [Header("ExplosionCharge")]
     [SerializeField] private float _chargeDuration;
     [SerializeField] private ParticleSystem _chargeParticle;
     [SerializeField] private ParticleSystem _explosionParticle;
     [SerializeField] private float _areaDamage;
+
     //PRIVATES GENERIC
     [SerializeField] private float _multiRayRotateForce = 8f;
     private bool _isPerformingMultiRayCombo = false;
@@ -926,29 +1412,42 @@ public class DemonBossModel : Entity, Idamageable
     private HashSet<RayShoot> _activatedRays = new HashSet<RayShoot>();
     private int _closeAttackCounter = 0;
     private bool _isDoingCloseCombo = false;
-    private bool _shootRay=false;
-    //private bool _isStunned = false;
+    private bool _shootRay = false;
+    private bool _fistToFistCombo = false;
+    private bool _isdead = false;
+    private Coroutine _shieldCharge;
+    private bool _isDashingRoutine=false;
+
+    // coroutines references for safe stopping
+    private Coroutine _closeComboCoroutine;
+    private Coroutine _explosionCoroutine;
+    private Coroutine _multiRayCoroutine;
+    private Coroutine _rayBeforeNextDashCoroutine;
 
     //EVENTOS
     public event Action PrepareImpulse = delegate { };
     public event Action Impulse = delegate { };
     public event Action DashFin = delegate { };
-    public event Action<int> Idle=delegate { };
-    public event Action<int> ChargeRay=delegate { };
-    public event Action<int> ShootRay=delegate { };
+    public event Action<int> Idle = delegate { };
+    public event Action<int> ChargeRay = delegate { };
+    public event Action<int> ShootRay = delegate { };
     public event Action<bool> Grounded = delegate { };
     public event Action<Vector3> OnMove = delegate { };
     public event Action GetToTheAir = delegate { };
     public event Action GetToGround = delegate { };
     public event Action OnAirHit = delegate { };
     public event Action OnHitStunt = delegate { };
-    public event Action OnAttackClose=delegate { };
-    public event Action OnMaxHeight=delegate { };
-    public event Action Jump=delegate { };
-    public event Action JumpPrepare=delegate { };
-    public event Action FallExplo=delegate { };
-    public event Action PrepareExplosion=delegate { };
-    public event Action<bool> FuriousWalk=delegate { };
+    public event Action OnAttackClose = delegate { };
+    public event Action OnMaxHeight = delegate { };
+    public event Action Jump = delegate { };
+    public event Action JumpPrepare = delegate { };
+    public event Action FallExplo = delegate { };
+    public event Action PrepareExplosion = delegate { };
+    public event Action FinishExplosion = delegate { };
+    public event Action<bool> FuriousWalk = delegate { };
+    public event Action OnDeath = delegate { };
+    public event Action OnStunt = delegate { };
+
     private void Awake()
     {
         IsRayStunable = false;
@@ -962,7 +1461,9 @@ public class DemonBossModel : Entity, Idamageable
     private void Start()
     {
         GameManager.Instance.AddEntity(this, KindOfEntity.Enemy);
+        lifebarToClose.SetActive(true);
         Life = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].Life;
+        _maxLife = Life;
         EventManager.Suscribe(EventManager.KindOfEvent.OnPjChangePosition, TakePjPosition);
 
         _fsm.AddState(FsmDemonBoss.AgentStates.OnGoinAir, new OnGoingAirState(this, () => _fsm.ChangeState(FsmDemonBoss.AgentStates.OnMidAir), 4.5f, GroundDistanceDetector, _rb));
@@ -975,36 +1476,94 @@ public class DemonBossModel : Entity, Idamageable
 
     private void Update()
     {
+        if (_isdead)
+        {
+            return;
+        }
+
         _tgNoPredict = GameManager.Instance.GetCloseEnemy(GameManager.Instance.RefreshEnemy(Kind), transform);
+
         if (GameManager.Instance.IsPaused)
             return;
 
         if (UseGravity)
         {
-            if (GravValue < GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].GravityForce)
+            float maxGrav = GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].GravityForce;
+            if (GravValue < maxGrav)
                 GravValue += Time.deltaTime * 7f;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+
+        if (_isPerformingExplosion ||
+            _isPerformingMultiRayCombo ||
+            _isDashing ||
+            _fistToFistCombo ||
+            Stuned ||
+            !_isShieldCharge||_isDashingRoutine)
         {
+            _fsm.ArtificialUpdate();
+            return;
+        }
+
+        float hpPercent = Life / GameManager.Instance.EnemyConfiguration[EnemyCatalogue.DemonBoss].Life;
+
+        if (!explosionUsed45 && hpPercent <= 0.45f)
+        {
+            explosionUsed45 = true;
             StartExplosionCombo();
+            _fsm.ArtificialUpdate();
+            return;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+
+        if (!explosionUsed20 && hpPercent <= 0.20f)
         {
-            DashShoot();
+            explosionUsed20 = true;
+            StartExplosionCombo();
+            _fsm.ArtificialUpdate();
+            return;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+
+        if (hpPercent > 0.60f)
         {
-            StartMultiRayCombo();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
+            // fase 1: close combos prioritarios
             StartCloseAttackCombo();
+            _fsm.ArtificialUpdate();
+            return;
         }
+
+        if (hpPercent <= 0.60f)
+        {
+            float rng = Random.value;
+
+            if (rng <= 0.50f)
+            {
+                StartCloseAttackCombo();
+            }
+            else
+            {
+                if (Random.Range(0, 100) > 50)
+                {
+                    StartMultiRayCombo();
+                    //DashShoot();
+                }
+                else
+                {
+                    DashShoot();
+                }
+            }
+
+            _fsm.ArtificialUpdate();
+            return;
+        }
+
         _fsm.ArtificialUpdate();
     }
 
     private void FixedUpdate()
     {
+        if (_isdead)
+        {
+            return;
+        }
         if (GameManager.Instance.IsPaused)
             return;
 
@@ -1021,9 +1580,6 @@ public class DemonBossModel : Entity, Idamageable
         }
         if (_moveActivate)
         { OnMovePj(); }
-
-        /*if (_rotationActivate)
-        { RotateToTarget(_tgNoPredict.transform.position); }*/
 
         FixedUpdateDash();
     }
@@ -1069,7 +1625,7 @@ public class DemonBossModel : Entity, Idamageable
         {
             if (!GameManager.Instance.SphereLineOfSight(_tgPos, transform.position, 0.5f))
             { continue; }
-            if (Vector3.Distance(transform.position - Vector3.up * 2, r.transform.position) < 500)
+            if (Vector3.Distance(transform.position, r.transform.position) < 500)
             {
                 if (r.TryGetComponent<Idamageable>(out var damageable))
                 {
@@ -1104,109 +1660,29 @@ public class DemonBossModel : Entity, Idamageable
     #endregion
 
     #region FistToFistCombo
-
     public void StartCloseAttackCombo()
     {
+        // si ya esta en combo no iniciar otro
         if (_isDoingCloseCombo || Stuned)
         {
             return;
         }
+
+        if (_tgNoPredict == null)
+        {
+            // no hay target valido ahora mismo
+            return;
+        }
+
         Idle(2);
         FuriousWalk(true);
-        ResetBossState();
-        StartCoroutine(CloseAttackCombo());
+        ResetBossState(); // detiene otras acciones activas
+        _fistToFistCombo = true;
+        _closeAttackCounter = 0;
+        if (_closeComboCoroutine != null) StopCoroutine(_closeComboCoroutine);
+        _closeComboCoroutine = StartCoroutine(CloseAttackCombo());
     }
 
-    /* private IEnumerator CloseAttackCombo()
-     {
-         yield return new WaitForSeconds(1.2f);
-         _isDoingCloseCombo = true;
-         _moveActivate = true;
-         _rotationActivate = true;
-
-         float walkTimer = 0f;
-         float maxWalkTime = 5f;
-         float dashDistance = 15f;
-         float hitDistance = 3f;
-         float dashOffset = 2f;
-
-         _closeAttackCounter++;
-
-         while (true)
-         {
-             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-
-             if (!_isShieldCharge || Stuned)
-             {
-                 ResetCloseCombo();
-                 yield break;
-             }
-
-             Vector3 toPlayer = _tgPos - transform.position;
-             float distance = toPlayer.magnitude;
-
-             if (_rotationActivate)
-             {
-                 OnMove(Vector3.forward);
-                 RotateToTarget(_tgPos);
-             }
-
-             if (distance <= hitDistance)
-             {
-                 StopMove();
-                 StopRotate();
-                 OnMove(Vector3.zero);
-                 OnAttackClose();
-
-                 float wait = 0f;
-                 while (wait < 4f)
-                 {
-                     yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
-
-                     if (!_isShieldCharge || Stuned)
-                     {
-                         ResetCloseCombo();
-                         yield break;
-                     }
-
-                     wait += Time.deltaTime;
-                 }
-
-                 bool repeat = Random.value <= 0.75f;
-
-                 if (!repeat || _closeAttackCounter >= 3)
-                 {
-                     ResetCloseCombo(true);
-                     yield break;
-                 }
-
-                 walkTimer = 0f;
-                 _moveActivate = true;
-                 _rotationActivate = true;
-                 continue;
-             }
-
-             walkTimer += Time.deltaTime;
-
-             if (walkTimer >= maxWalkTime || distance >= dashDistance)
-             {
-                 Impulse();
-                 yield return DashToPlayer(dashOffset);
-
-                 if (!_isShieldCharge || Stuned)
-                 {
-                     ResetCloseCombo();
-                     yield break;
-                 }
-
-                 walkTimer = 0f;
-                 continue;
-             }
-
-             Dir = toPlayer.normalized;
-             OnMovePj();
-         }
-     }*/
     private IEnumerator CloseAttackCombo()
     {
         yield return new WaitForSeconds(1.2f);
@@ -1226,10 +1702,18 @@ public class DemonBossModel : Entity, Idamageable
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-            if (!_isShieldCharge || Stuned)
+            // exit if shield lost, stunned, or dead
+            if (!_isShieldCharge || Stuned || _isdead)
             {
                 ResetCloseCombo();
                 yield break;
+            }
+
+            if (_tgPos == Vector3.zero)
+            {
+                // si no hay posición prevista, espera un frame
+                yield return null;
+                continue;
             }
 
             Vector3 toPlayer = _tgPos - transform.position;
@@ -1247,9 +1731,8 @@ public class DemonBossModel : Entity, Idamageable
                 Vector3 toPlayerDir = toPlayer.normalized;
                 float angleToPlayer = Vector3.Angle(forward, toPlayerDir);
 
-                if (angleToPlayer > 35)
+                if (angleToPlayer > 20)
                 {
-                    // Sigue moviéndose para alinearse
                     walkTimer += Time.deltaTime;
                     Dir = toPlayer.normalized;
                     OnMovePj();
@@ -1287,6 +1770,7 @@ public class DemonBossModel : Entity, Idamageable
                 walkTimer = 0f;
                 _moveActivate = true;
                 _rotationActivate = true;
+                _closeAttackCounter++;
                 continue;
             }
 
@@ -1295,7 +1779,11 @@ public class DemonBossModel : Entity, Idamageable
             if (walkTimer >= maxWalkTime || distance >= dashDistance)
             {
                 Impulse();
-                yield return DashToPlayer(dashOffset);
+                // dash hacia jugador (si existe)
+                if (_tgNoPredict != null)
+                {
+                    yield return DashToPlayer(dashOffset);
+                }
 
                 if (!_isShieldCharge || Stuned)
                 {
@@ -1312,10 +1800,12 @@ public class DemonBossModel : Entity, Idamageable
         }
     }
 
-
     private IEnumerator DashToPlayer(float offset)
     {
         float dashSpeed = 25f;
+
+        if (_tgNoPredict == null)
+            yield break;
 
         Vector3 dir = (_tgNoPredict.transform.position - transform.position).normalized;
         Vector3 target = _tgNoPredict.transform.position - dir * offset;
@@ -1341,9 +1831,14 @@ public class DemonBossModel : Entity, Idamageable
                 yield break;
             }
 
+            if (_tgNoPredict == null)
+            {
+                yield break;
+            }
+
             RotateToTarget(_tgNoPredict.transform.position);
 
-            Vector3 next = Vector3.MoveTowards(current,target,dashSpeed * Time.deltaTime);
+            Vector3 next = Vector3.MoveTowards(current, target, dashSpeed * Time.deltaTime);
 
             _rb.MovePosition(next);
         }
@@ -1351,17 +1846,22 @@ public class DemonBossModel : Entity, Idamageable
 
     private void ResetCloseCombo(bool normalEnd = false)
     {
-        //StopMove();
+        // stop and cleanup
+        if (_closeComboCoroutine != null)
+        {
+            StopCoroutine(_closeComboCoroutine);
+            _closeComboCoroutine = null;
+        }
+
+        StopMove();
         StopRotate();
+        _fistToFistCombo = false;
         _isDoingCloseCombo = false;
-
-        if (normalEnd)
-            _closeAttackCounter = 0;
-        else
-            _closeAttackCounter = 0;
-
         _moveActivate = false;
         _rotationActivate = false;
+
+        // reset counter either way (keeps your original behavior)
+        _closeAttackCounter = 0;
     }
 
     private void StopMove()
@@ -1374,7 +1874,6 @@ public class DemonBossModel : Entity, Idamageable
     {
         _rotationActivate = false;
     }
-
     #endregion
 
     #region IdamageableRegion
@@ -1382,26 +1881,6 @@ public class DemonBossModel : Entity, Idamageable
     {
         if (Life <= 0)
             return;
-
-        if (Stuned)
-        {
-            if (_bloodVfx != null && isStuntDamage)
-                _bloodVfx.Play();
-
-            Life -= dmg;
-
-            if (!downHit && isStuntDamage)
-            {
-                if (IsGrounded)
-                    OnHitStunt();
-                else
-                {
-                    OnAirHit();
-                    MantainOnAir();
-                }
-            }
-            return;
-        }
 
         if (_isShieldCharge)
         {
@@ -1413,7 +1892,8 @@ public class DemonBossModel : Entity, Idamageable
 
                 _isShieldCharge = false;
 
-                StopAllCoroutines();
+                // stop only combo coroutines (no StopAllCoroutines)
+                StopAllComboCoroutines();
                 ResetBossState();
 
                 DestroyActiveRocks();
@@ -1428,31 +1908,52 @@ public class DemonBossModel : Entity, Idamageable
                 }
                 _spawnedRays.Clear();
                 _activatedRays.Clear();
-
-                OnHitStunt();
-
-                //_isStunned = true;
+                OnMove(Vector3.zero);
+                OnStunt();
                 Stuned = true;
 
-                StartCoroutine(ShieldRechardRoutine());
+                _shieldCharge = StartCoroutine(ShieldRechardRoutine());
             }
         }
         else
         {
             if (_bloodVfx != null && isStuntDamage)
+            {
                 _bloodVfx.Play();
-
+            }
             Life -= dmg;
-
+            _healtBar.fillAmount = (Life / _maxLife);
+ 
             if (!downHit && isStuntDamage)
             {
                 if (IsGrounded)
+                {
                     OnHitStunt();
+                }
                 else
                 {
                     OnAirHit();
                     MantainOnAir();
                 }
+            }
+
+            if (Life <= 0)
+            {
+                _isdead = true;
+                if (_shieldCharge != null)
+                {
+                    StopCoroutine(_shieldCharge);
+                    _shieldCharge = null;
+                }
+                _isShieldCharge = false;
+                if (_victoryPanel != null)
+                {
+                    _victoryPanel.SetActive(true);
+                }
+                gameObject.layer = 18;
+                lifebarToClose.SetActive(false);
+                OnStunt();
+                OnDeath();
             }
         }
     }
@@ -1473,9 +1974,9 @@ public class DemonBossModel : Entity, Idamageable
         _isShieldCharge = true;
         Stuned = false;
         ResetBossState();
-       // _moveActivate = true;
-       // _rotationActivate = true;
+        _shieldCharge = null;
         _currentDashTarget = null;
+        // ensure combos flags are cleared
         _isDoingCloseCombo = false;
         _isPerformingExplosion = false;
         _isPerformingMultiRayCombo = false;
@@ -1492,7 +1993,8 @@ public class DemonBossModel : Entity, Idamageable
             return;
         }
         ResetBossState();
-        StartCoroutine(ExplosionComboRoutine());
+        if (_explosionCoroutine != null) StopCoroutine(_explosionCoroutine);
+        _explosionCoroutine = StartCoroutine(ExplosionComboRoutine());
     }
 
     private IEnumerator ExplosionComboRoutine()
@@ -1501,7 +2003,6 @@ public class DemonBossModel : Entity, Idamageable
         _moveActivate = false;
         _rotationActivate = false;
         JumpPrepare();
-        //FaceCenter();
 
         while (!IsFacingCenter())
         {
@@ -1520,8 +2021,8 @@ public class DemonBossModel : Entity, Idamageable
         yield return StartCoroutine(RaiseRocksRoutine(spawnedRocks));
 
         float timer = 0f;
-        
 
+        PrepareExplosion();
         while (timer < _explosionChargeTime)
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
@@ -1530,21 +2031,20 @@ public class DemonBossModel : Entity, Idamageable
             {
                 DestroyRocks(spawnedRocks);
                 _isPerformingExplosion = false;
-                //_moveActivate = true;
-                //_rotationActivate = true;
                 yield break;
             }
 
             timer += Time.deltaTime;
         }
-
+        FinishExplosion();
         AreaDamage();
         DestroyRocks(spawnedRocks);
         Idle(2);
+        yield return new WaitForSeconds(1.5f);
         _isPerformingExplosion = false;
-        //_moveActivate = true;
-        //_rotationActivate = true;
+        _explosionCoroutine = null;
     }
+
     private bool IsFacingCenter(float toleranceDegrees = 5f)
     {
         Vector3 dir = _centerPoint.position - transform.position;
@@ -1581,7 +2081,6 @@ public class DemonBossModel : Entity, Idamageable
         float ascendSpeed = 45f;
         float fallSpeed = 65f;
 
-        //JumpExecute();
         UseGravity = false;
         IsGrounded = false;
         gameObject.layer = 18;
@@ -1600,7 +2099,6 @@ public class DemonBossModel : Entity, Idamageable
         }
         OnMaxHeight();
         yield return new WaitForSeconds(0.5f);
-        //MaxHeigh();
         FallExplo();
         Vector3 fallTarget = new Vector3(targetPos.x, startPos.y, targetPos.z);
 
@@ -1641,7 +2139,6 @@ public class DemonBossModel : Entity, Idamageable
 
         return rocks;
     }
-
 
     private IEnumerator RaiseRocksRoutine(List<Transform> rocks)
     {
@@ -1712,19 +2209,22 @@ public class DemonBossModel : Entity, Idamageable
     #region MultiRayThrow
     public void StartMultiRayCombo()
     {
-        if (_performingRaySequence || _isDashing || _isPerformingMultiRayCombo)
+        if (_performingRaySequence || _isDashing || _isPerformingMultiRayCombo || Stuned)
         {
             return;
         }
         ResetBossState();
         PrepareImpulse();
-        StartCoroutine(MultiRayComboRoutine());
+        if (_multiRayCoroutine != null) StopCoroutine(_multiRayCoroutine);
+        _multiRayCoroutine = StartCoroutine(MultiRayComboRoutine());
     }
+
     private IEnumerator MultiRayComboRoutine()
     {
         _isPerformingMultiRayCombo = true;
         _moveActivate = false;
         _rotationActivate = false;
+        _performingRaySequence = true;
 
         Transform initialPoint = PickRandomDashPoint();
 
@@ -1738,11 +2238,12 @@ public class DemonBossModel : Entity, Idamageable
         }
         _shootRay = false;
         _isPerformingMultiRayCombo = false;
+        _performingRaySequence = false;
         Idle(1);
         OnMove(Vector3.zero);
-        //_moveActivate = true;
-        //_rotationActivate = true;
+        _multiRayCoroutine = null;
     }
+
     private IEnumerator MoveToPoint(Vector3 point)
     {
         Vector3 targetPos = point;
@@ -1786,6 +2287,7 @@ public class DemonBossModel : Entity, Idamageable
             yield return new WaitForFixedUpdate();
         }
     }
+
     private IEnumerator RotateTowardsPoint(Vector3 point)
     {
         Vector3 dir = point - transform.position;
@@ -1814,12 +2316,14 @@ public class DemonBossModel : Entity, Idamageable
             );
         }
     }
+
     private IEnumerator ChargeAndShootRay(int index)
     {
         ChargeRay(index + 1);
 
         Transform throwPoint = _rayThrowPoints[index];
-        throwPoint.GetComponent<RayMatCharge>().Active();
+        var mat = throwPoint.GetComponent<RayMatCharge>();
+        if (mat != null) mat.Active();
 
         while (!_shootRay)
         {
@@ -1831,30 +2335,31 @@ public class DemonBossModel : Entity, Idamageable
             RotateTowardsDuringMultiRay(dir);
         }
 
-        throwPoint.GetComponent<RayMatCharge>().Reinicio();
+        if (mat != null) mat.Reinicio();
 
         ShootRay(index + 1);
 
-        RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
+        if (_rayPrefab != null)
+        {
+            RayShoot ray = Instantiate(_rayPrefab, throwPoint.position, throwPoint.rotation).GetComponent<RayShoot>();
+            _spawnedRays.Add(ray);
+            _activatedRays.Add(ray);
 
-        _spawnedRays.Add(ray);
-
-        _activatedRays.Add(ray);
-
-        ray.GetTg(_tgNoPredict.transform.position);
+            if (_tgNoPredict != null)
+                ray.GetTg(_tgNoPredict.transform.position);
+        }
 
         _shootRay = false;
 
-        while (ray != null)
+        // wait until ray destroyed
+        while (true)
         {
-            if (GameManager.Instance.IsPaused)
-            {
-                yield return null;
-                continue;
-            }
-            yield return null;
+            yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
+            // break if no spawned rays remain active (or ray prefab not provided)
+            break;
         }
     }
+
     private void RotateTowardsDuringMultiRay(Vector3 dir)
     {
         if (dir.sqrMagnitude < 0.001f)
@@ -1869,6 +2374,7 @@ public class DemonBossModel : Entity, Idamageable
             )
         );
     }
+
     private Transform PickRandomDashPoint()
     {
         return _rayDashPoints[Random.Range(0, _rayDashPoints.Length)];
@@ -1878,18 +2384,34 @@ public class DemonBossModel : Entity, Idamageable
     #region DashRegion
     public void DashShoot()
     {
-        if (_isDashing || _isRotatingToDash)
+        if (_isDashing || _isRotatingToDash || Stuned)
         {
             return;
         }
         ResetBossState();
+        StopAllComboCoroutines();
+
+        _performingRaySequence = false;
+        _waitingToShootRay = false;
+        _shootRay = false;
+        _isDashing = false;
+        _isRotatingToDash = false;
         _dashCounter = 0;
+        _currentDashTarget = null;
+
+        Idle(0);
+        _isDashingRoutine = true;
+        PrepareImpulse();
+
         PickInitialDashPoint();
+
+        Debug.Log("[DemonBoss] DashShoot requested - starting rotation to dash target: " +
+                  (_currentDashTarget != null ? _currentDashTarget.name : "NULL"));
     }
 
     private void PickInitialDashPoint()
     {
-        _currentDashTarget = _rayDashPoints[UnityEngine.Random.Range(0, _rayDashPoints.Length)];
+        _currentDashTarget = _rayDashPoints[Random.Range(0, _rayDashPoints.Length)];
         StartDashRotation();
     }
 
@@ -1899,7 +2421,7 @@ public class DemonBossModel : Entity, Idamageable
 
         var farthest3 = _rayDashPoints.OrderByDescending(t => Vector3.Distance(myPos, t.position)).Take(3).ToArray();
 
-        _currentDashTarget = farthest3[UnityEngine.Random.Range(0, farthest3.Length)];
+        _currentDashTarget = farthest3[Random.Range(0, farthest3.Length)];
 
         StartDashRotation();
     }
@@ -1956,6 +2478,7 @@ public class DemonBossModel : Entity, Idamageable
             StartDash();
         }
     }
+
     private void RotateDuringCharge()
     {
         Vector3 dir = (_tgPos - transform.position);
@@ -1966,6 +2489,7 @@ public class DemonBossModel : Entity, Idamageable
         Quaternion targetRot = Quaternion.LookRotation(dir);
         _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, targetRot, _rotationForce * Time.fixedDeltaTime));
     }
+
     private void StartDash()
     {
         Impulse();
@@ -2009,12 +2533,20 @@ public class DemonBossModel : Entity, Idamageable
 
         _rb.MovePosition(_rb.position + dir * moveStep);
     }
+
     private void FinishDash()
     {
         DashFin();
         _isDashing = false;
-        StartCoroutine(RayBeforeNextDashRoutine());
+
+        if (_rayBeforeNextDashCoroutine != null)
+        {
+            StopCoroutine(_rayBeforeNextDashCoroutine);
+            _rayBeforeNextDashCoroutine = null;
+        }
+        _rayBeforeNextDashCoroutine = StartCoroutine(RayBeforeNextDashRoutine());
     }
+
     private IEnumerator RayBeforeNextDashRoutine()
     {
         if (_dashCounter > 0)
@@ -2023,7 +2555,8 @@ public class DemonBossModel : Entity, Idamageable
             _rotationActivate = false;
             _moveActivate = false;
 
-            _rayThrowPoints[0].GetComponent<RayMatCharge>().Active();
+            var mat = _rayThrowPoints[0].GetComponent<RayMatCharge>();
+            if (mat != null) mat.Active();
             ChargeRay(1);
 
             while (!_shootRay)
@@ -2036,14 +2569,18 @@ public class DemonBossModel : Entity, Idamageable
             }
 
             _waitingToShootRay = false;
-            _rayThrowPoints[0].GetComponent<RayMatCharge>().Reinicio();
+            if (mat != null) mat.Reinicio();
 
-            RayShoot spawnedRay = Instantiate(_rayPrefab,_rayThrowPoints[0].position,_rayThrowPoints[0].rotation).GetComponent<RayShoot>();
+            if (_rayPrefab != null)
+            {
+                RayShoot spawnedRay = Instantiate(_rayPrefab, _rayThrowPoints[0].position, _rayThrowPoints[0].rotation).GetComponent<RayShoot>();
 
-            _spawnedRays.Add(spawnedRay);
-            _activatedRays.Add(spawnedRay);
+                _spawnedRays.Add(spawnedRay);
+                _activatedRays.Add(spawnedRay);
 
-            spawnedRay.GetTg(_tgNoPredict.transform.position);
+                if (_tgNoPredict != null)
+                    spawnedRay.GetTg(_tgNoPredict.transform.position);
+            }
 
             _shootRay = false;
             yield return new WaitForSeconds(1f);
@@ -2058,15 +2595,21 @@ public class DemonBossModel : Entity, Idamageable
             _isRotatingToDash = false;
             _isDashing = false;
             _currentDashTarget = null;
+            _rayBeforeNextDashCoroutine = null;
+            _isRotatingToDash = false;
+            ResetBossState();
             yield break;
         }
 
         PickNextDashPoint();
+        _rayBeforeNextDashCoroutine = null;
     }
+
     public void SpereActive()
     {
-        _shootRay=true;
+        _shootRay = true;
     }
+
     private void CheckDashStun(Vector3 startPos, Vector3 endPos)
     {
         Vector3 center = (startPos + endPos) * 0.5f;
@@ -2082,7 +2625,6 @@ public class DemonBossModel : Entity, Idamageable
         Quaternion orientation = Quaternion.LookRotation(direction.normalized);
 
         Collider[] cols = Physics.OverlapBox(center, halfSize, orientation, _enemyLayer);
-        //print("DashDamage");
         foreach (Collider col in cols)
         {
             Entity entity = col.GetComponent<Entity>();
@@ -2138,22 +2680,64 @@ public class DemonBossModel : Entity, Idamageable
             }
         }
     }
+
     private void ResetBossState()
     {
+        // stop active behavior coroutines and reset flags and velocities
         _isDashing = false;
         _isRotatingToDash = false;
         _waitingToShootRay = false;
         _performingRaySequence = false;
-        //_moveActivate = false;
-        //_rotationActivate = false;
-        _shootRay=false;
+        _fistToFistCombo = false;
+        _shootRay = false;
         _currentDashTarget = null;
         _dashCounter = 0;
+        _isDashingRoutine = false;
+        // stop combo-specific coroutines
+        StopAllComboCoroutines();
 
         _isDoingCloseCombo = false;
         _closeAttackCounter = 0;
 
         _rb.angularVelocity = Vector3.zero;
+
+        // ensure ray coroutine ref is null (defensive)
+        if (_rayBeforeNextDashCoroutine != null)
+        {
+            StopCoroutine(_rayBeforeNextDashCoroutine);
+            _rayBeforeNextDashCoroutine = null;
+        }
+    }
+
+    private void StopAllComboCoroutines()
+    {
+        if (_closeComboCoroutine != null)
+        {
+            StopCoroutine(_closeComboCoroutine);
+            _closeComboCoroutine = null;
+        }
+        if (_explosionCoroutine != null)
+        {
+            StopCoroutine(_explosionCoroutine);
+            _explosionCoroutine = null;
+            _isPerformingExplosion = false;
+        }
+        if (_multiRayCoroutine != null)
+        {
+            StopCoroutine(_multiRayCoroutine);
+            _multiRayCoroutine = null;
+            _isPerformingMultiRayCombo = false;
+            _performingRaySequence = false;
+        }
+        if (_rayBeforeNextDashCoroutine != null)
+        {
+            StopCoroutine(_rayBeforeNextDashCoroutine);
+            _rayBeforeNextDashCoroutine = null;
+        }
+
+        _waitingToShootRay = false;
+        _performingRaySequence = false;
+        _shootRay = false;
     }
     #endregion
 
