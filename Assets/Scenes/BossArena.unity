@@ -73126,6 +73126,17 @@ PrefabInstance:
       objectReference: {fileID: 1789482908}
     - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
         type: 3}
+      propertyPath: _bigThunderWave
+      value: 
+      objectReference: {fileID: 3607540446773341290, guid: ff094e52fe4581146b32189869bcd455,
+        type: 3}
+    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
+        type: 3}
+      propertyPath: _explosionParticle
+      value: 
+      objectReference: {fileID: 3299387891366035441}
+    - target: {fileID: 2349184806392295909, guid: 53db79fc4b70d1a43845178f54620d34,
+        type: 3}
       propertyPath: '_rayDashPoints.Array.data[0]'
       value: 
       objectReference: {fileID: 1363162383}
@@ -73264,6 +73275,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53db79fc4b70d1a43845178f54620d34, type: 3}
+--- !u!198 &3299387891366035441 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3942717797898946834, guid: 53db79fc4b70d1a43845178f54620d34,
+    type: 3}
+  m_PrefabInstance: {fileID: 3299387891366035440}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &3303567654156107337
 MeshFilter:
   m_ObjectHideFlags: 0
