@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public enum EnemyCatalogue
 {
     Esqueleton,
@@ -51,6 +52,10 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.F3))
+        {
+            SceneManager.LoadScene("Boss1Level");
+        }
         if(GenericUpdate != null) { GenericUpdate(); }
         DecalUpdate();
         //print(_enemy.Count + " Enemigos");

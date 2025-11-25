@@ -116,13 +116,19 @@ public class Cards : MonoBehaviour
     {
         if (_rewardType == KindOfReward.Gold)
         {
-            SaveSystemManager.instance.GenericSave.Gold += _amount;
-            SaveSystemManager.instance.SaveData(4);
+            if (SaveSystemManager.instance != null)
+            {
+                SaveSystemManager.instance.GenericSave.Gold += _amount;
+                SaveSystemManager.instance.SaveData(4);
+            }
         }
         else if (_rewardType == KindOfReward.Diamonds)
         {
-            SaveSystemManager.instance.GenericSave.Diamond += _amount;
-            SaveSystemManager.instance.SaveData(4);
+            if (SaveSystemManager.instance != null)
+            {
+                SaveSystemManager.instance.GenericSave.Diamond += _amount;
+                SaveSystemManager.instance.SaveData(4);
+            }
         }
         else if (_rewardType == KindOfReward.Power && _selectedPower != null)
         {

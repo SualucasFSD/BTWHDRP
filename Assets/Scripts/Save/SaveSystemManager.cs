@@ -6,6 +6,7 @@ public class SaveSystemManager : MonoBehaviour
     public static SaveSystemManager instance;
     public DataSave[] _saveDatas = new DataSave[4];
     public DataSave GenericSave;
+    //public DataSave SaveLoaded;
     private string _path;
 
     private string[] _fileName = {
@@ -19,6 +20,7 @@ public class SaveSystemManager : MonoBehaviour
     private void Awake()
     {
         GenericSave = new DataSave();
+        //SaveLoaded= new DataSave();
         for (int i = 0; i < _saveDatas.Length; i++)
         {
             _saveDatas[i] = new DataSave();
@@ -52,14 +54,22 @@ public class SaveSystemManager : MonoBehaviour
     }
     public void SaveData(int i)
     {
-        if (i >= _saveDatas.Length)
+        if (i < 0 || i > 4)
         {
             Debug.LogWarning("Index fuera de rango al guardar");
             return;
         }
 
-        _saveDatas[i].Save = true;
-        string json = JsonUtility.ToJson(_saveDatas[i], true);
+        string json;
+
+        if (i == 4)
+        {
+            json = JsonUtility.ToJson(GenericSave, true);
+        }
+        else
+        {
+            json = JsonUtility.ToJson(_saveDatas[i], true);
+        }
         File.WriteAllText(_path + _fileName[i], json);
     }
 
@@ -85,6 +95,7 @@ public class SaveSystemManager : MonoBehaviour
         {
             string json = File.ReadAllText(_path + _fileName[i]);
             JsonUtility.FromJsonOverwrite(json, _saveDatas[i]);
+            //JsonUtility.FromJsonOverwrite(json, SaveLoaded);
             Debug.Log("Cargue Perfecto Save " + i);
         }
     }

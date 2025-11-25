@@ -277,12 +277,20 @@ public class OnPlayCanvas : MonoBehaviour
 
     public void RestartScene(params object[] p)
     {
+        if (SaveSystemManager.instance != null)
+        {
+            SaveSystemManager.instance._saveDatas[0] = new DataSave();
+        }
         EventManager.ResetEvent();
         SceneManager.LoadScene((string)p[0]);
     }
 
     public void MainMenuScene(params object[] p)
     {
+        if (SaveSystemManager.instance != null)
+        {
+            SaveSystemManager.instance._saveDatas[0] = new DataSave();
+        }
         EventManager.ResetEvent();
         SceneManager.LoadScene((string)p[0]);
     }

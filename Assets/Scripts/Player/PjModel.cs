@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]
@@ -55,6 +56,8 @@ public class PjModel : Entity, Idamageable
     private bool _haveCloseEnemy = false;
     private GameObject _closeEnemy;
     public float RotationSpeedMultiplyNoLock = 1;
+    private float _gold;
+    private float _diamond;
     //[SerializeField] private float _autoRotateRadius = 6f;
     #region Eventos
     public event Action<Vector3, bool> OnMovement = delegate { };
@@ -101,6 +104,18 @@ public class PjModel : Entity, Idamageable
         EventManager.Suscribe(EventManager.KindOfEvent.OnEnemyKilled, EnemyKilled);
         EventManager.Suscribe(EventManager.KindOfEvent.JumpPj, JumpExecute);
         EventManager.Suscribe(EventManager.KindOfEvent.KnightExecuteDodge, DodgeExecute);
+        if (SaveSystemManager.instance != null)
+        {
+            foreach (var i in SaveSystemManager.instance._saveDatas[0].PowerObtained)
+            {
+                _powerActivate[i].Item2.Active();
+                _powerActivate.Remove(i);
+            }
+            _gold = SaveSystemManager.instance.GenericSave.Gold;
+            _diamond = SaveSystemManager.instance.GenericSave.Diamond;
+            print(_gold);
+            print(_diamond);
+        }
     }
     private void Update()
     {
@@ -519,6 +534,10 @@ public class PjModel : Entity, Idamageable
              {
                  _deathCustomPass.SetActive(true);
              }*/
+            if (SaveSystemManager.instance != null)
+            {
+                SaveSystemManager.instance._saveDatas[0]=new DataSave();
+            }
             OnDeath();
 
             StartCoroutine(PostDeadThings());
@@ -598,6 +617,10 @@ public class PjModel : Entity, Idamageable
         {
             /*if (!_myAbilityText.isPlaying)
                 _myAbilityText.StartCoroutine(_myAbilityText.OnAbilityAcquired());*/
+            if(SaveSystemManager.instance!=null)
+            {
+                SaveSystemManager.instance._saveDatas[0].PowerObtained.Add((EnemyCatalogue)obj[1]);
+            }
             _powerActivate[(EnemyCatalogue)obj[1]].Item2.Active();
             _powerActivate.Remove((EnemyCatalogue)obj[1]);
         }
