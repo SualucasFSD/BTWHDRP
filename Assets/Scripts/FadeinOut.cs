@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FadeinOut : MonoBehaviour
 {
     [SerializeField] CanvasGroup _myBlack;
     [SerializeField] float _fadeTime = 1f;
-    
+
     void Start()
     {
         StartCoroutine(FadeOut());
@@ -31,24 +29,24 @@ public class FadeinOut : MonoBehaviour
         }
     }
 
-    IEnumerator FadeIn()
-    {
+     IEnumerator FadeIn()
+     {
 
-        if (_myBlack == null)
-            yield break;
-        _myBlack.gameObject.SetActive(true);
-        var elapsed = 0f;
+         if (_myBlack == null)
+             yield break;
+         _myBlack.gameObject.SetActive(true);
+         var elapsed = 0f;
 
-        while (elapsed <= _fadeTime)
-        {
-            var t = elapsed / _fadeTime;
+         while (elapsed <= _fadeTime)
+         {
+             var t = elapsed / _fadeTime;
 
-            _myBlack.alpha += t;
+             _myBlack.alpha += t;
 
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-    }
+             elapsed += Time.deltaTime;
+             yield return null;
+         }
+     }
 
     public void StartFadeIn()
     {

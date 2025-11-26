@@ -8,11 +8,6 @@ ShaderVariantCollection:
   m_PrefabAsset: {fileID: 0}
   m_Name: NewShaderVariants
   m_Shaders:
-  - first: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
   - first: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -23,11 +18,11 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-  - first: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  - first: {fileID: 103, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
-      - keywords: SHADOWS_DEPTH
-        passType: 8
+      - keywords: 
+        passType: 0
   - first: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -98,6 +93,8 @@ ShaderVariantCollection:
         passType: 8
       - keywords: DOTS_INSTANCING_ON _ALPHATEST_ON
         passType: 8
+      - keywords: DOTS_INSTANCING_ON _ALPHATEST_ON _DOUBLESIDED_ON
+        passType: 8
       - keywords: DOTS_INSTANCING_ON _DOUBLESIDED_ON
         passType: 8
       - keywords: _ALPHATEST_ON
@@ -122,20 +119,35 @@ ShaderVariantCollection:
         passType: 12
       - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
         passType: 12
-      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _ALPHATEST_ON
+      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _ALPHATEST_ON _DISABLE_DECALS
+          _DOUBLESIDED_ON
         passType: 12
       - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 12
-      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _ALPHATEST_ON _MASKMAP
-        passType: 12
-      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _MASKMAP
         passType: 12
       - keywords: 
         passType: 13
       - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
           DOTS_INSTANCING_ON PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON
           USE_CLUSTERED_LIGHTLIST USE_LEGACY_LIGHTMAPS _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _ENABLE_FOG_ON_TRANSPARENT _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
+          _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
+          DOTS_INSTANCING_ON PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON
+          USE_CLUSTERED_LIGHTLIST USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+          _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          USE_LEGACY_LIGHTMAPS _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+          _ENABLE_FOG_ON_TRANSPARENT _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
+          USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _ENABLE_FOG_ON_TRANSPARENT
+          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT DOTS_INSTANCING_ON LOD_FADE_CROSSFADE
           PROBE_VOLUMES_L1 RENDERING_LAYERS USE_LEGACY_LIGHTMAPS _MASKMAP _NORMALMAP
@@ -143,6 +155,10 @@ ShaderVariantCollection:
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT DOTS_INSTANCING_ON PROBE_VOLUMES_L1
           RENDERING_LAYERS USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT DOTS_INSTANCING_ON PROBE_VOLUMES_L1
+          RENDERING_LAYERS USE_LEGACY_LIGHTMAPS _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP
           _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT DOTS_INSTANCING_ON PROBE_VOLUMES_L1
@@ -155,10 +171,16 @@ ShaderVariantCollection:
           RENDERING_LAYERS USE_LEGACY_LIGHTMAPS _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
-          USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _EMISSIVE_COLOR_MAP _NORMALMAP_TANGENT_SPACE
+          USE_LEGACY_LIGHTMAPS _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          USE_LEGACY_LIGHTMAPS _EMISSIVE_COLOR_MAP _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           USE_LEGACY_LIGHTMAPS _EMISSIVE_COLOR_MAP _NORMALMAP_TANGENT_SPACE
@@ -172,12 +194,6 @@ ShaderVariantCollection:
       - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
           USE_LEGACY_LIGHTMAPS _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 USE_LEGACY_LIGHTMAPS
-          _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
-        passType: 13
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 USE_LEGACY_LIGHTMAPS
-          _NORMALMAP_TANGENT_SPACE
-        passType: 13
       - keywords: DOTS_INSTANCING_ON
         passType: 13
       - keywords: DOTS_INSTANCING_ON LOD_FADE_CROSSFADE USE_LEGACY_LIGHTMAPS _NORMALMAP
@@ -190,7 +206,10 @@ ShaderVariantCollection:
       - keywords: DOTS_INSTANCING_ON USE_LEGACY_LIGHTMAPS
         passType: 13
       - keywords: DOTS_INSTANCING_ON USE_LEGACY_LIGHTMAPS _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT
-          _SURFACE_TYPE_TRANSPARENT
+          _DOUBLESIDED_ON _NORMALMAP _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: DOTS_INSTANCING_ON USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT
+          _DOUBLESIDED_ON _NORMALMAP _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: DOTS_INSTANCING_ON USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _NORMALMAP
         passType: 13
@@ -200,7 +219,12 @@ ShaderVariantCollection:
         passType: 13
       - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER _ALPHATEST_ON
         passType: 13
+      - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER _ALPHATEST_ON _MASKMAP _NORMALMAP
+          _NORMALMAP_TANGENT_SPACE
+        passType: 13
       - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER _ALPHATEST_ON _MASKMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
+      - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER _ALPHATEST_ON _NORMALMAP
         passType: 13
       - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER _DOUBLESIDED_ON _MASKMAP
           _NORMALMAP _NORMALMAP_TANGENT_SPACE
@@ -217,6 +241,14 @@ ShaderVariantCollection:
         passType: 13
       - keywords: USE_LEGACY_LIGHTMAPS
         passType: 13
+      - keywords: USE_LEGACY_LIGHTMAPS _ALPHATEST_ON _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+          _NORMALMAP _SURFACE_TYPE_TRANSPARENT
+        passType: 13
+      - keywords: USE_LEGACY_LIGHTMAPS _DISABLE_DECALS _DOUBLESIDED_ON
+        passType: 13
+      - keywords: USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON _NORMALMAP
+          _SURFACE_TYPE_TRANSPARENT
+        passType: 13
       - keywords: USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON
         passType: 13
       - keywords: USE_LEGACY_LIGHTMAPS _DOUBLESIDED_ON _NORMALMAP
@@ -227,13 +259,20 @@ ShaderVariantCollection:
         passType: 13
       - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON
         passType: 13
+      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON
+        passType: 13
+      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _DISABLE_DECALS _DOUBLESIDED_ON
+          _NORMALMAP_TANGENT_SPACE
+        passType: 13
       - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 13
       - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
         passType: 13
+      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
+        passType: 13
       - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _MASKMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _NORMALMAP_TANGENT_SPACE
+      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _NORMALMAP
         passType: 13
       - keywords: WRITE_DECAL_BUFFER _DOUBLESIDED_ON _MASKMAP _NORMALMAP _NORMALMAP_TANGENT_SPACE
         passType: 13
@@ -247,7 +286,7 @@ ShaderVariantCollection:
         passType: 13
       - keywords: WRITE_DECAL_BUFFER _NORMALMAP_TANGENT_SPACE
         passType: 13
-      - keywords: _ALPHATEST_ON
+      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 13
       - keywords: _DOUBLESIDED_ON
         passType: 13
@@ -293,6 +332,12 @@ ShaderVariantCollection:
       variants:
       - keywords: DOTS_INSTANCING_ON
         passType: 0
+  - first: {fileID: -6465566751694194690, guid: 95060fe3e070428418e64e6bed27b111,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 13
   - first: {fileID: 4800000, guid: 2e37131331fbdca449b1a2bc47a639ca, type: 3}
     second:
       variants:
@@ -340,6 +385,11 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
+  - first: {fileID: 4800000, guid: bfa43a48695613b4ea19c58858ae1a61, type: 3}
+    second:
+      variants:
+      - keywords: AREA_SHADOW_MEDIUM DIRECTIONAL_SHADOW_LOW PUNCTUAL_SHADOW_LOW
+        passType: 0
   - first: {fileID: 4800000, guid: e3cab24f27741f44d8af1e94d006267c, type: 3}
     second:
       variants:
@@ -355,6 +405,10 @@ ShaderVariantCollection:
       variants:
       - keywords: APPLY_AFTER_POST
         passType: 0
+      - keywords: APPLY_AFTER_POST DITHER
+        passType: 0
+      - keywords: APPLY_AFTER_POST DITHER FXAA
+        passType: 0
   - first: {fileID: 4800000, guid: c4edd00ff2db5b24391a4fcb1762e459, type: 3}
     second:
       variants:
@@ -362,8 +416,6 @@ ShaderVariantCollection:
         passType: 8
       - keywords: _EMISSIVE_COLOR_MAP
         passType: 8
-      - keywords: 
-        passType: 12
       - keywords: 
         passType: 13
       - keywords: _EMISSIVE_COLOR_MAP
@@ -374,16 +426,21 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _SURFACE_TYPE_TRANSPARENT
         passType: 13
-  - first: {fileID: 4800000, guid: eb607f5e8fc16e140b732f33d26c8c31, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
   - first: {fileID: -6465566751694194690, guid: aefc63699cf4eff49a6bbb7c9ef5d160,
       type: 3}
     second:
       variants:
+      - keywords: _DOUBLESIDED_ON
+        passType: 8
+      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _DOUBLESIDED_ON
+        passType: 12
       - keywords: 
+        passType: 13
+      - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
+          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON USE_FPTL_LIGHTLIST
+          USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
+        passType: 13
+      - keywords: WRITE_DECAL_BUFFER _DOUBLESIDED_ON
         passType: 13
       - keywords: _DOUBLESIDED_ON
         passType: 13
@@ -392,37 +449,34 @@ ShaderVariantCollection:
     second:
       variants:
       - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 8
-      - keywords: WRITE_DECAL_BUFFER_AND_RENDERING_LAYER _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 12
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
-          USE_LEGACY_LIGHTMAPS _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 13
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 USE_LEGACY_LIGHTMAPS
-          _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 13
-      - keywords: WRITE_DECAL_BUFFER _ALPHATEST_ON _DOUBLESIDED_ON
-        passType: 13
-      - keywords: _ALPHATEST_ON _DOUBLESIDED_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: d050c951f6d88a047aa5c46e3692b18f,
       type: 3}
     second:
       variants:
-      - keywords: _DOUBLESIDED_ON
-        passType: 8
-      - keywords: AREA_SHADOW_MEDIUM DECALS_3RT DECAL_SURFACE_GRADIENT DIRECTIONAL_SHADOW_LOW
-          PROBE_VOLUMES_L1 PUNCTUAL_SHADOW_LOW SCREEN_SPACE_SHADOWS_ON USE_CLUSTERED_LIGHTLIST
-          USE_LEGACY_LIGHTMAPS _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
-          _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
-        passType: 13
       - keywords: _DISABLE_DECALS _DOUBLESIDED_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 2ffcad356dd52d640b95ea724bbd2302,
       type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 8
       - keywords: DOTS_INSTANCING_ON
+        passType: 8
+      - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER_AND_RENDERING_LAYER
+        passType: 12
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT DOTS_INSTANCING_ON PROBE_VOLUMES_L1
+          RENDERING_LAYERS USE_LEGACY_LIGHTMAPS
+        passType: 13
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT PROBE_VOLUMES_L1 RENDERING_LAYERS
+          USE_LEGACY_LIGHTMAPS
+        passType: 13
+      - keywords: DOTS_INSTANCING_ON
+        passType: 13
+      - keywords: DOTS_INSTANCING_ON WRITE_DECAL_BUFFER
+        passType: 13
+      - keywords: WRITE_DECAL_BUFFER
         passType: 13
   - first: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
     second:
@@ -482,16 +536,6 @@ ShaderVariantCollection:
           USE_LEGACY_LIGHTMAPS _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
           _SURFACE_TYPE_TRANSPARENT
         passType: 13
-  - first: {fileID: -6465566751694194690, guid: 6db042df6a1d7aa448250fc1b044ef7c,
-      type: 3}
-    second:
-      variants:
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT INSTANCING_ON _MATERIAL_AFFECTS_ALBEDO
-          _MATERIAL_AFFECTS_MASKMAP _MATERIAL_AFFECTS_NORMAL
-        passType: 13
-      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT _MATERIAL_AFFECTS_ALBEDO _MATERIAL_AFFECTS_MASKMAP
-          _MATERIAL_AFFECTS_NORMAL
-        passType: 13
   - first: {fileID: -6465566751694194690, guid: d661408afa94bea44861fb518f86803e,
       type: 3}
     second:
@@ -517,8 +561,6 @@ ShaderVariantCollection:
           _MATERIAL_FEATURE_COLORED_TRANSMISSION _SURFACE_TYPE_TRANSPARENT
         passType: 13
       - keywords: DOTS_INSTANCING_ON
-        passType: 13
-      - keywords: USE_LEGACY_LIGHTMAPS _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800000, guid: 36e335017ad71d54fbb10842863188ae, type: 3}
     second:
@@ -557,6 +599,13 @@ ShaderVariantCollection:
         passType: 13
       - keywords: DOTS_INSTANCING_ON
         passType: 13
+  - first: {fileID: -6465566751694194690, guid: a464ef8c454cb3643a701598dd57b45d,
+      type: 3}
+    second:
+      variants:
+      - keywords: DECALS_3RT DECAL_SURFACE_GRADIENT INSTANCING_ON _MATERIAL_AFFECTS_ALBEDO
+          _MATERIAL_AFFECTS_MASKMAP
+        passType: 13
   - first: {fileID: -6465566751694194690, guid: c15798bab349f7e42ab2ac40d002f92b,
       type: 3}
     second:
@@ -568,28 +617,10 @@ ShaderVariantCollection:
           USE_LEGACY_LIGHTMAPS _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
           _SURFACE_TYPE_TRANSPARENT
         passType: 13
-  - first: {fileID: -6465566751694194690, guid: 470ea0bf011d4394eb834b6fac9b7502,
-      type: 3}
-    second:
-      variants:
-      - keywords: DOTS_INSTANCING_ON _ALPHATEST_ON
-        passType: 8
-      - keywords: _ALPHATEST_ON
-        passType: 8
-      - keywords: DOTS_INSTANCING_ON _ALPHATEST_ON
-        passType: 12
-      - keywords: _ALPHATEST_ON
-        passType: 12
-      - keywords: DOTS_INSTANCING_ON _ALPHATEST_ON
-        passType: 13
-      - keywords: _ALPHATEST_ON
-        passType: 13
   - first: {fileID: 4800000, guid: 02e969dda67bbbf419541495c132bb5b, type: 3}
     second:
       variants:
       - keywords: INSTANCING_ON _ALPHATEST_ON
-        passType: 13
-      - keywords: _ALPHATEST_ON
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 091d7f222ade3b649a70079fe2aac1bf,
       type: 3}

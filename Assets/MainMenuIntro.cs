@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class MainMenuIntro : MonoBehaviour
 {
     [SerializeField] CanvasGroup _myBlack;
@@ -11,20 +10,34 @@ public class MainMenuIntro : MonoBehaviour
 
     [SerializeField] float _keyTime = .1f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    float _iti = 0;
+    private Coroutine _fade=null;
+    /*void Start()
     {
         StartCoroutine(IntroCoroutine());
-    }
+    }*/
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        _iti += Time.deltaTime;
+        if(_iti > 1&&!_B.activeInHierarchy)
+        {
+            _B.SetActive(true);
+        }
+        if(_iti > 2 && !_T.activeInHierarchy)
+        {
+            _T.SetActive(true);
+        }
+        if(_iti > 3 && !_W.activeInHierarchy)
+        {
+            _W.SetActive(true);
+        }
+        if(_iti>4&&_fade==null)
+        {
+            _fade= StartCoroutine(FadeOut());
+        }
     }
-
-
-    IEnumerator IntroCoroutine()
+    /*IEnumerator IntroCoroutine()
     {
         _B.SetActive(true);
         yield return new WaitForSeconds(_keyTime);
@@ -33,7 +46,7 @@ public class MainMenuIntro : MonoBehaviour
         _W.SetActive(true);
         yield return new WaitForSeconds(_keyTime);
         StartCoroutine(FadeOut());
-    }
+    }*/
 
     IEnumerator FadeOut()
     {

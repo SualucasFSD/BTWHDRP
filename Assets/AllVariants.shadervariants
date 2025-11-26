@@ -543,6 +543,8 @@ ShaderVariantCollection:
   - first: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
     second:
       variants:
+      - keywords: 
+        passType: 0
       - keywords: GLOW_ON
         passType: 0
   - first: {fileID: -6465566751694194690, guid: 26cbd8da5db8c7242ae64afd9e28a7be,
@@ -1025,16 +1027,6 @@ ShaderVariantCollection:
         passType: 13
       - keywords: _DISABLE_DECALS _DISABLE_SSR _DISABLE_SSR_TRANSPARENT _DOUBLESIDED_ON
         passType: 13
-  - first: {fileID: -6465566751694194690, guid: a464ef8c454cb3643a701598dd57b45d,
-      type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: 
-        passType: 13
-      - keywords: _MATERIAL_AFFECTS_ALBEDO _MATERIAL_AFFECTS_MASKMAP
-        passType: 13
   - first: {fileID: -6465566751694194690, guid: 9cea645f4931940428ec7022dc299741,
       type: 3}
     second:
@@ -1048,6 +1040,16 @@ ShaderVariantCollection:
       - keywords: 
         passType: 12
       - keywords: 
+        passType: 13
+  - first: {fileID: -6465566751694194690, guid: a464ef8c454cb3643a701598dd57b45d,
+      type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: 
+        passType: 13
+      - keywords: _MATERIAL_AFFECTS_ALBEDO _MATERIAL_AFFECTS_MASKMAP
         passType: 13
   - first: {fileID: -6465566751694194690, guid: c15798bab349f7e42ab2ac40d002f92b,
       type: 3}

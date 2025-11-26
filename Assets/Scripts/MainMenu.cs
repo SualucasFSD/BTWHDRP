@@ -150,6 +150,15 @@ public class MainMenu : MonoBehaviour
 
     private void PlayButton()
     {
+        Invoke(nameof(InvokePlayButton), 2);
+        if(TryGetComponent<MainMenuIntro>(out var compo))
+        {
+            print("Rutina");
+            compo.StartFadeIn();
+        }
+    }
+    private void InvokePlayButton()
+    {
         SceneManager.LoadSceneAsync(_sceneName);
     }
 
