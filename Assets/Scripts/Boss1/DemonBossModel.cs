@@ -58,6 +58,7 @@ public class DemonBossModel : Entity, Idamageable
     [SerializeField] private Vector3 _boxHalfExtents = new Vector3(2f, 2f, 2f);
 
     [Header("ExplosionCharge")]
+    [SerializeField] GameObject _chargeParticle;
     [SerializeField] private float _chargeDuration;
     //[SerializeField] private ParticleSystem _chargeParticle;
     [SerializeField] private ParticleSystem _explosionParticle;
@@ -751,7 +752,8 @@ public class DemonBossModel : Entity, Idamageable
         List<Transform> spawnedRocks = SpawnRocksAroundBoss();
 
         PrepareExplosion();
-        if(_explosionParticle!=null)
+        ChargeParticle(true);
+        if (_explosionParticle!=null)
         {
             _explosionParticle.Play();
         }
@@ -773,6 +775,7 @@ public class DemonBossModel : Entity, Idamageable
 
             timer += Time.deltaTime;
         }
+        ChargeParticle(false);
         FinishExplosion();
         if (_explosionParticle != null)
         {
@@ -784,6 +787,12 @@ public class DemonBossModel : Entity, Idamageable
         yield return new WaitForSeconds(1.5f);
         _isPerformingExplosion = false;
         _explosionCoroutine = null;
+    }
+
+    void ChargeParticle(bool state)
+    {
+         _chargeParticle.SetActive(state);
+       
     }
 
     private bool IsFacingCenter(float toleranceDegrees = 5f)
