@@ -133,16 +133,31 @@ public class KnightView : PjView
     #region Move System
     private void OnMove(Vector3 _dir, bool running)
     {
+        //print(_dir.sqrMagnitude);
         //_animator.SetBool("DodgeHasDirecction", DodgeHasDir);
         if (_dir.sqrMagnitude > 0)
         {
             _animator.SetBool("isMoving", true);
-            if (_animMove)
+            if (!_pjModel.IsDodging && !_pjModel.OnAttacking && _pjModel.IsGrounded&&_jumpDelay>=0.5f)
             {
-                _animMove = false;
-                _animator.SetTrigger("ForceMove");
+                var current = _animator.GetCurrentAnimatorStateInfo(1);
+                var next = _animator.GetNextAnimatorStateInfo(1);
+                bool alreadyInMoveTree =current.IsName("MoveTree") ||next.IsName("MoveTree") ||_animator.IsInTransition(1);
+
+                if (!alreadyInMoveTree)
+                {
+                    print("ForceMove");
+                    _animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+                }
             }
-        }
+        /*if (_animMove)
+        {
+            print("ForceMove");
+            _animMove = false;
+            _animator.CrossFadeInFixedTime("MoveTree", 0.25f, 1, 0f);
+            //_animator.SetTrigger("ForceMove");
+        }*/
+         }
         else
         {
             _animator.SetBool("isMoving", false);

@@ -128,7 +128,24 @@ public class PjModel : Entity, Idamageable
         {
             return;
         }
-        if(!Ready)
+        if (!IsGrounded)
+        {
+            OnFall(_rb.linearVelocity.y);
+            if (_actualJumps == 0) { _actualJumps = 1; }
+        }
+        else
+        {
+            GravValue = _gravityForce;
+            _jumpTimerReset += Time.deltaTime;
+            OnLanding();
+            if (_jumpTimerReset > 0.5f)
+            {
+                _dodgeReset = true;
+                _actualJumps = 0;
+                _jumpTimerReset = 0;
+            }
+        }
+        if (!Ready)
         {
             return;
         }
@@ -155,9 +172,8 @@ public class PjModel : Entity, Idamageable
         }
 
         _limitZone = _groundDetect.collider != null && _groundDetect.collider.gameObject.layer == 19;
-        //if (_limitZone) { Debug.LogWarning("LimitZone"); }
+
         EjecutePower();
-        //EventManager.Ejecute(EventManager.KindOfEvent.OnPjChangePosition, transform.position, Dir);
     }
     private void FixedUpdate()
     {
@@ -171,7 +187,7 @@ public class PjModel : Entity, Idamageable
         {
             _rb.AddForce(-transform.up * Mathf.Pow(GravValue, 2), ForceMode.Acceleration);
         }
-        if (!IsGrounded)
+       /* if (!IsGrounded)
         {
             OnFall(_rb.linearVelocity.y);
             if (_actualJumps == 0) { _actualJumps = 1; }
@@ -187,7 +203,7 @@ public class PjModel : Entity, Idamageable
                 _actualJumps = 0;
                 _jumpTimerReset = 0;
             }
-        }
+        }*/
         if (!Ready)
         {
             return;
