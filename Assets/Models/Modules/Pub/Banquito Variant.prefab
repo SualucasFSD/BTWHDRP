@@ -61,7 +61,7 @@ PrefabInstance:
     - target: {fileID: 790126482609954902, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 790126482609954902, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
@@ -76,7 +76,7 @@ PrefabInstance:
     - target: {fileID: 4255634556527700569, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4255634556527700569, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
@@ -91,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 8786489745031704154, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8786489745031704154, guid: 9efeb7cd58d614743811b20170dc2d30,
         type: 3}
@@ -196,7 +196,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a44e80dfa9c8be141afa0e71fd90a638,
         type: 3}
       propertyPath: m_Layer
-      value: 2
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a44e80dfa9c8be141afa0e71fd90a638,
         type: 3}
@@ -252,9 +252,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GenericDestroyable
   _mesh:
   - {fileID: 5071369198364150519}
+  _fakeMesh: {fileID: 0}
   _maxLife: 100
   _damageEffect: {fileID: 3649680069454665084}
   _isDestroyable: 1
+  _hitDestroyableEnemy: 0
+  _fixedCol: {fileID: 0}
+  _meshStay: 0
 --- !u!65 &431484063942590227
 BoxCollider:
   m_ObjectHideFlags: 0
