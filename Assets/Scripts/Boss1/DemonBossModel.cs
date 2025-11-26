@@ -27,7 +27,7 @@ public class DemonBossModel : Entity, Idamageable
     [SerializeField] private ParticleSystem _shieldBrokeEffect;
     [SerializeField] private Transform _centerPoint;
     [SerializeField] private GameObject _rocksHide;
-    [SerializeField] private ParticleSystem _rocksDestroyParticles;
+    [SerializeField] private GameObject _rocksDestroyParticles;
     [SerializeField] private float _rockSpawnRadius = 6f;
     [SerializeField] private float _rockRiseHeight = 4f;
     [SerializeField] private float _rockRiseDuration = 1.5f;
@@ -918,12 +918,14 @@ public class DemonBossModel : Entity, Idamageable
 
     private void DestroyRocks(List<Transform> rocks)
     {
+        GameObject x = null;
         foreach (var r in rocks)
         {
             if (_rocksDestroyParticles != null)
             {
-                Instantiate(_rocksDestroyParticles, r.position, Quaternion.identity);
+                x = Instantiate(_rocksDestroyParticles, r.position, Quaternion.identity);
             }
+            x.GetComponent<ParticleSystem>().Play();
             Destroy(r.gameObject);
 
             _activeRocks.Remove(r.gameObject);
