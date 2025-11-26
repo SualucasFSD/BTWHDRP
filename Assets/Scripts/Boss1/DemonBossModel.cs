@@ -597,6 +597,7 @@ public class DemonBossModel : Entity, Idamageable
             {
 
                 _shieldBrokeEffect.Play();
+                gameObject.layer = 10;
                 _isShieldCharge = false;
 
                 StopAllComboCoroutines();
