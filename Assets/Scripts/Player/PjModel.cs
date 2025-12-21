@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.VFX;
 [RequireComponent(typeof(Rigidbody))]
 public class PjModel : Entity, Idamageable
@@ -33,6 +35,9 @@ public class PjModel : Entity, Idamageable
     [SerializeField] AcquireAbility _myAbilityText;
     [SerializeField] private float _maxAirTime;
     [SerializeField] private ParticleSystem _deathParticle;
+    [SerializeField] private GameObject _bnMat;
+    [SerializeField] private CustomPassVolume _bnVolume;
+    private Material _matBn;
     //[SerializeField] private GameObject _deathCustomPass;
     [SerializeField] private Material[] _matPlayerRender = new Material[4];
     [SerializeField] private float _materialLerpDuration = 3;
@@ -120,6 +125,16 @@ public class PjModel : Entity, Idamageable
         {
             j.SetFloat("_Clip", 0);
         }
+
+        foreach (var pass in _bnVolume.customPasses)
+        {
+            if (pass is FullScreenCustomPass fsPass)
+            {
+                _matBn = fsPass.fullscreenPassMaterial;
+                break;
+            }
+        }
+        _matBn.SetFloat("_BN_activate", 0f);
     }
     private void Update()
     {
@@ -550,6 +565,7 @@ public class PjModel : Entity, Idamageable
              {
                  _deathCustomPass.SetActive(true);
              }*/
+            StartCoroutine(BnFade());
             if (SaveSystemManager.instance != null)
             {
                 SaveSystemManager.instance._saveDatas[0]=new DataSave();
@@ -700,6 +716,29 @@ public class PjModel : Entity, Idamageable
         }
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Dir.normalized * 0.3f, 0.5f);
+    }
+    IEnumerator BnFade()
+    {
+        if (_bnVolume == null || _matBn == null)
+            yield break;
+
+        _bnMat.SetActive(true);
+        _bnVolume.enabled = true;
+
+        float duration = 3f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+
+            float value = Mathf.Lerp(0f, 1f, elapsed / duration);
+            _matBn.SetFloat("_BN_activate", value);
+
+            yield return null;
+        }
+
+        _matBn.SetFloat("_BN_activate", 1f);
     }
 
     private void OnDestroy()

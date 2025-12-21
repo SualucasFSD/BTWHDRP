@@ -1,8 +1,10 @@
-using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
-using Unity.VisualScripting;
+using System.Collections.Generic;
+using System.Drawing;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
 
 public class KnightView : PjView
 {
@@ -36,6 +38,10 @@ public class KnightView : PjView
     private Renderer[] _swordRender;
     private SwordThrowableDamage _swordThrowed=null;
     private Coroutine _swordCoroutine;
+    [SerializeField] private GameObject _velCustom;
+    [SerializeField] private CustomPassVolume _velVolume;
+    private Material _materialVel;
+    private Coroutine _currentRoutineVel;
     private void Start()
     {
         _swordRender = _swordModel.GetComponentsInChildren<Renderer>();
@@ -66,6 +72,20 @@ public class KnightView : PjView
         _pjModel.OnDirectionalMovement += OnDirectionalMove;
         _pjModel.OnLifeUpdate += OnLifeUpdate;
         _pjModel.OnDeath += DeathAnim;
+
+        if (_velVolume == null||_velCustom==null)
+            return;
+
+        foreach (var pass in _velVolume.customPasses)
+        {
+            if (pass is FullScreenCustomPass fsPass)
+            {
+                _materialVel = fsPass.fullscreenPassMaterial;
+                _materialVel.SetColor("_Color", new UnityEngine.Color(0, 0, 0, 1));
+                break;
+            }
+        }
+
     }
     private void Update()
     {
@@ -612,4 +632,52 @@ public class KnightView : PjView
         StopAllCoroutines();
         EventManager.Unscribe(EventManager.KindOfEvent.RefreshEnemyHitList, RefreshEnemyList);
     }
+    #region DashRegionCustomPass
+    public void TurnOnVel()
+    {
+        if (_materialVel == null)
+            return;
+
+        if (_currentRoutineVel != null)
+            StopCoroutine(_currentRoutineVel);
+
+        _velVolume.enabled = true;
+        _currentRoutineVel = StartCoroutine(FadeColorRGB(0f, 140f, 0.5f));
+    }
+
+    public void TurnOffVel()
+    {
+        if (_materialVel == null)
+            return;
+
+        if (_currentRoutineVel != null)
+            StopCoroutine(_currentRoutineVel);
+
+        _currentRoutineVel = StartCoroutine(FadeColorRGB(140f, 0f, 1f, disableAtEnd: true));
+    }
+
+    private IEnumerator FadeColorRGB(float from, float to, float duration, bool disableAtEnd = false)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            byte value = (byte)Mathf.Lerp(from, to, t);
+
+            Color32 color = new Color32(value, value, value, 255);
+            _materialVel.SetColor("_Color", color);
+
+            yield return null;
+        }
+
+        Color32 finalColor = new Color32((byte)to, (byte)to, (byte)to, 255);
+        _materialVel.SetColor("_Color", finalColor);
+
+        if (disableAtEnd)
+            _velVolume.enabled = false;
+    }
+    #endregion
 }
