@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlackScreen_mat
-  m_Shader: {fileID: -6465566751694194690, guid: fd2ed40ee16761c45994c25c7db32d87,
+  m_Name: BN_mat
+  m_Shader: {fileID: -6465566751694194690, guid: 274e09ab86191d34f94da51cf8e28a1c,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,10 +24,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Texture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -42,14 +38,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fullscreen_DepthWrite: 0
-    - _Vignette_darkening: 0
-    - _Vignette_radius: 0.7
-    - _Vignette_softness: 0
-    - _alphaOp: 0
-    - _lerp: 1
-    - _test: 0
-    m_Colors:
-    - _Tint: {r: 0, g: 0, b: 0, a: 0}
+    - _BN_activate: 0
+    - _Float: 0
+    m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
