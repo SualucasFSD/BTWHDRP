@@ -45,3 +45,8 @@ The project is currently in development and represents an academic team-based pr
 This repository contains the Unity project source code.
 
 The project is still in development and features may change.
+
+## Engine History
+- Started in Unity 2023 URP
+- Migrated to HDRP
+- Currently developed in Unity 6
