@@ -98,7 +98,7 @@ public class DemonBossModel : Entity, Idamageable
     private Coroutine _multiRayCoroutine;
     private Coroutine _rayBeforeNextDashCoroutine;
 
-    //EVENTOS
+    //EVENTs
     public event Action PrepareImpulse = delegate { };
     public event Action Impulse = delegate { };
     public event Action DashFin = delegate { };
@@ -183,12 +183,7 @@ public class DemonBossModel : Entity, Idamageable
             _itiFloor+=Time.deltaTime;
         }
 
-        if (_isPerformingExplosion ||
-            _isPerformingMultiRayCombo ||
-            _isDashing ||
-            _fistToFistCombo ||
-            Stuned ||
-            !_isShieldCharge||_isDashingRoutine||_itiFloor<3)
+        if (_isPerformingExplosion ||_isPerformingMultiRayCombo || _isDashing ||_fistToFistCombo || Stuned ||!_isShieldCharge||_isDashingRoutine||_itiFloor<3)
         {
             _fsm.ArtificialUpdate();
             return;
@@ -400,7 +395,6 @@ public class DemonBossModel : Entity, Idamageable
         {
             yield return new WaitUntil(() => !GameManager.Instance.IsPaused);
 
-            // exit if shield lost, stunned, or dead
             if (!_isShieldCharge || Stuned || _isdead)
             {
                 ResetCloseCombo();
@@ -409,7 +403,6 @@ public class DemonBossModel : Entity, Idamageable
 
             if (_tgPos == Vector3.zero)
             {
-                // si no hay posición prevista, espera un frame
                 yield return null;
                 continue;
             }
@@ -477,7 +470,7 @@ public class DemonBossModel : Entity, Idamageable
             if (walkTimer >= maxWalkTime || distance >= dashDistance)
             {
                 Impulse();
-                // dash hacia jugador (si existe)
+
                 if (_tgNoPredict != null)
                 {
                     yield return DashToPlayer(dashOffset);
@@ -544,7 +537,6 @@ public class DemonBossModel : Entity, Idamageable
 
     private void ResetCloseCombo(bool normalEnd = false)
     {
-        // stop and cleanup
         if (_closeComboCoroutine != null)
         {
             StopCoroutine(_closeComboCoroutine);
@@ -558,7 +550,6 @@ public class DemonBossModel : Entity, Idamageable
         _moveActivate = false;
         _rotationActivate = false;
 
-        // reset counter either way (keeps your original behavior)
         _closeAttackCounter = 0;
     }
 
@@ -971,16 +962,7 @@ public class DemonBossModel : Entity, Idamageable
          if (_multiRayCoroutine != null) StopCoroutine(_multiRayCoroutine);
          _multiRayCoroutine = StartCoroutine(MultiRayComboRoutine());
      }
-    /*public void StartMultiRayCombo()
-    {
-        if (_bossBusy) return;
 
-        _bossBusy = true;
-        ResetBossState();
-        PrepareImpulse();
-        if (_multiRayCoroutine != null) StopCoroutine(_multiRayCoroutine);
-        _multiRayCoroutine = StartCoroutine(MultiRayComboRoutine());
-    }*/
     private IEnumerator MultiRayComboRoutine()
     {
         _isPerformingMultiRayCombo = true;
@@ -1005,42 +987,7 @@ public class DemonBossModel : Entity, Idamageable
         OnMove(Vector3.zero);
         _multiRayCoroutine = null;
     }
-    /*private IEnumerator MultiRayComboRoutine()
-    {
-        _isPerformingMultiRayCombo = true;
-        _moveActivate = false;
-        _rotationActivate = false;
-        _performingRaySequence = true;
 
-        Transform initialPoint = PickRandomDashPoint();
-
-        yield return RotateTowardsPoint(initialPoint.position);
-        Impulse();
-        yield return MoveToPoint(initialPoint.position);
-        DashFin();
-
-        for (int i = 0; i < 4; i++)
-        {
-            yield return ChargeAndShootRay(i);
-        }
-
-        FinishMultiRayCombo();
-    }*/
-    /*private void FinishMultiRayCombo()
-    {
-        _isPerformingMultiRayCombo = false;
-        _performingRaySequence = false;
-        _shootRay = false;
-
-        Idle(1);
-        OnMove(Vector3.zero);
-
-        _multiRayCoroutine = null;
-
-        ResetBossState();
-
-        _bossBusy = false;
-    }*/
     private IEnumerator MoveToPoint(Vector3 point)
     {
         Vector3 targetPos = point;
@@ -1161,12 +1108,7 @@ public class DemonBossModel : Entity, Idamageable
             return;
 
         Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
-        _rb.MoveRotation(
-            Quaternion.Slerp(
-                _rb.rotation,
-                targetRot,
-                _multiRayRotateForce * Time.deltaTime
-            )
+        _rb.MoveRotation( Quaternion.Slerp(_rb.rotation,targetRot,_multiRayRotateForce * Time.deltaTime)
         );
     }
 
@@ -1200,8 +1142,7 @@ public class DemonBossModel : Entity, Idamageable
 
         PickInitialDashPoint();
 
-        Debug.Log("[DemonBoss] DashShoot requested - starting rotation to dash target: " +
-                  (_currentDashTarget != null ? _currentDashTarget.name : "NULL"));
+        Debug.Log("[DemonBoss] DashShoot requested - starting rotation to dash target: " + (_currentDashTarget != null ? _currentDashTarget.name : "NULL"));
     }
 
     private void PickInitialDashPoint()

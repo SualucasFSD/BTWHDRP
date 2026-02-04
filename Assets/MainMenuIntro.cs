@@ -12,10 +12,6 @@ public class MainMenuIntro : MonoBehaviour
 
     float _iti = 0;
     private Coroutine _fade=null;
-    /*void Start()
-    {
-        StartCoroutine(IntroCoroutine());
-    }*/
 
     private void Update()
     {
@@ -37,16 +33,6 @@ public class MainMenuIntro : MonoBehaviour
             _fade= StartCoroutine(FadeOut());
         }
     }
-    /*IEnumerator IntroCoroutine()
-    {
-        _B.SetActive(true);
-        yield return new WaitForSeconds(_keyTime);
-        _T.SetActive(true);
-        yield return new WaitForSeconds(_keyTime);
-        _W.SetActive(true);
-        yield return new WaitForSeconds(_keyTime);
-        StartCoroutine(FadeOut());
-    }*/
 
     IEnumerator FadeOut()
     {
