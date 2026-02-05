@@ -53,7 +53,7 @@ The project is still in development and features may change.
   
 ## Controll-Keyboar/Mouse-Joystick
 
-- On Combat
+## On Combat
 - Jump= Space or A
 - Dodge/Dash= Shift or B
 - Light Attack= Left Click or RB
@@ -64,11 +64,11 @@ The project is still in development and features may change.
 - Change Target= Mouse Wheel(Up and Down)  or Right Stick(Move Left or Right)
 - Move= WASD or Left Analog
 
-- Menu
+## Menu
 - Confirm= Left Click or A
 - Back= Esc or B(Hold)
 
-- Combos
+## Combos
 - L= light, H= Heavy
 - L(4 Combo)
 - H(3 Combo)
@@ -81,5 +81,5 @@ The project is still in development and features may change.
 - H(Hold mid air) Enemies to ground heavy attack
 - L+L+H (Mid air) Enemies to ground 3 combo heavy attack
 
-- Special
+## Special
 - Boss Scene= F3
