@@ -50,3 +50,36 @@ The project is still in development and features may change.
 - Started in Unity 2023 URP
 - Migrated to HDRP
 - Currently developed in Unity 6
+- 
+#Controll-Keyboar/Mouse-Joystick
+
+On Combat
+Jump= Space or A
+Dodge/Dash= Shift or B
+Light Attack= Left Click or RB
+Heavy Attack= Right Click or LB
+Interact= E or Y
+Pause= Esc or Start
+Lock= Mid Button Mouse or Right Stick(Press)
+Change Target= Mouse Wheel(Up and Down)  or Right Stick(Move Left or Right)
+Move= WASD or Left Analog
+
+Menu
+Confirm= Left Click or A
+Back= Esc or B(Hold)
+
+Combos
+L= light, H= Heavy
+L(4 Combo)
+H(3 Combo)
+L(Hold) Enemies to air With pj jump
+H(Hold) Sword Throw
+L+L+H Spin Attack
+L+L+(L Hold) Enemies to air With pj jump
+L(3 Combo mid air)
+L(Hold mid air) Enemies to ground
+H(Hold mid air) Enemies to ground heavy attack
+L+L+H (Mid air) Enemies to ground 3 combo heavy attack
+
+Special
+Boss Scene= F3
