@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,12 +14,6 @@ public class PowerPanel : MonoBehaviour, Iinitializers
         EventManager.Suscribe(EventManager.KindOfEvent.PowerSelect, Activate);
         EventManager.Suscribe(EventManager.KindOfEvent.ResumeTime, Desactivate);
     }
-    /*private void Start()
-    {
-        EventManager.Suscribe(EventManager.KindOfEvent.PowerSelect, Activate);
-        EventManager.Suscribe(EventManager.KindOfEvent.ResumeTime, Desactivate);
-        gameObject.SetActive(false);
-    }*/
 
     private void Update()
     {
@@ -83,6 +78,7 @@ public class PowerPanel : MonoBehaviour, Iinitializers
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        EventSystem.current.SetSelectedGameObject(null);
 
         foreach (Cards card in _selectables)
             card.Randomized();
