@@ -51,7 +51,7 @@ The project is still in development and features may change.
 - Migrated to HDRP
 - Currently developed in Unity 6
   
-##Controll-Keyboar/Mouse-Joystick
+## Controll-Keyboar/Mouse-Joystick
 
 - On Combat
 - Jump= Space or A
